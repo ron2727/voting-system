@@ -1,0 +1,67 @@
+import Login from '../views/auth/Login.vue'
+import Register from '../views/auth/Register.vue'
+
+const routes = [
+    {
+        path: '/',
+        name: 'Login',
+        component: Login
+    },
+    {
+        path: '/register',
+        name: 'Register',
+        component: Register
+    }, 
+    {
+        path: '/dashboard',
+        name: 'Dashboard',
+        component: () => import('../views/dashboard/Dashboard.vue')
+    },
+    {
+        path: '/voters',
+        name: 'Voters',
+        component: () => import('../views/dashboard/voters/Voters.vue')
+    }, 
+    {
+        path: '/voter/add',
+        name: 'VotersAdd',
+        component: () => import('../views/dashboard/voters/VotersAdd.vue')
+    },
+    {
+        path: '/elections',
+        name: 'Elections',
+        component: () => import('../views/dashboard/elections/Elections.vue')
+    },
+    {
+        path: '/election/add',
+        name: 'ElectionsAdd',
+        component: () => import('../views/dashboard/elections/ElectionAdd.vue')
+    }, 
+    {
+        path: '/election/:electionId/candidates',
+        name: 'Candidate',
+        component: () => import('../views/dashboard/candidates/Candidates.vue')
+    }, 
+    {
+        path: '/election/:electionId/candidates/add',
+        name: 'CandidateAdd',
+        component: () => import('../views/dashboard/candidates/CandidatesAdd.vue')
+    },
+    {
+        path: '/vote',
+        name: 'Vote',
+        component: () => import('../views/dashboard/Vote.vue')
+    },
+    {
+        path: '/results',
+        name: 'Results',
+        component: () => import('../views/dashboard/Results.vue')
+    },
+    {
+        path: '/reports',
+        name: 'Reports',
+        component: () => import('../views/dashboard/Reports.vue')
+    }
+]
+
+export default routes;
