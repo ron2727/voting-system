@@ -1,5 +1,5 @@
 <template> 
-    <div class="card-wrapper relative h-min border bg-white rounded-2xl">
+    <div class="card-wrapper relative h-min border bg-white rounded-2xl cursor-pointer">
        <div class="card-head">
          <slot name="title"></slot> 
        </div>
