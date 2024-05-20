@@ -4,6 +4,8 @@ namespace App\Services;
 
 use App\Models\Candidate;
 use App\Models\Election;
+use App\Services\Interfaces\ElectionFilter;
+use Illuminate\Support\Facades\DB;
 
 class ElectionService
 {
@@ -19,6 +21,30 @@ class ElectionService
 
     public function getElection($id){ 
         return Election::find($id);
+    }
+    // In Election Model find all election that the start_date is less than to current datetime and end_date is greater than to current datetime
+    public function getFilteredElections($status)
+    {
+        if ($status == 'Active') {
+            $filteredElections = Election::where('start_date', '<', now())
+                ->where('end_date', '>', now())
+                ->orderBy('created_at', 'desc')
+                ->get();
+        }
+        if ($status == 'Upcoming') {
+            $filteredElections = Election::where('start_date', '>', now())
+                ->where('end_date', '>', now())
+                ->orderBy('created_at', 'desc')
+                ->get();
+        }
+        if ($status == 'Completed') {
+            $filteredElections = Election::where('start_date', '<', now())
+                ->where('end_date', '<', now())
+                ->orderBy('created_at', 'desc')
+                ->get();
+        } 
+
+        return $filteredElections;
     }
 
 }

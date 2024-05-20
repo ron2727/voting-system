@@ -61,7 +61,7 @@ import Card from '../../../components/common/Card.vue';
 import { onMounted, ref, onBeforeMount, provide } from 'vue';
 import { RouterLink, useRouter } from 'vue-router';
 import { useAuthStore } from '../../../stores/auth'; 
-import { getElections } from '../../../services/api/elections';
+import { getElections, getFilteredElection } from '../../../services/api/elections';
 import { DateFormat } from '../../../services/dateFormat';
 
 const authStore = useAuthStore(); 
@@ -75,13 +75,13 @@ onBeforeMount(async () => {
    if (!authStore.user.is_admin) {
      route.push('/dashboard')
    }
-   elections.value = await getElections(); 
+   elections.value = await getFilteredElection('Active'); 
    console.log(authStore.user)
 }) 
  
 
-const getActiveMenu = (menuItem) => {
-    console.log(menuItem)
+const getActiveMenu = async (menuItem) => {
+    elections.value = await getFilteredElection(menuItem);
 }
  
 

@@ -13,7 +13,10 @@ class ElectionController extends Controller
     {
         return $this->electionService->getAllElections();
     }
-
+    public function getFilteredElections($status)
+    {
+        return $this->electionService->getFilteredElections($status);
+    }
     /**
      * Show the form for creating a new resource.
      */

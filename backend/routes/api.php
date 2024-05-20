@@ -30,7 +30,7 @@ Route::get('/election/{electionId}', [ElectionController::class, 'getElection'])
 Route::get('/candidates/{electionId}', [CandidateController::class, 'getCandidates']);
 Route::get('/voters/random', [VoterController::class, 'getRandomVoters']);
 Route::get('/voters/find/{q}', [VoterController::class, 'findVoters']);
-
+Route::get('/elections/filtered/{status}', [ElectionController::class, 'getFilteredElections']);
 
 Route::apiResource('voters', VoterController::class);
 Route::apiResource('elections', ElectionController::class);

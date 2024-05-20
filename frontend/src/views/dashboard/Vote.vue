@@ -1,6 +1,6 @@
 <template>
     <div>
-        <DashboardTemplate> 
+        <DashboardTemplate layout="grid grid-cols-5 "> 
             <template #head>
               <Title title="Vote" subTitle="vote on elections"></Title>
              </template>

@@ -32,3 +32,12 @@ export const getElection = async (id) => {
         console.error(error);
     }
 }
+
+export const getFilteredElection = async (status) => { 
+    try {
+        const response = await axios.get(`/api/elections/filtered/${status}`);
+        return response.data;
+    } catch (error) {
+        console.error(error);
+    }
+}

@@ -9,7 +9,7 @@
                 <ul class="text-sm divide-y">
                     <li class="dropdown-header">
                        <div class="p-2">
-                          <h6 class="font-bold text-sm text-gray-600">John Doe</h6>
+                          <h6 class="font-bold text-sm text-gray-600">{{ userAuth.user?.firstname }} {{ userAuth.user?.lastname }}</h6>
                           <small class="text-xs text-gray-500">{{ getUserRole() }}</small>
                        </div>
                     </li>
