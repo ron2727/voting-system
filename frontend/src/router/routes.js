@@ -51,7 +51,14 @@ const routes = [
         path: '/vote',
         name: 'Vote',
         component: () => import('../views/dashboard/Vote.vue')
-    },
+    }
+    ,
+    {
+        path: '/ballot',
+        name: 'Ballot',
+        component: () => import('../views/dashboard/Ballot.vue')
+    }
+    ,
     {
         path: '/results',
         name: 'Results',

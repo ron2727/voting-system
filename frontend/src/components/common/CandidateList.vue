@@ -11,6 +11,8 @@
                 </div>
             </div>
         </div>
+        <small class=" text-red-500" v-if="errorMessage">
+            {{ errorMessage }}</small>
     </div>
 </template>
 
@@ -19,7 +21,11 @@ import { ref } from 'vue';
 
 defineProps({
     candidates: Array,
-    position: String
+    position: String,
+    errorMessage: {
+        type: String,
+        default: ''
+    }
 })
 const emits = defineEmits(['selectCandidate'])
 

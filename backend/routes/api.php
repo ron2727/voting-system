@@ -3,7 +3,9 @@
 use App\Http\Controllers\CandidateController;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\ElectionController;
+use App\Http\Controllers\VoteController;
 use App\Http\Controllers\VoterController;
+use App\Models\Vote;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -31,6 +33,8 @@ Route::get('/candidates/{electionId}', [CandidateController::class, 'getCandidat
 Route::get('/voters/random', [VoterController::class, 'getRandomVoters']);
 Route::get('/voters/find/{q}', [VoterController::class, 'findVoters']);
 Route::get('/elections/filtered/{status}', [ElectionController::class, 'getFilteredElections']);
+
+Route::post('/vote', [VoteController::class, 'submitVote']);
 
 Route::apiResource('voters', VoterController::class);
 Route::apiResource('elections', ElectionController::class);
