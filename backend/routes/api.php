@@ -38,3 +38,4 @@ Route::apiResource('candidates', CandidateController::class);
 
 
 Route::get('/test', [Controller::class, 'testing']);
+Route::get('/testrequest', [Controller::class, 'testRequest']);
