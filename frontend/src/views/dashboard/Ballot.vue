@@ -6,7 +6,7 @@
         </template>
         <template #main>
           <div class="wrapper space-y-8">
-            Ballot
+            <CandidateList :candidates="voteBallot" title="Candidates you had voted"></CandidateList>
            </div>  
         </template>
       </DashboardTemplate>
@@ -23,20 +23,45 @@
   import { useAuthStore } from '../../stores/auth'; 
   import { getCandidatesFromElection } from '../../services/api/candidates'
   import { getFilteredElection } from '../../services/api/elections'
-  import { storeVote } from '../../services/api/vote'
-   
+  import { storeVote, getVotes } from '../../services/api/vote'
+  import { useRoute } from 'vue-router';
+
+  const route = useRoute();
   const currentElection = ref([]);
   const authStore = useAuthStore(); 
    
   const errorsData = ref(null);
+  const voteBallot = ref(null)
   provide('userAuth', authStore);
   
   onMounted(async () => {
-     await authStore.getAuthUser(); 
-     votersBallot.value.user_id = authStore.user.id
+     await authStore.getAuthUser();  
      currentElection.value = await getFilteredElection('Active')
-  
+     const candidates = await getVotes({
+       user_id: authStore.user.id,
+       election_id: currentElection.value[0].id
+     })
+
+     voteBallot.value = candidates.map(data => {
+        const candidateInfo = {
+          candidate_id: data.candidate_id,
+          user_id: data.user_id,
+          position: data.position,
+          user:{
+             firstname: data.firstname,
+             lastname: data.lastname,
+             email: data.email,
+             course: data.course,
+             year_level: data.year_level,
+             section: data.section
+          }
+        }
+
+        return candidateInfo
+     })
+
+     console.log(voteBallot.value)
   }) 
  
-  </script>
+</script>
    

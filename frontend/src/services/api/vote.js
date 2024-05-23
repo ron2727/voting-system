@@ -15,7 +15,7 @@ export const storeVote = async (data) => {
      return { requestResponse, errors }
 }
 
-export const getVotes = async () => {
-    const response = await axios.get('/api/vote');
+export const getVotes = async (data) => {
+    const response = await axios.get(`/api/vote/ballot/${data.user_id}/${data.election_id}`);
     return response.data.data
 }

@@ -35,6 +35,7 @@ Route::get('/voters/find/{q}', [VoterController::class, 'findVoters']);
 Route::get('/elections/filtered/{status}', [ElectionController::class, 'getFilteredElections']);
 
 Route::post('/vote', [VoteController::class, 'submitVote']);
+Route::get('/vote/ballot/{user_id}/{election_id}', [VoteController::class, 'getSubmittedVote']);
 
 Route::apiResource('voters', VoterController::class);
 Route::apiResource('elections', ElectionController::class);

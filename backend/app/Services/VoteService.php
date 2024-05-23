@@ -2,7 +2,9 @@
 
 namespace App\Services;
 
+use App\Http\Resources\VoteResource;
 use App\Models\Vote;
+use Illuminate\Support\Facades\DB;
 
 class VoteService
 {
@@ -17,5 +19,18 @@ class VoteService
                 'candidate_id' => $value
             ]);
         } 
+    }
+
+    public function getSubmittedVote($user_id, $election_id)
+    {
+        $candidates = DB::table('votes') 
+        ->join('candidates', 'votes.candidate_id', '=', 'candidates.id')
+        ->join('users', 'candidates.user_id', '=', 'users.id') 
+        ->select('users.*', 'votes.candidate_id', 'votes.election_id', 'candidates.user_id', 'candidates.position')
+        ->where('votes.election_id', $election_id)
+        ->where('votes.user_id', $user_id)
+        ->get();
+
+        return VoteResource::collection($candidates);  
     }
 }

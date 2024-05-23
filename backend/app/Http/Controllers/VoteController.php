@@ -16,4 +16,8 @@ class VoteController extends Controller
         return response()->json([['message' => 'Vote is submitted'], $request->all()], 201);
     
     }
+
+    public function getSubmittedVote($user_id, $election_id){
+        return $this->voteService->getSubmittedVote($user_id, $election_id); 
+    }
 }

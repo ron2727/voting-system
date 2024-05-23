@@ -6,7 +6,7 @@
       </template>
       <template #main>
         <div class="wrapper space-y-8">
-          <CandidateList v-for="(candidates, position) in positions" :candidates="candidates" :position="position" @select-candidate="selectCandidate" :errorMessage="errorsData?.[removeSpace(position)]?.[0]"/>  
+          <CandidateList v-for="(candidates, position) in positions" :candidates="candidates" :title="position" @select-candidate="selectCandidate" :errorMessage="errorsData?.[removeSpace(position)]?.[0]"/>  
         </div> 
         <div class=" flex justify-center">
           <Button buttonText="Submit Vote" class="m-5" @click="submitVote"/> 
