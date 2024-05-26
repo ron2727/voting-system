@@ -20,7 +20,7 @@ class CandidateResource extends JsonResource
              'elections_id' => $this->elections_id,
              'user_id' => $this->user_id,
              'position' => $this->position,
-             'user' => new UserResource($this->whenLoaded('user'))
+             'user' => new UserResource($this->whenLoaded('user')), 
         ];
     }
 }

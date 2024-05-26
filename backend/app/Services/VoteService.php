@@ -2,7 +2,9 @@
 
 namespace App\Services;
 
+use App\Http\Resources\CandidateVoteResource;
 use App\Http\Resources\VoteResource;
+use App\Models\Candidate;
 use App\Models\Vote;
 use Illuminate\Support\Facades\DB;
 
@@ -32,5 +34,11 @@ class VoteService
         ->get();
 
         return VoteResource::collection($candidates);  
+    }
+
+    public function getCandidatesTotalVotes($election_id)
+    { 
+        $candidate = Candidate::where('election_id', $election_id)->with('user')->with('votes')->get();
+        return CandidateVoteResource::collection($candidate);
     }
 }

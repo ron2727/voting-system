@@ -20,4 +20,9 @@ class VoteController extends Controller
     public function getSubmittedVote($user_id, $election_id){
         return $this->voteService->getSubmittedVote($user_id, $election_id); 
     }
+
+    public function getCandidatesTotalVotes($election_id){
+        return $this->voteService->getCandidatesTotalVotes($election_id);
+    }
+
 }

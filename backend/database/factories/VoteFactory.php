@@ -19,7 +19,7 @@ class VoteFactory extends Factory
         return [
             'user_id' => fake()->numberBetween(18, 29),
             'election_id' => 6,
-            'candidate_id' => 2,
+            'candidate_id' => 1,
         ];
     }
 }

@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\CandidateResource;
+use App\Http\Resources\CandidateVoteResource;
 use App\Http\Resources\VoteResource;
 use App\Models\Candidate;
 use App\Models\Election;
@@ -19,15 +21,24 @@ class Controller extends BaseController
 
     public function testing()
     {
-        $candidates = DB::table('votes') 
-        ->join('candidates', 'votes.candidate_id', '=', 'candidates.id')
-        ->join('users', 'candidates.user_id', '=', 'users.id') 
-        ->select('users.*', 'votes.candidate_id', 'votes.election_id', 'candidates.user_id')
-        ->where('votes.election_id', 6)
-        ->where('votes.user_id', 18)
-        ->get();
-
-        return VoteResource::collection($candidates); 
+        // $positions = [
+        //   'President' => [6],
+        //   'Vice President' => [1, 3], 
+        //   'Treasurer' => [4, 5],
+        //   'Secretary' => [2]
+        // ];
+        
+        // $votes = [];
+        // foreach ($positions as $position => $candidate_id) {
+        //     // $votes[$position] = [];
+        //     foreach ($candidate_id as $value) { 
+        //        $votes[$position][$value] = Vote::where('election_id', 6)->where('candidate_id', $value)->count();
+        //     }
+        // } 
+        $candidate = Candidate::where('election_id', 6)->with('user')->with('votes')->get();
+        return CandidateVoteResource::collection($candidate);
+        // $count_votes = $candidate->votes->count();
+        // return $count_votes;
     }
 
     public function testRequest(Request $request)
