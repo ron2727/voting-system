@@ -132,7 +132,9 @@ const submitCandidateForm = async (formData) => {
 
 const clearForm = () => { 
   for (const key in form.value) {
-    form.value[key] = '';
+    if (!key === 'election_id') {
+      form.value[key] = '';
+    }
   }
   errorsData.value = [];
 }

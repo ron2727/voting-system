@@ -26,20 +26,20 @@ class ElectionService
     public function getFilteredElections($status)
     {
         if ($status == 'Active') {
-            $filteredElections = Election::where('start_date', '<', now())
-                ->where('end_date', '>', now())
+            $filteredElections = Election::where('start_date', '<', now('Asia/Manila')->format('Y-m-d H:i:s'))
+                ->where('end_date', '>', now('Asia/Manila')->format('Y-m-d H:i:s'))
                 ->orderBy('created_at', 'desc')
                 ->get();
         }
         if ($status == 'Upcoming') {
-            $filteredElections = Election::where('start_date', '>', now())
-                ->where('end_date', '>', now())
+            $filteredElections = Election::where('start_date', '>', now('Asia/Manila')->format('Y-m-d H:i:s'))
+                ->where('end_date', '>', now('Asia/Manila')->format('Y-m-d H:i:s'))
                 ->orderBy('created_at', 'desc')
                 ->get();
         }
         if ($status == 'Completed') {
-            $filteredElections = Election::where('start_date', '<', now())
-                ->where('end_date', '<', now())
+            $filteredElections = Election::where('start_date', '<', now('Asia/Manila')->format('Y-m-d H:i:s'))
+                ->where('end_date', '<', now('Asia/Manila')->format('Y-m-d H:i:s'))
                 ->orderBy('created_at', 'desc')
                 ->get();
         } 

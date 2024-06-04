@@ -28,3 +28,12 @@ export const getCandidateTotalVotes = async (electionId) => {
       console.log(error)
     }
 }
+
+export const getElectionVotes = async () => {
+  try {
+    const response = await axios.get('/api/vote/winners');
+    return response.data
+  } catch (error) {
+    console.log(error)
+  }
+}

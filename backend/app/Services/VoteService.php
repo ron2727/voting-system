@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Http\Resources\CandidateVoteResource;
 use App\Http\Resources\VoteResource;
 use App\Models\Candidate;
+use App\Models\Election;
 use App\Models\Vote;
 use Illuminate\Support\Facades\DB;
 
@@ -40,5 +41,35 @@ class VoteService
     { 
         $candidate = Candidate::where('election_id', $election_id)->with('user')->with('votes')->get();
         return CandidateVoteResource::collection($candidate);
+    }
+
+    public function getCurrentElectionVotes()
+    {
+        $election = Election::where('start_date', '<', now())
+        ->where('end_date', '<', now())
+        ->orderBy('end_date', 'desc')
+        ->first();
+
+        $result = Candidate::where('election_id', $election->id)->with('user')->with('votes')->get();
+ 
+        $candidate = CandidateVoteResource::collection($result); 
+ 
+        return $this->getElectionCandidatesWithPosition($candidate);
+
+    }
+    
+    public function getElectionCandidatesWithPosition($election_candidates){
+        $candidatesPosition = [
+            'President' => ['candidates' => []],
+            'Vice President' => ['candidates' => []],
+            'Secretary' => ['candidates' => []],
+            'Treasurer' => ['candidates' => []]
+        ];
+
+        foreach ($election_candidates as $candidate) {
+            array_push($candidatesPosition[$candidate->position]['candidates'], $candidate);
+        } 
+        
+        return response()->json($candidatesPosition);
     }
 }

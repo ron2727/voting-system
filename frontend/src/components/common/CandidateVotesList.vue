@@ -36,6 +36,11 @@ defineProps({
 })
  
 const getPercentageVote = (totalVote, candidateTotalVote) => {
-     return Math.round((candidateTotalVote / totalVote) * 100); 
+    let totalPercentageVotes = Math.round((candidateTotalVote / totalVote) * 100)
+    if (isNaN(totalPercentageVotes)) {
+        totalPercentageVotes = 0
+    }
+    
+    return totalPercentageVotes; 
 }
 </script> 

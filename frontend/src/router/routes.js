@@ -62,7 +62,19 @@ const routes = [
     {
         path: '/results',
         name: 'Results',
-        component: () => import('../views/dashboard/Results.vue')
+        component: () => import('../views/dashboard/results/Results.vue'),
+        children: [
+            {
+                path: '',
+                name: 'ResultVote',
+                component: () => import('../views/dashboard/results/ResultVotes.vue')
+            },
+            {
+                path: 'winners',
+                name: 'ResultWinner',
+                component: () => import('../views/dashboard/results/ResultWinner.vue')
+            }
+        ]
     },
     {
         path: '/reports',

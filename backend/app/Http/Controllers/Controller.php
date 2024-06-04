@@ -9,6 +9,7 @@ use App\Models\Candidate;
 use App\Models\Election;
 use App\Models\User;
 use App\Models\Vote;
+use Carbon\Carbon;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Http\Request;
@@ -21,25 +22,12 @@ class Controller extends BaseController
 
     public function testing()
     {
-        // $positions = [
-        //   'President' => [6],
-        //   'Vice President' => [1, 3], 
-        //   'Treasurer' => [4, 5],
-        //   'Secretary' => [2]
-        // ];
-        
-        // $votes = [];
-        // foreach ($positions as $position => $candidate_id) {
-        //     // $votes[$position] = [];
-        //     foreach ($candidate_id as $value) { 
-        //        $votes[$position][$value] = Vote::where('election_id', 6)->where('candidate_id', $value)->count();
-        //     }
-        // } 
-        $candidate = Candidate::where('election_id', 6)->with('user')->with('votes')->get();
-        return CandidateVoteResource::collection($candidate);
-        // $count_votes = $candidate->votes->count();
-        // return $count_votes;
-    }
+        $candidate = Election::where('start_date', '<', now('Asia/Manila')->format('Y-m-d H:i:s'))
+        ->where('end_date', '>', now('Asia/Manila')->format('Y-m-d H:i:s'))
+        ->orderBy('created_at', 'desc')
+        ->get();
+        return $candidate;  
+     }
 
     public function testRequest(Request $request)
     {

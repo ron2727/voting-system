@@ -10,7 +10,7 @@
         </RouterLink>
         <SubNav @getActive="getActiveMenu" :menus="['Active', 'Upcoming', 'Completed']" defaultActive="Active"></SubNav>
       </template>
-      <template #main>
+      <template #main> 
         <div class=" space-y-3">
           <Card v-for="election in elections" class=" p-4">
             <template #title>
@@ -30,16 +30,16 @@
             </template>
             <template #footer>
               <div class=" space-y-4">
-                <div class=" w-max text-xs text-gray-500">  
-                      <span class=" font-bold">Start Date: </span>
-                      {{ DateFormat.getDateWithMonthName(election.start_date) }}
-                      {{ DateFormat.getTimeOfDate(election.start_date) }} 
+                <div class=" w-max text-xs text-gray-500">
+                  <span class=" font-bold">Start Date: </span>
+                  {{ DateFormat.getDateWithMonthName(election.start_date) }}
+                  {{ DateFormat.getTimeOfDate(election.start_date) }}
                 </div>
-                <div class=" w-max text-xs text-gray-500">  
-                      <span class=" font-bold">End Date: </span>
-                      {{ DateFormat.getDateWithMonthName(election.end_date) }}
-                      {{ DateFormat.getTimeOfDate(election.end_date) }}
-                </div> 
+                <div class=" w-max text-xs text-gray-500">
+                  <span class=" font-bold">End Date: </span>
+                  {{ DateFormat.getDateWithMonthName(election.end_date) }}
+                  {{ DateFormat.getTimeOfDate(election.end_date) }}
+                </div>
               </div>
               <RouterLink :to="`/election/${election.id}/candidates`">
                 <Button buttonText="View Candidates" class=" absolute right-0 bottom-0 m-5"></Button>

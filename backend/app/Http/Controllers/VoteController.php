@@ -25,4 +25,7 @@ class VoteController extends Controller
         return $this->voteService->getCandidatesTotalVotes($election_id);
     }
 
+    public function getCurrentElectionVotes(){
+        return $this->voteService->getCurrentElectionVotes();
+    }
 }
