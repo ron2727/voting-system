@@ -36,9 +36,10 @@
         <form @submit.prevent="submitCandidateForm(form)">
           <input type="hidden" v-model="form.user_id">
           <div class="form-wrapper bg-white max-w-xl p-4 rounded-lg shadow-md space-y-3">
-            <div v-if="errorsData?.candidate" class=" alert py-2 text-center border border-red-600 bg-red-100 text-red-600 text-sm">
+            <!-- <div v-if="errorsData?.candidate" class=" alert py-2 text-center border border-red-600 bg-red-100 text-red-600 text-sm">
               {{ errorsData?.candidate }}
-            </div>
+            </div> -->
+            <AlertMessage v-if="alert.isOpen" :alertType="alert.type" @closeAlert="alert.isOpen = false">{{ alert.message }}</AlertMessage>
             <div class=" select-candidate-wrapper" @click="openModal">
               <span class=" text-sm">Select Candidate <span class="text-red-500">*</span></span>
               <div v-if="selectedToBeCandidate.firstname === ''"
@@ -81,6 +82,7 @@ import Selection from '../../../components/common/Selection.vue';
 import Button from '../../../components/common/Button.vue';
 import SubNav from '../../../components/common/SubNav.vue'; 
 import Modal from '../../../components/common/Modal.vue';
+import AlertMessage from '../../../components/common/AlertMessage.vue';
 import { onMounted, ref, onBeforeMount, provide } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
 import { useAuthStore } from '../../../stores/auth'; 
@@ -96,9 +98,17 @@ const elections = ref([]);
 const errorsData = ref([]);
 const responseData = ref([]);
 
+
 const isModalOpen = ref(false);
 const voters = ref([]);
 const search = ref('');
+
+const alert = ref({
+  isOpen: false,
+  type: '',
+  message: '',
+});
+
 const selectedToBeCandidate = ref({
   firstname: '',
   lastname: '',
@@ -111,6 +121,7 @@ const form = ref({
    user_id: "",
    position: "",  
 });
+
 provide('userAuth', authStore);
   
 onBeforeMount(async () => {
@@ -130,18 +141,28 @@ const submitCandidateForm = async (formData) => {
   
   if(errors.value) {
     errorsData.value = errors.value
+    if (errorsData.value?.candidate) { 
+      showAlert('error', errorsData.value.candidate)
+    }
     console.log(errorsData.value)
   }else{
     responseData.value = requestResponse.value 
+    showAlert('success', requestResponse.value.message)
     clearForm()
   }
 }
 
-const clearForm = () => { 
-  for (const key in form.value) {
-    if (!key === 'election_id') {
-      form.value[key] = '';
-    }
+const showAlert = (type, message) => {
+  alert.value.isOpen = true;
+  alert.value.type = type;
+  alert.value.message = message;
+} 
+const clearForm = () => {  
+  showAlert('success', "Candidate added successfully")
+  form.value.user_id = ''
+  form.value.position = ''
+  for (const key in selectedToBeCandidate.value) { 
+    selectedToBeCandidate.value[key] = ''
   }
   errorsData.value = [];
 }
@@ -159,9 +180,11 @@ const findVoters = async () => {
   }
 }
 
-const selectVoter = (voter) => { 
+const selectVoter = (voter) => {  
   form.value.user_id = voter.id;  
-  selectedToBeCandidate.value = voter;
+  for (const key in selectedToBeCandidate.value) { 
+    selectedToBeCandidate.value[key] = voter[key]
+  } 
   isModalOpen.value = false
 }
 </script>
