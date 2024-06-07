@@ -1,11 +1,13 @@
 <template>
     <div>
-        <CandidateVotesList v-for="(candidates, position) in candidatesWithTotalVotes" :candidates="candidates.candidates" :totalVotes="candidates.totalVotes" :title="position"></CandidateVotesList>
+        <CandidateVotesList v-if="currentElection.length" v-for="(candidates, position) in candidatesWithTotalVotes" :candidates="candidates.candidates" :totalVotes="candidates.totalVotes" :title="position"></CandidateVotesList>
+        <NoRecordMessage v-else>No active election</NoRecordMessage>
     </div>
 </template>
 
 <script setup> 
 import CandidateVotesList from '../../../components/common/CandidateVotesList.vue';
+import NoRecordMessage from '../../../components/common/NoRecordMessage.vue';
 import { ref, onMounted, onBeforeMount, provide } from 'vue';
 import { useAuthStore } from '../../../stores/auth'; 
 import { getCandidateTotalVotes } from '../../../services/api/vote';
@@ -26,9 +28,9 @@ provide('userAuth', authStore);
 onBeforeMount(async () => {
    await authStore.getAuthUser(); 
    currentElection.value = await getFilteredElection('Active');
-   const candidates = await getCandidateTotalVotes(currentElection.value[0].id);
+   const candidates = await getCandidateTotalVotes(currentElection.value[0]?.id); 
    mapCandidatesVote(candidates)
-//    console.log(candidates)
+ 
 })  
 
 const mapCandidatesVote = (data) => {

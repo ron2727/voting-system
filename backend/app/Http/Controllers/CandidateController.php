@@ -35,9 +35,8 @@ class CandidateController extends Controller
      * Store a newly created resource in storage.
      */
     public function store(CandidateRequest $request)
-    {
-        $this->candidateService->createCandidate($request->all());
-        return response()->json([['message' => 'New Candidate Created'], $request->all()], 201);
+    { 
+        return  $this->candidateService->createCandidate($request->all());
     }
 
     /**

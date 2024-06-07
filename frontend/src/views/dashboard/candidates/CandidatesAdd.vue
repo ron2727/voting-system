@@ -26,7 +26,7 @@
             </div>
           </div>
         </div>
-      </template> 
+      </template>
     </Modal>
     <DashboardTemplate layout="w-full">
       <template #head>
@@ -36,17 +36,24 @@
         <form @submit.prevent="submitCandidateForm(form)">
           <input type="hidden" v-model="form.user_id">
           <div class="form-wrapper bg-white max-w-xl p-4 rounded-lg shadow-md space-y-3">
+            <div v-if="errorsData?.candidate" class=" alert py-2 text-center border border-red-600 bg-red-100 text-red-600 text-sm">
+              {{ errorsData?.candidate }}
+            </div>
             <div class=" select-candidate-wrapper" @click="openModal">
               <span class=" text-sm">Select Candidate <span class="text-red-500">*</span></span>
-              <div v-if="selectedToBeCandidate.firstname === ''"  class=" flex flex-col items-center border cursor-pointer hover:ring-2 hover:ring-offset-1 border-gray-300 rounded-lg py-5">
+              <div v-if="selectedToBeCandidate.firstname === ''"
+                class=" flex flex-col items-center border cursor-pointer hover:ring-2 hover:ring-offset-1 border-gray-300 rounded-lg py-5">
                 <i class='bx bx-search-alt-2 bx-lg text-blue-600'></i>
                 <p class=" text-sm text-gray-500">Choose candidate</p>
               </div>
-              <div v-else class="voter flex flex-col items-center py-2 rounded-lg border border-gray-300 cursor-pointer">
+              <div v-else
+                class="voter flex flex-col items-center py-2 rounded-lg border border-gray-300 cursor-pointer">
                 <img src="../../../assets/images/BUERE_JOHNRON1.png" alt="voter"
                   class=" w-[50px] h-[50px] border rounded-full object-cover">
-                <span class=" text-sm font-bold">{{ selectedToBeCandidate.firstname }} {{ selectedToBeCandidate.lastname }}</span>
-                <span class=" text-xs text-gray-600">{{ selectedToBeCandidate.course }} {{ selectedToBeCandidate.year_level }}</span>
+                <span class=" text-sm font-bold">{{ selectedToBeCandidate.firstname }} {{ selectedToBeCandidate.lastname
+                  }}</span>
+                <span class=" text-xs text-gray-600">{{ selectedToBeCandidate.course }} {{
+                  selectedToBeCandidate.year_level }}</span>
               </div>
               <small class=" text-sm text-red-600">{{ errorsData?.user_id?.[0] }}</small>
             </div>

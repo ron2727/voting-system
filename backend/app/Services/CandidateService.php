@@ -21,6 +21,15 @@ class CandidateService
 
     public function createCandidate($data)
     {
-        return Candidate::create($data);
+        $isCandidateExistInElection = Candidate::where('user_id', $data['user_id'])->where('election_id', $data['election_id'])->exists();
+        if ($isCandidateExistInElection) {
+            return response()->json(['errors' => [
+                'candidate' => 'Candidate already exists'
+            ]], 409);
+        } 
+
+        Candidate::create($data); 
+
+        return response()->json([['message' => 'New Candidate Created'], $data], 201);
     }
 }

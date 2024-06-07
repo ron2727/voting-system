@@ -5,12 +5,14 @@
         <Title :title="currentElection[0]?.title" :subTitle="currentElection[0]?.description"></Title>
       </template>
       <template #main>
-        <div class="wrapper space-y-8">
-          <CandidateList v-for="(candidates, position) in positions" :candidates="candidates" :title="position" @select-candidate="selectCandidate" :errorMessage="errorsData?.[removeSpace(position)]?.[0]"/>  
-        </div> 
-        <div class=" flex justify-center">
-          <Button buttonText="Submit Vote" class="m-5" @click="submitVote"/> 
+        <div class="wrapper space-y-8" v-if="currentElection.length">
+          <CandidateList v-for="(candidates, position) in positions" :candidates="candidates" :title="position"
+            @select-candidate="selectCandidate" :errorMessage="errorsData?.[removeSpace(position)]?.[0]" />
+          <div class=" flex justify-center">
+            <Button buttonText="Submit Vote" class="m-5" @click="submitVote" />
+          </div>
         </div>
+        <NoRecordMessage v-else>No Election yet</NoRecordMessage>
       </template>
     </DashboardTemplate>
   </div>
@@ -22,6 +24,7 @@ import Title from '../../components/common/Title.vue'
 import Button from '../../components/common/Button.vue'; 
 import Card from '../../components/common/Card.vue';
 import CandidateList from '../../components/common/CandidateList.vue';
+import NoRecordMessage from '../../components/common/NoRecordMessage.vue';
 import { ref, onMounted, provide } from 'vue';
 import { useAuthStore } from '../../stores/auth'; 
 import { getCandidatesFromElection } from '../../services/api/candidates'
@@ -54,10 +57,11 @@ onMounted(async () => {
    await authStore.getAuthUser(); 
    votersBallot.value.user_id = authStore.user.id
    currentElection.value = await getFilteredElection('Active')
-   votersBallot.value.election_id = currentElection.value[0].id
-   const response = await getCandidatesFromElection(currentElection.value[0].id);
-
-   processCandidates(response.data)
+  if (currentElection.value.length) {
+    votersBallot.value.election_id = currentElection.value[0].id
+    const response = await getCandidatesFromElection(currentElection.value[0].id);
+    processCandidates(response.data)
+  }
    console.log(authStore.user)
 }) 
 const getActiveMenu = (menuItem) => {

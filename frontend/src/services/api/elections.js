@@ -29,7 +29,7 @@ export const getElection = async (id) => {
         const response = await axios.get(`/api/election/${id}`);
         return response.data;
     } catch (error) {
-        console.error(error);
+        console.log(error);
     }
 }
 
@@ -38,6 +38,6 @@ export const getFilteredElection = async (status) => {
         const response = await axios.get(`/api/elections/filtered/${status}`);
         return response.data;
     } catch (error) {
-        console.error(error);
+        console.log(error.data);
     }
 }
