@@ -63,11 +63,16 @@ const routes = [
         path: '/results',
         name: 'Results',
         component: () => import('../views/dashboard/results/Results.vue'),
-        children: [
+        children: [ 
             {
                 path: '',
-                name: 'ResultVote',
-                component: () => import('../views/dashboard/results/ResultVotes.vue')
+                name: 'ActiveElection',
+                component: () => import('../views/dashboard/results/ActiveElection.vue')
+            },
+            {
+                path: 'tally/:electionId',
+                name: 'ResultTally',
+                component: () => import('../views/dashboard/results/ResultTally.vue')
             },
             {
                 path: 'elections',
@@ -78,7 +83,7 @@ const routes = [
                 path: 'winners/:electionId',
                 name: 'ResultWinner',
                 component: () => import('../views/dashboard/results/ResultWinner.vue')
-            }
+            },
         ]
     },
     {
