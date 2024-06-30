@@ -70,7 +70,12 @@ const routes = [
                 component: () => import('../views/dashboard/results/ResultVotes.vue')
             },
             {
-                path: 'winners',
+                path: 'elections',
+                name: 'ResultElections',
+                component: () => import('../views/dashboard/results/ResultElection.vue')
+            },
+            {
+                path: 'winners/:electionId',
                 name: 'ResultWinner',
                 component: () => import('../views/dashboard/results/ResultWinner.vue')
             }

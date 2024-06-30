@@ -11,7 +11,7 @@
                             Votes Tally
                         </button>
                     </RouterLink>
-                    <RouterLink to="/results/winners">
+                    <RouterLink to="/results/elections">
                         <button  @click="setActive('winners')" 
                                 :class="activeNav == 'winners' ? 'bg-white shadow' : 'text-slate-600'" 
                                 class="px-5 py-2 text-sm rounded-lg">

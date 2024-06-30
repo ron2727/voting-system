@@ -43,14 +43,10 @@ class VoteService
         return CandidateVoteResource::collection($candidate);
     }
 
-    public function getCurrentElectionVotes()
-    {
-        $election = Election::where('start_date', '<', now())
-        ->where('end_date', '<', now())
-        ->orderBy('end_date', 'desc')
-        ->first();
+    public function getElectionVotes($election_id)
+    { 
 
-        $result = Candidate::where('election_id', $election->id)->with('user')->with('votes')->get();
+        $result = Candidate::where('election_id', $election_id)->with('user')->with('votes')->get();
  
         $candidate = CandidateVoteResource::collection($result); 
  

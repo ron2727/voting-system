@@ -15,12 +15,14 @@
 
 <script setup>
 import CandidateList from '../../../components/common/CandidateList.vue';
+import { RouterLink, useRoute } from 'vue-router'; 
 import { getElectionVotes } from '../../../services/api/vote'
 import { onBeforeMount, ref } from 'vue';
- 
+
+const route = useRoute();
 const candidatesWinners = ref([])
 onBeforeMount(async () => {
-    const data = await getElectionVotes()    
+    const data = await getElectionVotes(route.params.electionId)    
     candidatesWinners.value = getElectionCandidatesWinner(data)
     console.log(candidatesWinners.value)
 })
