@@ -10,7 +10,7 @@
               </RouterLink>
               </template>
              <template #main> 
-                <Table :dataTable="votersData"></Table>
+                <Table v-if="votersData.data.length" :dataTable="votersData" @change-page="changePage"></Table>
              </template>
         </DashboardTemplate> 
     </div>
@@ -23,7 +23,7 @@ import Button from '../../../components/common/Button.vue';
 import SubNav from '../../../components/common/SubNav.vue';
 import Card from '../../../components/common/Card.vue';
 import Table from '../../../components/common/Table.vue';
-import { onMounted, provide, ref } from 'vue';
+import { onMounted, onBeforeMount, provide, ref } from 'vue';
 import { useAuthStore } from '../../../stores/auth'; 
 import { RouterView } from 'vue-router';
 import { getVoters } from '../../../services/api/voters'
@@ -32,14 +32,14 @@ const authStore = useAuthStore();
 const votersData = ref([]);
 provide('userAuth', authStore);
 
-onMounted(async () => {
+onBeforeMount(async () => {
    await authStore.getAuthUser(); 
    votersData.value = await getVoters() 
    console.log(votersData.value)
   
 }) 
-const getActiveMenu = (menuItem) => {
-    console.log(menuItem)
+const changePage = async (page) => {
+  votersData.value = await getVoters(page) 
 }
 
 

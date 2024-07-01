@@ -9,7 +9,7 @@ class VoterService
 { 
     public function getVoters()
     {
-        return UserResource::collection(User::all());
+        return UserResource::collection(User::paginate(10));
     }
   
     public function getRandomVoters()

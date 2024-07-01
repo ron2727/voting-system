@@ -1,4 +1,5 @@
 <template>
+  <div class="wrapper-table">
     <table class="w-full text-sm bg-white rounded-lg overflow-hidden border shadow-sm">
         <thead class=" text-left">
            <tr class="border">
@@ -11,7 +12,7 @@
            </tr>
         </thead>
         <tbody>
-           <tr class="border text-slate-600 odd:bg-[#f2f2f2] ..." v-for="voter in dataTable" :key="voter.id">
+           <tr class="border text-slate-600 odd:bg-[#f2f2f2] ..." v-for="voter in dataTable.data" :key="voter.id">
              <td class=" p-2">{{ voter.student_id }}</td>
              <td class=" p-2">{{ voter.firstname }}</td>
              <td class=" p-2">{{ voter.lastname }}</td>
@@ -24,19 +25,34 @@
                 </button>
              </td>
            </tr>
-        </tbody>
+        </tbody> 
     </table>
+    <div id="pagination" class=" p-3 flex justify-between">
+      <div id="results-number" class=" text-sm text-gray-800">
+        <!-- Showing {{ pagination[1].to - pagination[1].to }} to {{ pagination[1].to }} of {{ pagination[1].total }} results -->
+      </div>
+      <div id="page-numbers">
+          <ul class="flex items-center space-x-1"> 
+            <li v-for="(link, index) in dataTable.meta.links"> 
+                <button v-if="link.url" @click="$emit('changePage', link.url)" type="button" 
+                :class="dataTable.meta.current_page === Number(link.label) ? 'bg-blue-600 text-white' : 'bg-white'" 
+                class="active px-3 py-2 flex border text-xs hover:bg-blue-600 hover:text-white" v-html="link.label"></button>
+            </li> 
+          </ul>
+      </div> 
+    </div>
+  </div>
 </template>
 
-<script setup>
+<script setup> 
+
 defineProps({
- dataTable: {
-   type: Array
- }
+ dataTable: Object
 })
+ 
 </script>
 
 <style>
-
+ 
 </style>
  

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Resources\CandidateResource;
 use App\Http\Resources\CandidateVoteResource;
+use App\Http\Resources\UserResource;
 use App\Http\Resources\VoteResource;
 use App\Models\Candidate;
 use App\Models\Election;
@@ -22,12 +23,8 @@ class Controller extends BaseController
 
     public function testing()
     {
-        $candidate = Election::where('start_date', '<', now('Asia/Manila')->format('Y-m-d H:i:s'))
-        ->where('end_date', '>', now('Asia/Manila')->format('Y-m-d H:i:s'))
-        ->orderBy('created_at', 'desc')
-        ->get();
-        return $candidate;  
-     }
+        return UserResource::collection(User::paginate(10)); 
+    }
 
     public function testRequest(Request $request)
     {

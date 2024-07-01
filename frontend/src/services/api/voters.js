@@ -1,9 +1,9 @@
 import axios from "axios"; 
 import { ref } from "vue";
 
-export const getVoters = async () => {
-    const response = await axios.get('/api/voters');
-    return response.data.data
+export const getVoters = async (url = '/api/voters') => { 
+    const response = await axios.get(url);
+    return response.data
 }
 
 export const getRandomVoters = async () => {
