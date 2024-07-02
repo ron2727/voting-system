@@ -29,7 +29,7 @@
     </table>
     <div id="pagination" class=" p-3 flex justify-between">
       <div id="results-number" class=" text-sm text-gray-800">
-        <!-- Showing {{ pagination[1].to - pagination[1].to }} to {{ pagination[1].to }} of {{ pagination[1].total }} results -->
+        Showing {{ dataTable.meta.from }} to {{ dataTable.meta.to }} of {{ dataTable.meta.total }} results
       </div>
       <div id="page-numbers">
           <ul class="flex items-center space-x-1"> 

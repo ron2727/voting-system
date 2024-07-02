@@ -10,7 +10,8 @@
               </RouterLink>
               </template>
              <template #main> 
-                <Table v-if="votersData.data.length" :dataTable="votersData" @change-page="changePage"></Table>
+                <div v-if="loading">Loading</div>
+                <Table v-else :dataTable="votersData" @change-page="changePage"></Table>
              </template>
         </DashboardTemplate> 
     </div>
@@ -29,12 +30,14 @@ import { RouterView } from 'vue-router';
 import { getVoters } from '../../../services/api/voters'
 
 const authStore = useAuthStore(); 
+const loading = ref(true);
 const votersData = ref([]);
 provide('userAuth', authStore);
 
 onBeforeMount(async () => {
    await authStore.getAuthUser(); 
-   votersData.value = await getVoters() 
+   votersData.value = await getVoters()
+   loading.value = false 
    console.log(votersData.value)
   
 }) 
