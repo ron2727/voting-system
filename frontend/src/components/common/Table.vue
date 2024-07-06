@@ -23,7 +23,7 @@
             <Dropdown>
               <template #head>
                 <button type="button">
-                  <i class='bx bx-edit-alt'></i>
+                  <i class='bx bx-dots-horizontal-rounded'></i>
                 </button>
               </template>
               <template #body>
