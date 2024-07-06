@@ -51,8 +51,15 @@ class VoterService
     }
 
     public function updateVoter($data, $voterId){
-        User::where('id', $voterId)->update($data);
 
+        User::where('id', $voterId)->update($data); 
         return response()->json([['message' => 'Voter updated successfully'], $data], 201);;
+    }
+
+    public function deleteVoter($voterId){
+
+        User::where('id', $voterId)->delete();
+        return response()->json(['message' => 'Voter deleted successfully'], 201);;
+
     }
 }

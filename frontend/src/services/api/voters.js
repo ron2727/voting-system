@@ -49,3 +49,9 @@ export const updateVoter = async (data, voterId) => {
  
      return { requestResponse, errors }
  }
+
+ export const deleteVoter = async (voterId) => { 
+
+        const response = await axios.delete(`/api/voters/${voterId}`);
+        return response.data
+ }

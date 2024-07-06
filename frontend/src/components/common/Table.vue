@@ -35,12 +35,10 @@
                       </div>
                     </RouterLink> 
                   </li>
-                  <li>
-                    <RouterLink :to="`/voter/${voter.id}/delete`">
-                      <div class="text-sm p-2 text-red-600">
+                  <li> 
+                      <button type="button" class="text-sm p-2 text-red-600" @click="$emit('openDeleteModal', voter)">
                         <i class='bx bx-trash bx-xs' ></i>  Delete
-                      </div>
-                    </RouterLink>  
+                      </button> 
                   </li>
                 </ul>
               </template>
