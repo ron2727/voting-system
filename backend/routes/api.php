@@ -28,6 +28,9 @@ Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
 // Route::post('/candidates', function (Request $request) {
 //     return response()->json([['message' => 'New Candidate Created'], $request->all()], 201);
 // });
+
+
+
 Route::get('/election/{electionId}', [ElectionController::class, 'getElection']);
 Route::get('/candidates/{electionId}', [CandidateController::class, 'getCandidates']);
 Route::get('/voters/random', [VoterController::class, 'getRandomVoters']);

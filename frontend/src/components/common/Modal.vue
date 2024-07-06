@@ -24,7 +24,7 @@
 <script setup>
 import { ref, watch } from 'vue';
 const props = defineProps({
-    status: {
+    isModalActive: {
         type: Boolean,
         default: false
     }

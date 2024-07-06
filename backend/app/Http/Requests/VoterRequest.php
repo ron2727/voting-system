@@ -25,7 +25,7 @@ class VoterRequest extends FormRequest
             'student_id' => ['required', 'integer', 'digits:11'],
             'firstname' => ['required', 'string'],
             'lastname' => ['required', 'string'],
-            'email' => ['required', 'email', 'unique:users,email'],
+            'email' => ['required', 'email'],
             'course' => ['required', 'string'],
             'year_level' => ['required', 'string'],
             'section' => ['required', 'string'],

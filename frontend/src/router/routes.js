@@ -28,6 +28,16 @@ const routes = [
         component: () => import('../views/dashboard/voters/VotersAdd.vue')
     },
     {
+        path: '/voter/:voterId/update',
+        name: 'VotersUpdate',
+        component: () => import('../views/dashboard/voters/VotersUpdate.vue')
+    },
+    {
+        path: '/voter/:voterId/delete',
+        name: 'VotersDelete',
+        component: () => import('../views/dashboard/voters/VotersDelete.vue')
+    },
+    {
         path: '/elections',
         name: 'Elections',
         component: () => import('../views/dashboard/elections/Elections.vue')

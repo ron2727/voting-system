@@ -23,7 +23,7 @@ import Title from '../../../components/common/Title.vue'
 import Button from '../../../components/common/Button.vue';
 import SubNav from '../../../components/common/SubNav.vue';
 import Card from '../../../components/common/Card.vue';
-import Table from '../../../components/common/Table.vue';
+import Table from '../../../components/common/Table.vue'; 
 import { onMounted, onBeforeMount, provide, ref } from 'vue';
 import { useAuthStore } from '../../../stores/auth'; 
 import { RouterView } from 'vue-router';

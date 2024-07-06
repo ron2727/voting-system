@@ -11,6 +11,11 @@ class VoterService
     {
         return UserResource::collection(User::paginate(10));
     }
+
+    public function getVoter($id)
+    {
+        return new UserResource(User::find($id));
+    }
   
     public function getRandomVoters()
     {
@@ -19,7 +24,9 @@ class VoterService
     }
     public function storeVoter($data)
     {
-        return User::create($data);
+        User::create($data);
+
+        return  response()->json([['message' => 'Voter created successfully'], $data], 201);
     }
 
     public function findVoters($q)
@@ -41,5 +48,11 @@ class VoterService
         }
 
         return UserResource::collection($voters);
+    }
+
+    public function updateVoter($data, $voterId){
+        User::where('id', $voterId)->update($data);
+
+        return response()->json([['message' => 'Voter updated successfully'], $data], 201);;
     }
 }

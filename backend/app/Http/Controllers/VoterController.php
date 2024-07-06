@@ -39,8 +39,8 @@ class VoterController extends Controller
      */
     public function store(VoterRequest $request)
     {
-        $this->voterService->storeVoter($request->all());
-        return response()->json([['message' => 'Voter created successfully'], $request->all()], 201);
+        return $this->voterService->storeVoter($request->all());
+        
     }
 
     /**
@@ -48,7 +48,7 @@ class VoterController extends Controller
      */
     public function show(string $id)
     {
-        //
+        return $this->voterService->getVoter($id);
     }
 
     /**
@@ -56,15 +56,15 @@ class VoterController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(VoterRequest $request, string $id)
     {
-        //
+        return $this->voterService->updateVoter($request->all(), $id);
     }
 
     /**

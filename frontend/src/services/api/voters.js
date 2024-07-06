@@ -5,7 +5,10 @@ export const getVoters = async (url = '/api/voters') => {
     const response = await axios.get(url);
     return response.data
 }
-
+export const getVoter = async (voterId) => { 
+    const response = await axios.get(`/api/voters/${voterId}`);
+    return response.data
+}
 export const getRandomVoters = async () => {
     const response = await axios.get('/api/voters/random');
     return response.data.data
@@ -32,3 +35,17 @@ export const storeVoter = async (data) => {
 
     return { requestResponse, errors }
 }
+
+export const updateVoter = async (data, voterId) => {
+    const requestResponse = ref(null)
+     const errors = ref(null) 
+     try {
+         const response = await axios.put(`/api/voters/${voterId}`, data);
+         requestResponse.value = response
+     } catch (error) {
+         errors.value = error.response.data.errors
+         console.log(error)
+     }
+ 
+     return { requestResponse, errors }
+ }
