@@ -67,7 +67,7 @@ const submitVoterForm = async (formData) => {
     console.log(errorsData.value)
   }else{
     responseData.value = requestResponse.value
-    console.log(responseData.value.data[0].message)
+    console.log(responseData.value.message)
     clearForm()
   }
 }

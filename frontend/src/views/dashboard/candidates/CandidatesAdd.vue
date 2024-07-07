@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Modal :status="isModalOpen" @close-modal="isModalOpen = false">
+    <Modal @close-modal="isModalOpen = false" v-if="isModalOpen">
       <template #body>
         <div class="input-search mb-5 flex justify-end">
           <div class=" relative w-min">

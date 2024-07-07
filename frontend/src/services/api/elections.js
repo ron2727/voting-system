@@ -32,6 +32,22 @@ export const getElection = async (id) => {
         console.log(error);
     }
 }
+ 
+
+export const updateElection = async (data, electionId) => {
+    const requestResponse = ref(null)
+    const errors = ref(null) 
+    try {
+        const response = await axios.put(`/api/elections/${electionId}`, data);
+        requestResponse.value = response
+    } catch (error) {
+        errors.value = error.response.data.errors
+        console.log(error)
+    }
+
+    return { requestResponse, errors }
+}
+
 
 export const getFilteredElection = async (status) => { 
     try {
@@ -41,3 +57,5 @@ export const getFilteredElection = async (status) => {
         console.log(error.data);
     }
 }
+
+

@@ -47,4 +47,11 @@ class ElectionService
         return $filteredElections;
     }
 
+    public function updateElection($data, $id)
+    {
+        Election::where('id', $id)->update($data);
+        
+        return response()->json(['message' => 'Election updated successfully'], 201);
+    }
+
 }

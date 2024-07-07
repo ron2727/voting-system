@@ -15,9 +15,11 @@
           <Card v-for="election in elections" class=" p-4">
             <template #title>
               <div class="flex justify-end">
-                <button class="text-sm">
-                  <i class='bx bx-dots-vertical-rounded bx-sm'></i>
-                </button>
+                <RouterLink :to="`/election/edit/${election.id}`">
+                  <button class="text-sm">
+                     <i class='bx bxs-edit bx-sm'></i>
+                  </button>
+                </RouterLink> 
               </div>
               <h6 class="title text-lg font-bold">
                 {{ election.title }}

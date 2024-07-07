@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ElectionRequest;
+use App\Http\Requests\ElectionUpdateRequest;
 use App\Services\ElectionService;
 use Illuminate\Http\Request;
 
@@ -54,9 +55,9 @@ class ElectionController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(ElectionUpdateRequest $request, string $id)
     {
-        //
+        return $this->electionService->updateElection($request->all(), $id);
     }
 
     /**

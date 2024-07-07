@@ -44,8 +44,13 @@ const routes = [
     },
     {
         path: '/election/add',
-        name: 'ElectionsAdd',
+        name: 'ElectionAdd',
         component: () => import('../views/dashboard/elections/ElectionAdd.vue')
+    }, 
+    {
+        path: '/election/edit/:electionId',
+        name: 'ElectionUpdate',
+        component: () => import('../views/dashboard/elections/ElectionUpdate.vue')
     }, 
     {
         path: '/election/:electionId/candidates',
