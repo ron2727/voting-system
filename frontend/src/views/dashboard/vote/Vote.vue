@@ -19,17 +19,16 @@
 </template>
 
 <script setup>
-import DashboardTemplate from '../../components/layouts/DashboardTemplate.vue'
-import Title from '../../components/common/Title.vue'
-import Button from '../../components/common/Button.vue'; 
-import Card from '../../components/common/Card.vue';
-import CandidateList from '../../components/common/CandidateList.vue';
-import NoRecordMessage from '../../components/common/NoRecordMessage.vue';
+import DashboardTemplate from '../../../components/layouts/DashboardTemplate.vue'
+import Title from '../../../components/common/Title.vue'
+import Button from '../../../components/common/Button.vue';  
+import CandidateList from '../../../components/common/CandidateList.vue';
+import NoRecordMessage from '../../../components/common/NoRecordMessage.vue';
 import { ref, onMounted, provide } from 'vue';
-import { useAuthStore } from '../../stores/auth'; 
-import { getCandidatesFromElection } from '../../services/api/candidates'
-import { getFilteredElection } from '../../services/api/elections'
-import { storeVote } from '../../services/api/vote'
+import { useAuthStore } from '../../../stores/auth'; 
+import { getCandidatesFromElection } from '../../../services/api/candidates'
+import { getFilteredElection } from '../../../services/api/elections'
+import { storeVote } from '../../../services/api/vote'
  
 const currentElection = ref([]);
 const authStore = useAuthStore(); 

@@ -64,8 +64,14 @@ const routes = [
     },
     {
         path: '/vote',
+        name: 'VoteActiveElection',
+        component: () => import('../views/dashboard/vote/ActiveElection.vue')
+    }
+    ,
+    {
+        path: '/vote/:electionId',
         name: 'Vote',
-        component: () => import('../views/dashboard/Vote.vue')
+        component: () => import('../views/dashboard/vote/Vote.vue')
     }
     ,
     {
