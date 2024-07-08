@@ -34,7 +34,7 @@
              <li> 
                 <SideNavLink navText="Results" link="/results">
                   <template #icon>
-                    <i class='bx bx-file bx-sm' ></i>
+                    <i class='bx bx-stats bx-sm' ></i> 
                   </template> 
                </SideNavLink> 
              </li>
@@ -45,6 +45,13 @@
                   </template> 
                </SideNavLink> 
              </li> 
+             <li> 
+                <SideNavLink navText="Settings" link="/settings">
+                  <template #icon>
+                    <i class='bx bx-cog bx-sm' ></i> 
+                  </template> 
+               </SideNavLink> 
+             </li>
            </ul>
        </div>
     </nav>

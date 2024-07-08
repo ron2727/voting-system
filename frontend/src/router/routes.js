@@ -111,7 +111,12 @@ const routes = [
         path: '/reports',
         name: 'Reports',
         component: () => import('../views/dashboard/Reports.vue')
-    }
+    },
+    {
+        path: '/settings',
+        name: 'Settings',
+        component: () => import('../views/dashboard/Settings.vue')
+    } 
 ]
 
 export default routes;

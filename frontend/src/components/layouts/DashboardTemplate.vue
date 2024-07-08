@@ -1,7 +1,7 @@
 <template> 
     <div>
-        <TopNav></TopNav>
-        <SideNav></SideNav>
+        <TopNav/> 
+        <SideNav/> 
         <div class=" ml-64 p-5 space-y-10"> 
           <slot name="head"></slot>
           <div :class="layout" class="main">

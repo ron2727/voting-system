@@ -35,10 +35,7 @@
       <template #main>
         <form @submit.prevent="submitCandidateForm(form)">
           <input type="hidden" v-model="form.user_id">
-          <div class="form-wrapper bg-white max-w-xl p-4 rounded-lg shadow-md space-y-3">
-            <!-- <div v-if="errorsData?.candidate" class=" alert py-2 text-center border border-red-600 bg-red-100 text-red-600 text-sm">
-              {{ errorsData?.candidate }}
-            </div> -->
+          <div class="form-wrapper bg-white max-w-xl p-4 rounded-lg shadow-md space-y-3"> 
             <AlertMessage v-if="alert.isOpen" :alertType="alert.type" @closeAlert="alert.isOpen = false">{{ alert.message }}</AlertMessage>
             <div class=" select-candidate-wrapper" @click="openModal">
               <span class=" text-sm">Select Candidate <span class="text-red-500">*</span></span>
