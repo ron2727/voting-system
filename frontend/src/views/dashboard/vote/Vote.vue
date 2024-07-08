@@ -13,7 +13,15 @@
               <Button buttonText="Submit Vote" class="m-5" @click="submitVote" />
             </div>
           </div>
-          <NoRecordMessage v-else>You have already voted in this election</NoRecordMessage>
+          <div class="wrapper" v-else> 
+            <NoRecordMessage>You have already voted in this election</NoRecordMessage>
+            <div class=" flex justify-center">
+              <RouterLink :to="`/ballot/${$route.params.electionId}`">
+                <button type="button" class=" px-4 py-2 bg-blue-600 rounded-md text-white text-sm">View my
+                  candidates</button>
+              </RouterLink>
+            </div>
+          </div>
         </div>
         <div v-else>
           Loading
@@ -34,7 +42,7 @@ import { useAuthStore } from '../../../stores/auth';
 import { getCandidatesFromElection } from '../../../services/api/candidates'
 import { getElection, getFilteredElection } from '../../../services/api/elections'
 import { storeVote, checkVote } from '../../../services/api/vote'
-import { useRoute, useRouter } from 'vue-router';
+import { RouterLink, useRoute, useRouter } from 'vue-router';
 const route = useRoute();
 const router = useRouter();
 const currentElection = ref([]);
@@ -92,7 +100,7 @@ const submitVote = async () => {
     errorsData.value = response.errors.value 
     
     if (errorsData.value == null) { 
-     router.push('/vote/' + currentElection.value.id)
+      router.push('/ballot/' + currentElection.value.id)
     }
 }
 

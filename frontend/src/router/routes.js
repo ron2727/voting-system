@@ -75,7 +75,7 @@ const routes = [
     }
     ,
     {
-        path: '/ballot',
+        path: '/ballot/:electionId',
         name: 'Ballot',
         component: () => import('../views/dashboard/Ballot.vue')
     }

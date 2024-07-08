@@ -1,5 +1,5 @@
 <template>
-    <div class=" candidates-wrapper">
+    <div class=" candidates-wrapper mt-10">
         <h6 class=" text-lg font-bold">{{ title }}</h6>
         <div ref="candidatesList" class=" grid grid-cols-4 gap-5">
             <div v-for="candidate in candidates" @click="selectCandidate(candidate, $event)" class="candidate relative h-min border bg-white rounded-2xl cursor-pointer p-1 hover:border-blue-600">

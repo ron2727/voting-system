@@ -2,7 +2,7 @@
     <div>
       <DashboardTemplate layout="w-full">
         <template #head>
-          <Title :title="currentElection[0]?.title" :subTitle="currentElection[0]?.description"></Title>
+          <Title :title="currentElection.title" :subTitle="currentElection.description"></Title>
         </template>
         <template #main>
           <div class="wrapper space-y-8">
@@ -22,7 +22,7 @@
   import { ref, onMounted, provide } from 'vue';
   import { useAuthStore } from '../../stores/auth'; 
   import { getCandidatesFromElection } from '../../services/api/candidates'
-  import { getFilteredElection } from '../../services/api/elections'
+  import { getElection } from '../../services/api/elections'
   import { storeVote, getVotes } from '../../services/api/vote'
   import { useRoute } from 'vue-router';
 
@@ -36,10 +36,10 @@
   
   onMounted(async () => {
      await authStore.getAuthUser();  
-     currentElection.value = await getFilteredElection('Active')
+     currentElection.value = await getElection(route.params.electionId)
      const candidates = await getVotes({
        user_id: authStore.user.id,
-       election_id: currentElection.value[0].id
+       election_id: currentElection.value.id
      })
 
      voteBallot.value = candidates.map(data => {
