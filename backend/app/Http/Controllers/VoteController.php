@@ -11,10 +11,8 @@ class VoteController extends Controller
     public function __construct(private VoteService $voteService) {}
 
     public function submitVote(VoteRequest $request)
-    {
-        $this->voteService->submitVote($request);
-        return response()->json([['message' => 'Vote is submitted'], $request->all()], 201);
-    
+    { 
+        return $this->voteService->submitVote($request);  
     }
 
     public function getSubmittedVote($user_id, $election_id){
@@ -28,4 +26,15 @@ class VoteController extends Controller
     public function getElectionVotes($election_id){
         return $this->voteService->getElectionVotes($election_id);
     }
+    public function checkIfVoterHasVoted($user_id, $election_id){
+        
+        if ($this->voteService->checkIfVoterHasVoted($user_id, $election_id)) {
+            $response = response()->json(['message' => 'You have already voted'], 422);
+        }else{
+            $response = response()->json(['message' => 'You have not voted yet'], 200);
+        }
+
+        return $response;
+    }
+    
 }

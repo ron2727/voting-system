@@ -13,15 +13,22 @@ class VoteService
 {
     public function submitVote($request)
     {
-        $vote = $request->except(['user_id', 'election_id']); 
+        $vote = $request->except(['user_id', 'election_id']);  
 
-        foreach ($vote as $value) {
-            Vote::create([
-                'user_id' => $request->user_id,
-                'election_id' => $request->election_id,
-                'candidate_id' => $value
-            ]);
+        $response = response()->json([['message' => 'You have already voted'], $request->all()], 422);
+       
+        if (!$this->checkIfVoterHasVoted($request->user_id, $request->election_id)) { 
+            foreach ($vote as $value) {
+                Vote::create([
+                    'user_id' => $request->user_id,
+                    'election_id' => $request->election_id,
+                    'candidate_id' => $value
+                ]);
+            }  
+            $response = response()->json([['message' => 'Vote is submitted'], $request->all()], 201);
         } 
+
+        return $response;
     }
 
     public function getSubmittedVote($user_id, $election_id)
@@ -67,5 +74,14 @@ class VoteService
         } 
         
         return response()->json($candidatesPosition);
+    }
+
+    public function checkIfVoterHasVoted($user_id, $election_id)
+    {
+        $isAlreadyVoted = Vote::where('user_id', $user_id)
+            ->where('election_id', $election_id)
+            ->first();
+        
+        return $isAlreadyVoted;
     }
 }

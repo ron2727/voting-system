@@ -42,6 +42,8 @@ Route::get('/vote/winners/{election_id}', [VoteController::class, 'getElectionVo
 
 Route::post('/vote', [VoteController::class, 'submitVote']);
 
+Route::get('/vote/verify/{user_id}/{election_id}', [VoteController::class, 'checkIfVoterHasVoted']);
+
 Route::apiResource('voters', VoterController::class);
 Route::apiResource('elections', ElectionController::class);
 Route::apiResource('candidates', CandidateController::class);

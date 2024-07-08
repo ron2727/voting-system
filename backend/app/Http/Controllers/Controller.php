@@ -23,7 +23,9 @@ class Controller extends BaseController
 
     public function testing()
     {
-        return UserResource::collection(User::paginate(10)); 
+        return Vote::where('user_id', 17)
+        ->where('election_id', 21)
+        ->first();
     }
 
     public function testRequest(Request $request)

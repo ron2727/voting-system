@@ -38,11 +38,14 @@ export const getElectionVotes = async (electionId) => {
   }
 }
 
-export const checkVote = async () => {
+export const checkVote = async (user_id, electionId) => {
+  let response = null
   try {
-    const response = await axios.get(`/api/vote/winners/${electionId}`);
-    return response.data
+    response = await axios.get(`/api/vote/verify/${user_id}/${electionId}`); 
   } catch (error) {
     console.log(error)
+    response = error.response
+  }finally{
+    return response.data;
   }
 }
