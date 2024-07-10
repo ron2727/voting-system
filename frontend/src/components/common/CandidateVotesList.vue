@@ -3,7 +3,7 @@
         <h6 class=" text-xl font-bold mb-5">{{title}}</h6>
         <div class="relative grid grid-cols-12 h-min pt-5 pb-10 bg-white rounded-xl space-x-5" v-for="candidate in candidates">
             <div class=" col-span-2 flex flex-col justify-between items-center">
-                <img src="../../assets/images/BUERE_JOHNRON1.png" alt="a"
+                <img :src="candidate.user.profile_image" alt="a"
                     class="  w-16 h-16object-cover border rounded-full">
                 <h6 class="text-xs font-bold">{{ candidate.user.firstname }} {{ candidate.user.lastname }}</h6>
                 <small class=" text-xs text-gray-500">{{ candidate.user.year_level }}</small>

@@ -3,7 +3,7 @@
         <h6 class=" text-lg font-bold">{{ title }}</h6>
         <div ref="candidatesList" class=" grid grid-cols-4 gap-5">
             <div v-for="candidate in candidates" @click="selectCandidate(candidate, $event)" class="candidate relative h-min border bg-white rounded-2xl cursor-pointer p-1 hover:border-blue-600">
-                <img src="../../assets/images/BUERE_JOHNRON1.png" alt="a"
+                <img :src="candidate.user.profile_image" alt="a"
                     class=" w-full object-cover border rounded-2xl">
                 <div class="px-1 py-2">
                     <h6 class="text-lg font-bold">{{ candidate.user.firstname }} {{ candidate.user.lastname }}</h6>

@@ -16,7 +16,7 @@
             <div class=" grid grid-cols-4 gap-3" v-if="candidates.length">
               <Card v-for="candidate in candidates" class=" p-1">
                 <template #body>
-                  <img src="../../../assets/images/BUERE_JOHNRON1.png" alt="a"
+                  <img :src="candidate.user.profile_image" alt="a"
                     class=" w-full object-cover border rounded-2xl">
                 </template>
                 <template #footer>

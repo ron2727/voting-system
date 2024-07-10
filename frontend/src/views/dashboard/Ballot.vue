@@ -1,12 +1,13 @@
 <template>
     <div>
       <DashboardTemplate layout="w-full">
-        <template #head>
+        <template #head v-if="!isLoading">
           <Title :title="currentElection.title" :subTitle="currentElection.description"></Title>
         </template>
         <template #main>
           <div class="wrapper space-y-8">
-            <CandidateList :candidates="voteBallot" title="Candidates you had voted"></CandidateList>
+            <Loader size="md" v-if="isLoading"/>
+            <CandidateList v-else :candidates="voteBallot" title="Candidates you had voted"></CandidateList>
            </div>  
         </template>
       </DashboardTemplate>
@@ -15,22 +16,20 @@
   
   <script setup>
   import DashboardTemplate from '../../components/layouts/DashboardTemplate.vue'
-  import Title from '../../components/common/Title.vue'
-  import Button from '../../components/common/Button.vue'; 
-  import Card from '../../components/common/Card.vue';
+  import Loader from '../../components/common/Loader.vue'
+  import Title from '../../components/common/Title.vue' 
   import CandidateList from '../../components/common/CandidateList.vue';
   import { ref, onMounted, provide } from 'vue';
-  import { useAuthStore } from '../../stores/auth'; 
-  import { getCandidatesFromElection } from '../../services/api/candidates'
+  import { useAuthStore } from '../../stores/auth';  
   import { getElection } from '../../services/api/elections'
-  import { storeVote, getVotes } from '../../services/api/vote'
+  import { getVotes } from '../../services/api/vote'
   import { useRoute } from 'vue-router';
 
   const route = useRoute();
   const currentElection = ref([]);
   const authStore = useAuthStore(); 
    
-  const errorsData = ref(null);
+  const isLoading = ref(true);
   const voteBallot = ref(null)
   provide('userAuth', authStore);
   
@@ -40,8 +39,7 @@
      const candidates = await getVotes({
        user_id: authStore.user.id,
        election_id: currentElection.value.id
-     })
-
+     }) 
      voteBallot.value = candidates.map(data => {
         const candidateInfo = {
           candidate_id: data.candidate_id,
@@ -53,14 +51,14 @@
              email: data.email,
              course: data.course,
              year_level: data.year_level,
-             section: data.section
+             section: data.section,
+             profile_image: data.profile_image
           }
         }
 
         return candidateInfo
      })
-
-     console.log(voteBallot.value)
+    isLoading.value = false
   }) 
  
 </script>

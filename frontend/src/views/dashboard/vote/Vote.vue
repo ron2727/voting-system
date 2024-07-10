@@ -1,7 +1,7 @@
 <template>
   <div>
     <DashboardTemplate layout="w-full">
-      <template #head>
+      <template #head v-if="!isLoading">
         <Title :title="currentElection.title" :subTitle="currentElection.description"></Title>
       </template>
       <template #main>

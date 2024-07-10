@@ -3,7 +3,7 @@
     <div ref="candidatesList" class=" grid grid-cols-4 gap-5" v-else>
         <div v-if="candidatesWinners" v-for="candidateWinner in candidatesWinners"
             class="candidate relative h-min border bg-white rounded-2xl cursor-pointer p-1 ">
-            <img src="../../../assets/images/BUERE_JOHNRON1.png" alt="a"
+            <img :src="candidateWinner?.user?.profile_image" alt="a"
                 class=" w-full object-cover border rounded-2xl">
             <div class="px-1 py-2">
                 <h6 class="text-lg font-bold">{{ candidateWinner?.user?.firstname }} {{ candidateWinner?.user?.lastname }}</h6>

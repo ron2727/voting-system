@@ -12,14 +12,12 @@
             </button>
           </div>
         </div>
-        <div class="content-wrapper h-[300px] overflow-y-auto">
-          <div class=" flex justify-center py-5" v-if="voters?.message">
-            <p>{{ voters?.message }}</p>
-          </div>
+        <div class="content-wrapper h-[300px] overflow-y-auto"> 
+          <Loader size="sm" v-if="isModalLoading" />
           <div class=" grid grid-cols-3 gap-3" v-else>
             <div class="voter flex flex-col items-center py-2 rounded-lg border border-gray-300 cursor-pointer"
               v-for="voter in voters" :key="voter.id" @click="selectVoter(voter)">
-              <img src="../../../assets/images/BUERE_JOHNRON1.png" alt="voter"
+              <img :src="voter.profile_image" alt="voter"
                 class=" w-[50px] h-[50px] border rounded-full object-cover">
               <span class=" text-sm font-bold">{{ voter.firstname }} {{ voter.lastname }}</span>
               <span class=" text-xs text-gray-600">{{ voter.course }} {{ voter.year_level }}</span>
@@ -46,7 +44,7 @@
               </div>
               <div v-else
                 class="voter flex flex-col items-center py-2 rounded-lg border border-gray-300 cursor-pointer">
-                <img src="../../../assets/images/BUERE_JOHNRON1.png" alt="voter"
+                <img :src="selectedToBeCandidate.profile_image" alt="voter"
                   class=" w-[50px] h-[50px] border rounded-full object-cover">
                 <span class=" text-sm font-bold">{{ selectedToBeCandidate.firstname }} {{ selectedToBeCandidate.lastname
                   }}</span>
@@ -80,6 +78,7 @@ import Button from '../../../components/common/Button.vue';
 import SubNav from '../../../components/common/SubNav.vue'; 
 import Modal from '../../../components/common/Modal.vue';
 import AlertMessage from '../../../components/common/AlertMessage.vue';
+import Loader from '../../../components/common/Loader.vue';
 import { onMounted, ref, onBeforeMount, provide } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
 import { useAuthStore } from '../../../stores/auth'; 
@@ -97,6 +96,7 @@ const responseData = ref([]);
 
 
 const isModalOpen = ref(false);
+const isModalLoading = ref(false);
 const voters = ref([]);
 const search = ref('');
 
@@ -111,6 +111,7 @@ const selectedToBeCandidate = ref({
   lastname: '',
   course: '',
   year_level: '',
+  profile_image: '', 
 });
 
 const form = ref({
@@ -170,11 +171,13 @@ const openModal = () => {
 } 
 
 const findVoters = async () => {
+  isModalLoading.value = true
   if (search.value !== '') {
     voters.value = await searchVoters(search.value)
   }else{
     voters.value = await getRandomVoters()
   }
+  isModalLoading.value = false
 }
 
 const selectVoter = (voter) => {  

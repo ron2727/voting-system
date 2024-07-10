@@ -4,6 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Facades\Storage;
 
 class VoteResource extends JsonResource
 {
@@ -24,7 +25,8 @@ class VoteResource extends JsonResource
             'email' => $this->email,
             'course' => $this->course,
             'year_level' => $this->year_level,
-            'section' => $this->section
+            'section' => $this->section,
+            'profile_image' => 'http://127.0.0.1:8000'.Storage::url('public/uploaded/images/'.$this->profile_image)
         ];
     }
 }
