@@ -1,11 +1,16 @@
 <template>
     <div>
-        <CandidateVotesList v-for="(candidates, position) in candidatesWithTotalVotes" :candidates="candidates.candidates" :totalVotes="candidates.totalVotes" :title="position"></CandidateVotesList>
-    
+        <Loader size="md" v-if="isLoading"/>
+        <CandidateVotesList v-else
+                            v-for="(candidates, position) in candidatesWithTotalVotes" 
+                            :candidates="candidates.candidates" 
+                            :totalVotes="candidates.totalVotes" 
+                            :title="position"/>
     </div>
 </template>
 
 <script setup> 
+import Loader from '../../../components/common/Loader.vue';
 import CandidateVotesList from '../../../components/common/CandidateVotesList.vue';
 import NoRecordMessage from '../../../components/common/NoRecordMessage.vue';
 import { ref, onMounted, onBeforeMount, provide } from 'vue';
@@ -15,6 +20,7 @@ import { getCandidateTotalVotes } from '../../../services/api/vote';
 import { getFilteredElection } from '../../../services/api/elections'
 
 const authStore = useAuthStore(); 
+const isLoading = ref(true);
 const candidatesWithTotalVotes = ref({
     "President":{ candidates: [] },
     "Vice President": { candidates: [] },
@@ -38,7 +44,7 @@ const mapCandidatesVote = (data) => {
         candidatesWithTotalVotes.value[candidate.position].candidates.push(candidate)
     })
     getCandidatesPercentageVote()
-    // console.log(candidatesWithTotalVotes.value)
+    isLoading.value = false
 } 
 
 const getCandidatesPercentageVote = () => { 

@@ -4,8 +4,9 @@
         <Title title="Vote" subTitle="Select election where you want to vote"></Title>
       </template>
       <template #main>
-        <div class=" space-y-3">
-        <Card v-for="election in elections" class=" p-4">
+        <Loader size="md" v-if="isLoading"/>
+        <div class=" space-y-3" v-else>
+        <Card v-if="elections.length" v-for="election in elections" class=" p-4">
             <template #title> 
                 <h6 class="title text-lg font-bold">
                     {{ election.title }}
@@ -34,6 +35,7 @@
                 </RouterLink>
             </template>
         </Card>
+        <NoRecordMessage v-else>No election found</NoRecordMessage>
        </div>
       </template>
     </DashboardTemplate>
@@ -41,10 +43,11 @@
 </template>
 
 <script setup>
+import Loader from '../../../components/common/Loader.vue';
 import DashboardTemplate from '../../../components/layouts/DashboardTemplate.vue'
 import Title from '../../../components/common/Title.vue'
 import Button from '../../../components/common/Button.vue';
-import SubNav from '../../../components/common/SubNav.vue';
+import NoRecordMessage from '../../../components/common/NoRecordMessage.vue';
 import Card from '../../../components/common/Card.vue';
 import { onMounted, ref, onBeforeMount, provide } from 'vue'; 
 import { getElections, getFilteredElection } from '../../../services/api/elections';
@@ -52,12 +55,14 @@ import { DateFormat } from '../../../services/dateFormat';
 import { useAuthStore } from '../../../stores/auth'; 
 
 const authStore = useAuthStore(); 
+const isLoading = ref(true);
 const elections = ref([]);
 
 provide('userAuth', authStore);
 
 onBeforeMount(async () => { 
     elections.value = await getFilteredElection('Active'); 
+    isLoading.value = false;
 })
 
  

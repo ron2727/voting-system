@@ -5,8 +5,9 @@
            <template #body>Are you sure you want to delete this voter <span class=" font-bold">{{ voterToBeDeleted.firstname }} {{ voterToBeDeleted.lastname }}</span>?</template>
            <template #footer>
              <div class="flex justify-end space-x-2">
-               <Button buttonText="No" @click="isDeleteModalOpen = false"></Button>
-               <Button buttonText="Yes" bgColor="bg-red-600" @click="submitVoterToDelete"></Button>
+
+               <button @click="isDeleteModalOpen = false" class=" text-xs px-3 py-2 border rounded-md">Cancel</button>
+               <button @click="submitVoterToDelete" class=" text-xs px-3 py-2 bg-red-600 text-white rounded-md">Yes, Delete</button>
              </div>
            </template>
         </Modal>
@@ -20,7 +21,7 @@
               </RouterLink>
               </template>
              <template #main> 
-                <div v-if="loading">Loading</div>
+                <Loader size="md" v-if="loading"/> 
                 <Table v-else :dataTable="votersData" @change-page="changePage" @open-delete-modal="openDeleteModal"></Table>
              </template>
         </DashboardTemplate> 
@@ -28,6 +29,7 @@
 </template>
 
 <script setup>
+import Loader from '../../../components/common/Loader.vue';
 import DashboardTemplate from '../../../components/layouts/DashboardTemplate.vue'
 import Title from '../../../components/common/Title.vue'
 import Button from '../../../components/common/Button.vue';

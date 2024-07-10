@@ -4,25 +4,29 @@
             <template #head>
               <Title title="Update voter"></Title> 
              </template>
-             <template #main> 
-                <form @submit.prevent="submitElectionForm(form)">       
-                  <div class="form-wrapper bg-white max-w-xl p-4 rounded-lg shadow-md space-y-3">
-                    <Input labelText="Title" :required="true" v-model="form.title" :errorMessage="errorsData?.title?.[0]"/>
-                    <Input labelText="Description" :required="true" v-model="form.description" :errorMessage="errorsData?.description?.[0]"/>
-                    <div class="text-right space-x-3">
-                       <RouterLink to="/elections">
-                          <Button buttonText="Cancel" class="bg-red-500"/>
-                       </RouterLink>
-                       <Button buttonType="submit" buttonText="Update Election" class="bg-blue-600"/>
+             <template #main>  
+                <Loader size="md" v-if="isLoading"/> 
+                <div class="form-wrapper bg-white max-w-xl p-4 rounded-lg shadow-md space-y-3" v-else>
+                 <form @submit.prevent="submitElectionForm(form)">       
+                    <div class=" space-y-2">
+                      <Input labelText="Title" :required="true" v-model="form.title" :errorMessage="errorsData?.title?.[0]"/>
+                      <Input labelText="Description" :required="true" v-model="form.description" :errorMessage="errorsData?.description?.[0]"/>
+                      <div class="text-right space-x-3">
+                         <RouterLink to="/elections">
+                            <Button buttonText="Cancel" class="bg-red-500"/>
+                         </RouterLink>
+                        <Button buttonType="submit" buttonText="Update Election" class="bg-blue-600"/>
+                      </div>
                     </div>
-                  </div>
-                </form>
+                  </form> 
+                </div>
              </template>
         </DashboardTemplate> 
     </div>
 </template>
 
 <script setup>
+import Loader from '../../../components/common/Loader.vue';
 import DashboardTemplate from '../../../components/layouts/DashboardTemplate.vue'
 import Title from '../../../components/common/Title.vue'
 import Input from '../../../components/common/Input.vue';
@@ -38,6 +42,7 @@ import { getElection, storeElection, updateElection } from '../../../services/ap
 const authStore = useAuthStore(); 
 const router = useRouter(); 
 const route = useRoute();
+const isLoading = ref(true);
 const errorsData = ref([]);
 const responseData = ref([]); 
 
@@ -54,6 +59,7 @@ onBeforeMount(async () => {
    } 
    const response = await getElection(route.params.electionId)
    storeDataToForm(response) 
+   isLoading.value = false
    console.log(response.end_date)
 }) 
  

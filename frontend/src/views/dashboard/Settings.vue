@@ -5,29 +5,33 @@
         <Title title="User settings" subTitle="Update your account information"></Title>
       </template>
       <template #main>
-        <form @submit.prevent="submitVoterForm()" enctype="multipart/form-data">
-          <div class="form-wrapper bg-white max-w-xl p-4 rounded-lg shadow-md space-y-3">
-            <AlertMessage v-if="alert.isOpen" :alertType="alert.type" @closeAlert="alert.isOpen = false">{{alert.message }}</AlertMessage>
-            <Input labelText="Student ID" :required="true" v-model="form.student_id":errorMessage="errorsData?.student_id?.[0]" />
-            <Input labelText="First Name" :required="true" v-model="form.firstname":errorMessage="errorsData?.firstname?.[0]" />
-            <Input labelText="Last Name" :required="true" v-model="form.lastname":errorMessage="errorsData?.lastname?.[0]" />
-            <Input labelText="Email" :required="true" v-model="form.email" :errorMessage="errorsData?.email?.[0]" />
-            <Selection labelText="Course" :required="true" v-model="form.course" :options="['BSIS', 'BSIT', 'BSCS']":errorMessage="errorsData?.course?.[0]" />
-            <Selection labelText="Year Level" :required="true" v-model="form.year_level"
-              :options="['1st year', '2nd year', '3rd year', '4rth year']":errorMessage="errorsData?.year_level?.[0]" />
-            <Selection labelText="Section" :required="true" v-model="form.section" :options="['1', '2', '3']":errorMessage="errorsData?.section?.[0]" />
-            <FileInput @select-file="selectFile" @remove-file="removeFilePhoto()"/>
-            <div class="text-right space-x-3">
-              <Button buttonType="submit" buttonText="Update" class="bg-blue-600" />
+        <Loader size="md" v-if="isLoading"/> 
+        <div class="form-wrapper bg-white max-w-xl p-4 rounded-lg shadow-md" v-else>
+         <form @submit.prevent="submitVoterForm()" enctype="multipart/form-data">
+            <div class=" space-y-3">
+              <AlertMessage v-if="alert.isOpen" :alertType="alert.type" @closeAlert="alert.isOpen = false">{{alert.message }}</AlertMessage>
+              <Input labelText="Student ID" :required="true" v-model="form.student_id":errorMessage="errorsData?.student_id?.[0]" />
+              <Input labelText="First Name" :required="true" v-model="form.firstname":errorMessage="errorsData?.firstname?.[0]" />
+              <Input labelText="Last Name" :required="true" v-model="form.lastname":errorMessage="errorsData?.lastname?.[0]" />
+              <Input labelText="Email" :required="true" v-model="form.email" :errorMessage="errorsData?.email?.[0]" />
+              <Selection labelText="Course" :required="true" v-model="form.course" :options="['BSIS', 'BSIT', 'BSCS']":errorMessage="errorsData?.course?.[0]" />
+              <Selection labelText="Year Level" :required="true" v-model="form.year_level"
+                :options="['1st year', '2nd year', '3rd year', '4rth year']":errorMessage="errorsData?.year_level?.[0]" />
+              <Selection labelText="Section" :required="true" v-model="form.section" :options="['1', '2', '3']":errorMessage="errorsData?.section?.[0]" />
+              <FileInput @select-file="selectFile" @remove-file="removeFilePhoto()"/>
+              <div class="text-right space-x-3">
+                <Button buttonType="submit" buttonText="Update" class="bg-blue-600" />
+              </div>
             </div>
-          </div>
-        </form>
+         </form> 
+       </div>
       </template>
     </DashboardTemplate>
   </div>
 </template>
 
 <script setup>
+import Loader from '../../components/common/Loader.vue';
 import DashboardTemplate from '../../components/layouts/DashboardTemplate.vue'
 import Title from '../../components/common/Title.vue' 
 import Input from '../../components/common/Input.vue';
@@ -42,7 +46,7 @@ import { updateVoter, getVoter } from '../../services/api/voters'
 import axios from 'axios';
 
 const authStore = useAuthStore();  
-const route = useRoute();
+const isLoading = ref(true);
 const errorsData = ref([]);
 const responseData = ref([]);
 const form = ref({
@@ -66,6 +70,7 @@ provide('userAuth', authStore);
 onMounted(async () => {
    await authStore.getAuthUser();  
    storeDataToForm(authStore.user)
+   isLoading.value = false
    console.log(authStore.user)
 }) 
 const submitVoterForm = async () => {  

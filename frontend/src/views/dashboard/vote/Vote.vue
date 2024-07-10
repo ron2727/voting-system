@@ -5,7 +5,8 @@
         <Title :title="currentElection.title" :subTitle="currentElection.description"></Title>
       </template>
       <template #main>
-        <div class="wrapper space-y-8" v-if="!loading">
+        <Loader size="md" v-if="isLoading"/>
+        <div class="wrapper space-y-8" v-else>
           <div class="wrapper" v-if="!alreadyVoted">
             <CandidateList v-for="(candidates, position) in positions" :candidates="candidates" :title="position"
               @select-candidate="selectCandidate" :errorMessage="errorsData?.[removeSpace(position)]?.[0]" />
@@ -22,16 +23,14 @@
               </RouterLink>
             </div>
           </div>
-        </div>
-        <div v-else>
-          Loading
-        </div>
+        </div> 
       </template>
     </DashboardTemplate>
   </div>
 </template>
 
 <script setup>
+import Loader from '../../../components/common/Loader.vue';
 import DashboardTemplate from '../../../components/layouts/DashboardTemplate.vue'
 import Title from '../../../components/common/Title.vue'
 import Button from '../../../components/common/Button.vue';  
@@ -47,7 +46,7 @@ const route = useRoute();
 const router = useRouter();
 const currentElection = ref([]);
 const authStore = useAuthStore(); 
-const loading = ref(true);
+const isLoading = ref(true);
 const alreadyVoted = ref(true);
 
 const positions = ref({
@@ -74,7 +73,7 @@ onMounted(async () => {
    votersBallot.value.user_id = authStore.user.id
    currentElection.value = await getElection(route.params.electionId)
    const dataForIfVoted = await checkVote(authStore.user.id, route.params.electionId)
-   loading.value = false
+   isLoading.value = false
    if (dataForIfVoted.message == "You have not voted yet") {
      alreadyVoted.value = false
      votersBallot.value.election_id = currentElection.value.id

@@ -1,5 +1,6 @@
 <template>
-    <div ref="candidatesList" class=" grid grid-cols-4 gap-5">
+    <Loader size="md" v-if="isLoading"/>
+    <div ref="candidatesList" class=" grid grid-cols-4 gap-5" v-else>
         <div v-if="candidatesWinners" v-for="candidateWinner in candidatesWinners"
             class="candidate relative h-min border bg-white rounded-2xl cursor-pointer p-1 ">
             <img src="../../../assets/images/BUERE_JOHNRON1.png" alt="a"
@@ -14,17 +15,19 @@
 </template>
 
 <script setup>
-import CandidateList from '../../../components/common/CandidateList.vue';
-import { RouterLink, useRoute } from 'vue-router'; 
+import Loader from '../../../components/common/Loader.vue';
+import { useRoute } from 'vue-router'; 
 import { getElectionVotes } from '../../../services/api/vote'
 import { onBeforeMount, ref } from 'vue';
 
 const route = useRoute();
+const isLoading = ref(true);
 const candidatesWinners = ref([])
 onBeforeMount(async () => {
     const data = await getElectionVotes(route.params.electionId)    
+    console.log(data)
     candidatesWinners.value = getElectionCandidatesWinner(data)
-    console.log(candidatesWinners.value)
+    isLoading.value = false
 })
 
 const getElectionCandidatesWinner = (candidates) => {

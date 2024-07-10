@@ -1,7 +1,7 @@
 <template>
   <div>
     <DashboardTemplate :layout="'w-full'">
-      <template #head>
+      <template #head v-if="!isLoading">
         <Title :title="election.title" :subTitle="election.description"></Title>
         <RouterLink :to="`/election/${election.id}/candidates/add`">
           <Button buttonText="Add new candidate" class="mt-10">
@@ -10,7 +10,7 @@
         </RouterLink>
       </template>
       <template #main>
-        <div class="wrapper space-y-8">
+        <div class="wrapper space-y-8" v-if="!isLoading">
           <div class="candidates space-y-2" v-for="(candidates, position) in positions">
             <h6 class=" text-lg font-bold">{{ position }}</h6>
             <div class=" grid grid-cols-4 gap-3" v-if="candidates.length">
@@ -30,12 +30,15 @@
             <NoRecordMessage v-else>No candidate found</NoRecordMessage>
           </div>
         </div>
+        
+        <Loader size="md" v-else />
       </template>
     </DashboardTemplate>
   </div>
 </template>
   
   <script setup>
+  import Loader from '../../../components/common/Loader.vue';
   import DashboardTemplate from '../../../components/layouts/DashboardTemplate.vue'
   import Title from '../../../components/common/Title.vue'
   import Button from '../../../components/common/Button.vue';
@@ -52,6 +55,7 @@
   const authStore = useAuthStore(); 
   const router = useRouter();
   const route = useRoute();
+  const isLoading = ref(true);
   const election = ref([]);  
   const positions = ref({
     "President": [],
@@ -69,6 +73,7 @@
      }
      election.value = await getElection(route.params.electionId); 
      const response = await getCandidatesFromElection(route.params.electionId);
+     isLoading.value = false
      processCandidates(response.data)
     //  console.log(candidates.value.data)
   }) 

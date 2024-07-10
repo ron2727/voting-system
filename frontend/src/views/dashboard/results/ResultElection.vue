@@ -1,6 +1,7 @@
 <template>
-    <div class=" space-y-3">
-        <Card v-for="election in elections" class=" p-4">
+    <Loader size="md" v-if="isLoading" />
+    <div class=" space-y-3" v-else>
+        <Card v-if="elections.length" v-for="election in elections" class=" p-4">
             <template #title>
                 <div class="flex justify-end">
                     <button class="text-sm">
@@ -34,24 +35,25 @@
                 </RouterLink>
             </template>
         </Card>
+        <NoRecordMessage v-else>No election found</NoRecordMessage>
     </div>
 </template>
 
-<script setup>
-import DashboardTemplate from '../../../components/layouts/DashboardTemplate.vue'
-import Title from '../../../components/common/Title.vue'
-import Button from '../../../components/common/Button.vue';
-import SubNav from '../../../components/common/SubNav.vue';
+<script setup> 
+import Loader from '../../../components/common/Loader.vue';
+import Button from '../../../components/common/Button.vue'; 
 import Card from '../../../components/common/Card.vue';
-import { onMounted, ref, onBeforeMount, provide } from 'vue'; 
-import { getElections, getFilteredElection } from '../../../services/api/elections';
+import NoRecordMessage from '../../../components/common/NoRecordMessage.vue';
+import { ref, onBeforeMount } from 'vue'; 
+import { getFilteredElection } from '../../../services/api/elections';
 import { DateFormat } from '../../../services/dateFormat';
 
- 
+const isLoading = ref(true);
 const elections = ref([]);
  
 onBeforeMount(async () => { 
     elections.value = await getFilteredElection('Completed'); 
+    isLoading.value = false;
 })
 
  

@@ -11,8 +11,9 @@
         <SubNav @getActive="getActiveMenu" :menus="['Active', 'Upcoming', 'Completed']" defaultActive="Active"></SubNav>
       </template>
       <template #main> 
-        <div class=" space-y-3">
-          <Card v-for="election in elections" class=" p-4">
+        <Loader size="md" v-if="isLoading"/>
+        <div class=" space-y-3" v-else>
+          <Card v-if="elections.length" v-for="election in elections" class=" p-4">
             <template #title>
               <div class="flex justify-end">
                 <RouterLink :to="`/election/edit/${election.id}`">
@@ -48,6 +49,7 @@
               </RouterLink>
             </template>
           </Card>
+          <NoRecordMessage v-else>No election found</NoRecordMessage>
         </div>
       </template>
     </DashboardTemplate>
@@ -55,11 +57,13 @@
 </template>
 
 <script setup>
+import Loader from '../../../components/common/Loader.vue';
 import DashboardTemplate from '../../../components/layouts/DashboardTemplate.vue'
 import Title from '../../../components/common/Title.vue'
 import Button from '../../../components/common/Button.vue';
 import SubNav from '../../../components/common/SubNav.vue';
 import Card from '../../../components/common/Card.vue';
+import NoRecordMessage from '../../../components/common/NoRecordMessage.vue';
 import { onMounted, ref, onBeforeMount, provide } from 'vue';
 import { RouterLink, useRouter } from 'vue-router';
 import { useAuthStore } from '../../../stores/auth'; 
@@ -68,6 +72,7 @@ import { DateFormat } from '../../../services/dateFormat';
 
 const authStore = useAuthStore(); 
 const route = useRouter();
+const isLoading = ref(true);
 const elections = ref([]);
 
 provide('userAuth', authStore);
@@ -78,12 +83,15 @@ onBeforeMount(async () => {
      route.push('/dashboard')
    }
    elections.value = await getFilteredElection('Active'); 
+   isLoading.value = false;
    console.log(authStore.user)
 }) 
  
 
 const getActiveMenu = async (menuItem) => {
+    isLoading.value = true;
     elections.value = await getFilteredElection(menuItem);
+    isLoading.value = false;
 }
  
 
