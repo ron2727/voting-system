@@ -3,7 +3,7 @@
       <div class="w-full flex justify-end py-2 pr-6 border bg-white">
          <Dropdown>
             <template #head>
-              <img src="../../assets/images/BUERE_JOHNRON1.png" alt="user-image" class=" w-12 h-12 object-cover rounded-full border">
+              <img :src="userAuth.user?.profile_image" alt="user-image" class=" w-12 h-12 object-cover rounded-full border">
             </template> 
             <template #body>
                 <ul class="text-sm divide-y">
@@ -30,6 +30,8 @@ import Dropdown from '../common/Dropdown.vue'
 import { inject } from 'vue'; 
 
 const userAuth = inject('userAuth');
+
+
 
 const getUserRole = () => {
   return userAuth.user?.is_admin ? 'Admin' : 'Voter';

@@ -13,7 +13,7 @@
         <div class="wrapper space-y-8">
           <div class="candidates space-y-2" v-for="(candidates, position) in positions">
             <h6 class=" text-lg font-bold">{{ position }}</h6>
-            <div class=" grid grid-cols-4 gap-3">
+            <div class=" grid grid-cols-4 gap-3" v-if="candidates.length">
               <Card v-for="candidate in candidates" class=" p-1">
                 <template #body>
                   <img src="../../../assets/images/BUERE_JOHNRON1.png" alt="a"
@@ -27,6 +27,7 @@
                 </template>
               </Card>
             </div>
+            <NoRecordMessage v-else>No candidate found</NoRecordMessage>
           </div>
         </div>
       </template>
@@ -40,6 +41,7 @@
   import Button from '../../../components/common/Button.vue';
   import SubNav from '../../../components/common/SubNav.vue';
   import Card from '../../../components/common/Card.vue';
+  import NoRecordMessage from '../../../components/common/NoRecordMessage.vue';
   import { onMounted, ref, onBeforeMount, provide } from 'vue';
   import { RouterLink, useRouter, useRoute } from 'vue-router';
   import { useAuthStore } from '../../../stores/auth'; 
@@ -50,7 +52,7 @@
   const authStore = useAuthStore(); 
   const router = useRouter();
   const route = useRoute();
-  const election = ref([]); 
+  const election = ref([]);  
   const positions = ref({
     "President": [],
     "Vice President": [],

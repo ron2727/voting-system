@@ -70,8 +70,7 @@ const submitVoterForm = async (formData) => {
   }
 }
 
-const clearForm = () => {
-  const formData = form.value;
+const clearForm = () => { 
   for (const key in form.value) {
     form.value[key] = '';
   }

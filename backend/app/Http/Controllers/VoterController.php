@@ -39,7 +39,7 @@ class VoterController extends Controller
      */
     public function store(VoterRequest $request)
     {
-        return $this->voterService->storeVoter($request->all());
+        return $this->voterService->storeVoter($request);
         
     }
 
@@ -64,7 +64,7 @@ class VoterController extends Controller
      */
     public function update(VoterRequest $request, string $id)
     {
-        return $this->voterService->updateVoter($request->all(), $id);
+        return $this->voterService->updateVoter($request, $id); 
     }
 
     /**

@@ -5,6 +5,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Controllers\ElectionController;
 use App\Http\Controllers\VoteController;
 use App\Http\Controllers\VoterController;
+use App\Http\Resources\UserResource;
 use App\Models\Vote;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -21,7 +22,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
-    return $request->user();
+    return UserResource::make($request->user());
 });
 
 // Route::post('/candidates', [CandidateController::class, 'store']);
@@ -43,6 +44,7 @@ Route::get('/vote/winners/{election_id}', [VoteController::class, 'getElectionVo
 Route::post('/vote', [VoteController::class, 'submitVote']);
 
 Route::get('/vote/verify/{user_id}/{election_id}', [VoteController::class, 'checkIfVoterHasVoted']);
+Route::post('/voters/update/{id}', [VoterController::class, 'update']);
 
 Route::apiResource('voters', VoterController::class);
 Route::apiResource('elections', ElectionController::class);

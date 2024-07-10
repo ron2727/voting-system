@@ -4,6 +4,8 @@ namespace App\Services;
 
 use App\Http\Resources\UserResource;
 use App\Models\User;
+use Illuminate\Http\Request;
+use Illuminate\Http\UploadedFile;
 
 class VoterService
 { 
@@ -23,9 +25,9 @@ class VoterService
         return UserResource::collection($randomVoters); 
     }
     public function storeVoter($data)
-    {
-        User::create($data);
-
+    {     
+        User::create($data->all());
+        
         return  response()->json([['message' => 'Voter created successfully'], $data], 201);
     }
 
@@ -52,8 +54,16 @@ class VoterService
 
     public function updateVoter($data, $voterId){
 
-        User::where('id', $voterId)->update($data); 
-        return response()->json([['message' => 'Voter updated successfully'], $data], 201);;
+        if($data->hasFile('profile_image') && $data->file('profile_image')->getClientOriginalName() != '') {
+
+           $image_name = FileUploadService::uploadFileImage($data->file('profile_image'), $voterId);  
+           $transformed_data = array_merge($data->except('profile_image'), ['profile_image' => $image_name]);
+           User::where('id', $voterId)->update($transformed_data); 
+        }else{ 
+           User::where('id', $voterId)->update($data->except(['profile_image']));
+        }
+        
+        return response()->json([['message' => 'Voter updated successfully'], $data->all()], 201);
     }
 
     public function deleteVoter($voterId){

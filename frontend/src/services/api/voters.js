@@ -40,7 +40,7 @@ export const updateVoter = async (data, voterId) => {
     const requestResponse = ref(null)
      const errors = ref(null) 
      try {
-         const response = await axios.put(`/api/voters/${voterId}`, data);
+         const response = await axios.post(`/api/voters/update/${voterId}`, data);
          requestResponse.value = response
      } catch (error) {
          errors.value = error.response.data.errors

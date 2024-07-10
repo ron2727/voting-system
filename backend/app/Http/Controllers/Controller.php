@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\VoterRequest;
 use App\Http\Resources\CandidateResource;
 use App\Http\Resources\CandidateVoteResource;
 use App\Http\Resources\UserResource;
@@ -16,6 +17,7 @@ use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 
 class Controller extends BaseController
 {
@@ -23,13 +25,15 @@ class Controller extends BaseController
 
     public function testing()
     {
-        return Vote::where('user_id', 17)
-        ->where('election_id', 21)
-        ->first();
+       $image_url = Storage::url('public/uploaded/images/crud-layout.png');
+       return response()->json(['url_image' => $image_url]);
     }
 
-    public function testRequest(Request $request)
+    public function testRequest()
     {
-        return $request->all();
+        // $image_name = 'profile_image-'.rand(11111111,99999999).'.'.$request->file('profile_image')->getClientOriginalExtension();
+        // $request->file('profile_image')->storeAs('public/uploaded/images', $image_name);
+
+        return User::find(80)->profile_image;
     }
 }
