@@ -20,7 +20,9 @@
               <Selection labelText="Section" :required="true" v-model="form.section" :options="['1', '2', '3']":errorMessage="errorsData?.section?.[0]" />
               <FileInput @select-file="selectFile" @remove-file="removeFilePhoto()"/>
               <div class="text-right space-x-3">
-                <Button buttonType="submit" buttonText="Update" class="bg-blue-600" />
+                <Button buttonType="submit" buttonText="Update" class="bg-blue-600" :disabled="isSubmitting">
+                  <i class='bx bx-loader-alt bx-xs bx-spin text-white' v-if="isSubmitting"></i>
+                </Button>
               </div>
             </div>
          </form> 
@@ -47,6 +49,7 @@ import axios from 'axios';
 
 const authStore = useAuthStore();  
 const isLoading = ref(true);
+const isSubmitting = ref(false)
 const errorsData = ref([]);
 const responseData = ref([]);
 const form = ref({
@@ -74,16 +77,20 @@ onMounted(async () => {
    console.log(authStore.user)
 }) 
 const submitVoterForm = async () => {  
+  isSubmitting.value = true
   const {requestResponse, errors} = await updateVoter(getFormData(), authStore.user.id)
   
   if(errors.value) {
-    errorsData.value = errors.value
+    errorsData.value = errors.value 
+    openAlert('error')
     console.log(errorsData.value)
   }else{
-    responseData.value = requestResponse.value
-    alert.value.isOpen = true
+    responseData.value = requestResponse.value 
+    openAlert('success')
+    errorsData.value = []
     console.log(responseData.value.data) 
   }
+  isSubmitting.value = false
 }
  
 
@@ -114,5 +121,14 @@ const removeFilePhoto = () => {
   form.value.profile_image = ''
 }
 
+const openAlert = (type) => {
+  const message = {
+    success: 'Updated successfully',
+    error: 'Failed to update',
+  }
+  alert.value.isOpen = true
+  alert.value.type = type
+  alert.value.message = message[type]
+}
 </script>
  

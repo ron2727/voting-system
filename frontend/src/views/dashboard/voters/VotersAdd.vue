@@ -18,7 +18,9 @@
                        <RouterLink to="/voters">
                           <Button buttonText="Cancel" class="bg-red-500"/>
                        </RouterLink>
-                       <Button buttonType="submit" buttonText="Add new voter" class="bg-blue-600"/>
+                       <Button buttonType="submit" buttonText="Add new voter" class="bg-blue-600" :disabled="isSubmitting">
+                         <i class='bx bx-loader-alt bx-xs bx-spin text-white' v-if="isSubmitting"></i>
+                       </Button>
                     </div>
                   </div>
                 </form>
@@ -41,6 +43,7 @@ import { storeVoter } from '../../../services/api/voters'
 const authStore = useAuthStore(); 
 const errorsData = ref([]);
 const responseData = ref([]);
+const isSubmitting = ref(false);
 const form = ref({
    student_id: "",
    firstname: "",
@@ -58,6 +61,7 @@ onMounted(async () => {
    console.log(authStore.user)
 }) 
 const submitVoterForm = async (formData) => { 
+  isSubmitting.value = true
   const {requestResponse, errors} = await storeVoter(formData)
   
   if(errors.value) {
@@ -68,6 +72,8 @@ const submitVoterForm = async (formData) => {
     console.log(responseData.value.data[0].message)
     clearForm()
   }
+
+  isSubmitting.value = false
 }
 
 const clearForm = () => { 

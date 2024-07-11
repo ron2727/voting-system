@@ -17,7 +17,9 @@
                        <RouterLink to="/elections">
                           <Button buttonText="Cancel" class="bg-red-500"/>
                        </RouterLink>
-                       <Button buttonType="submit" buttonText="Create Election" class="bg-blue-600"/>
+                       <Button buttonType="submit" buttonText="Create Election" class="bg-blue-600" :disabled="isSubmitting">
+                         <i class='bx bx-loader-alt bx-xs bx-spin text-white' v-if="isSubmitting"></i>
+                       </Button>
                     </div>
                   </div>
                 </form>
@@ -44,7 +46,7 @@ const route = useRouter();
 const elections = ref([]);
 const errorsData = ref([]);
 const responseData = ref([]);
-
+const isSubmitting = ref(false);
 const form = ref({
    title: "",
    description: "", 
@@ -63,6 +65,7 @@ onBeforeMount(async () => {
 }) 
  
 const submitElectionForm = async (formData) => {
+  isSubmitting.value = true
   formData.start_date = DateFormat.getDateTime(formData.start_date)
   formData.end_date = DateFormat.getDateTime(formData.end_date)
     
@@ -75,6 +78,8 @@ const submitElectionForm = async (formData) => {
     responseData.value = requestResponse.value 
     clearForm()
   }
+
+  isSubmitting.value = false
 }
 
 const clearForm = () => { 

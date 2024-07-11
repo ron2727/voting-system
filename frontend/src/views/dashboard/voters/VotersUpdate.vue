@@ -2,7 +2,7 @@
     <div>
         <DashboardTemplate layout="w-full"> 
             <template #head>
-              <Title title="Add new voter"></Title> 
+              <Title title="Update voter"></Title> 
              </template>
              <template #main> 
                 <form @submit.prevent="submitVoterForm(form)">       
@@ -18,7 +18,9 @@
                        <RouterLink to="/voters">
                           <Button buttonText="Cancel" class="bg-red-500"/>
                        </RouterLink>
-                       <Button buttonType="submit" buttonText="Add new voter" class="bg-blue-600"/>
+                       <Button buttonType="submit" buttonText="Update" class="bg-blue-600" :disabled="isSubmitting">
+                          <i class='bx bx-loader-alt bx-xs bx-spin text-white' v-if="isSubmitting"></i>
+                       </Button>
                     </div>
                   </div>
                 </form>
@@ -41,6 +43,7 @@ import { updateVoter, getVoter } from '../../../services/api/voters'
 const authStore = useAuthStore(); 
 const errorsData = ref([]);
 const responseData = ref([]);
+const isSubmitting = ref(false);
 const form = ref({
    student_id: "",
    firstname: "",
@@ -60,6 +63,7 @@ onMounted(async () => {
    console.log(voter)
 }) 
 const submitVoterForm = async (formData) => { 
+  isSubmitting.value = true
   const {requestResponse, errors} = await updateVoter(formData, route.params.voterId)
   
   if(errors.value) {
@@ -70,6 +74,8 @@ const submitVoterForm = async (formData) => {
     console.log(responseData.value.message)
     clearForm()
   }
+
+  isSubmitting.value = false
 }
 
 const clearForm = () => {

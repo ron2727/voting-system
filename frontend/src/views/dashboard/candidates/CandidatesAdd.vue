@@ -60,7 +60,9 @@
               <RouterLink to="/elections">
                 <Button buttonText="Cancel" class="bg-red-500" />
               </RouterLink>
-              <Button buttonType="submit" buttonText="Add Candidate" class="bg-blue-600" />
+              <Button buttonType="submit" buttonText="Add Candidate" class="bg-blue-600" :disabled="isSubmitting">
+                <i class='bx bx-loader-alt bx-xs bx-spin text-white' v-if="isSubmitting"></i>
+              </Button>
             </div>
           </div>
         </form>
@@ -93,7 +95,7 @@ const route = useRoute();
 const elections = ref([]);
 const errorsData = ref([]);
 const responseData = ref([]);
-
+const isSubmitting = ref(false)
 
 const isModalOpen = ref(false);
 const isModalLoading = ref(false);
@@ -134,8 +136,8 @@ onBeforeMount(async () => {
 }) 
  
 const submitCandidateForm = async (formData) => { 
-    
-   const {requestResponse, errors} = await storeCandidate(formData)
+  isSubmitting.value = true  
+  const {requestResponse, errors} = await storeCandidate(formData)
   
   if(errors.value) {
     errorsData.value = errors.value
@@ -148,6 +150,7 @@ const submitCandidateForm = async (formData) => {
     showAlert('success', requestResponse.value.message)
     clearForm()
   }
+  isSubmitting.value = false
 }
 
 const showAlert = (type, message) => {

@@ -11,7 +11,9 @@
             <CandidateList v-for="(candidates, position) in positions" :candidates="candidates" :title="position"
               @select-candidate="selectCandidate" :errorMessage="errorsData?.[removeSpace(position)]?.[0]" />
             <div class=" flex justify-center">
-              <Button buttonText="Submit Vote" class="m-5" @click="submitVote" />
+              <Button buttonText="Submit Vote" class="m-5" @click="submitVote" :disabled="isSubmitting">
+                <i class='bx bx-loader-alt bx-xs bx-spin text-white' v-if="isSubmitting"></i>
+              </Button>
             </div>
           </div>
           <div class="wrapper" v-else> 
@@ -48,6 +50,7 @@ const currentElection = ref([]);
 const authStore = useAuthStore(); 
 const isLoading = ref(true);
 const alreadyVoted = ref(true);
+const isSubmitting = ref(false);
 
 const positions = ref({
     "President": [],
@@ -95,12 +98,15 @@ const selectCandidate = (candidate) => {
 }
 
 const submitVote = async () => {
+    isSubmitting.value = true
     const response = await storeVote(votersBallot.value)
     errorsData.value = response.errors.value 
     
     if (errorsData.value == null) { 
       router.push('/ballot/' + currentElection.value.id)
     }
+
+    isSubmitting.value = false
 }
 
 const removeSpace = (text) => {
