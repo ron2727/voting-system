@@ -2,7 +2,7 @@
     <div>
         <DashboardTemplate layout="w-full"> 
             <template #head>
-              <Title title="Add new voter"></Title> 
+              <Title title="Create an election"></Title> 
              </template>
              <template #main> 
                 <form @submit.prevent="submitElectionForm(form)">       
@@ -36,13 +36,14 @@ import Selection from '../../../components/common/Selection.vue';
 import Button from '../../../components/common/Button.vue';
 import SubNav from '../../../components/common/SubNav.vue'; 
 import { onMounted, ref, onBeforeMount, provide } from 'vue';
-import { useRouter } from 'vue-router';
+import { useRouter, useRoute } from 'vue-router';
 import { useAuthStore } from '../../../stores/auth'; 
 import { getElections, storeElection } from '../../../services/api/elections';
 import { DateFormat } from '../../../services/dateFormat';
 
 const authStore = useAuthStore(); 
-const route = useRouter();
+const router = useRouter();
+const route = useRoute();
 const elections = ref([]);
 const errorsData = ref([]);
 const responseData = ref([]);
@@ -58,7 +59,7 @@ provide('userAuth', authStore);
 onBeforeMount(async () => {
    await authStore.getAuthUser(); 
    if (!authStore.user.is_admin) {
-     route.push('/dashboard')
+     router.push('/dashboard')
    }
    elections.value = await getElections(); 
    console.log(authStore.user)
@@ -76,7 +77,7 @@ const submitElectionForm = async (formData) => {
     console.log(errorsData.value)
   }else{
     responseData.value = requestResponse.value 
-    clearForm()
+    router.push('/elections')
   }
 
   isSubmitting.value = false

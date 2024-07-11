@@ -7,6 +7,8 @@
              <template #main> 
                 <form @submit.prevent="submitVoterForm(form)">       
                   <div class="form-wrapper bg-white max-w-xl p-4 rounded-lg shadow-md space-y-3">
+                    <AlertMessage v-if="alert.isOpen" :alertType="alert.type" @closeAlert="alert.isOpen = false">{{alert.message }}</AlertMessage>
+
                     <Input labelText="Student ID" :required="true" v-model="form.student_id" :errorMessage="errorsData?.student_id?.[0]"/>
                     <Input labelText="First Name" :required="true" v-model="form.firstname" :errorMessage="errorsData?.firstname?.[0]"/>
                     <Input labelText="Last Name" :required="true" v-model="form.lastname" :errorMessage="errorsData?.lastname?.[0]"/>
@@ -35,6 +37,7 @@ import Title from '../../../components/common/Title.vue'
 import Input from '../../../components/common/Input.vue';
 import Selection from '../../../components/common/Selection.vue';
 import Button from '../../../components/common/Button.vue';
+import AlertMessage from '../../../components/common/AlertMessage.vue';
 import { useAuthStore } from '../../../stores/auth'; 
 import { onMounted, provide, ref } from 'vue';
 import { RouterView } from 'vue-router';
@@ -53,7 +56,11 @@ const form = ref({
    section: "",
    email: "",
 });
-
+const alert = ref({
+  isOpen: false,
+  type: 'success',
+  message: 'Updated successfully',
+});
 provide('userAuth', authStore);
 
 onMounted(async () => {
@@ -66,9 +73,11 @@ const submitVoterForm = async (formData) => {
   
   if(errors.value) {
     errorsData.value = errors.value
+    openAlert('error')
     console.log(errorsData.value)
   }else{
     responseData.value = requestResponse.value
+    openAlert('success')
     console.log(responseData.value.data[0].message)
     clearForm()
   }
@@ -82,6 +91,14 @@ const clearForm = () => {
   }
   errorsData.value = [];
 }
-
+const openAlert = (type) => {
+  const message = {
+    success: 'New voter was added successfully',
+    error: 'Failed to add new voter',
+  }
+  alert.value.isOpen = true
+  alert.value.type = type
+  alert.value.message = message[type]
+}
 </script>
  

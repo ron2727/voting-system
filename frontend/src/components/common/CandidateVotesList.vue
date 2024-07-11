@@ -1,7 +1,7 @@
 <template>
     <div class=" candidates-wrapper px-4 pt-4 pb-8">
         <h6 class=" text-xl font-bold mb-5">{{title}}</h6>
-        <div class="relative grid grid-cols-12 h-min pt-5 pb-10 bg-white rounded-xl space-x-5" v-for="candidate in candidates">
+        <div v-if="candidates.length" class="relative grid grid-cols-12 h-min pt-5 pb-10 bg-white rounded-xl space-x-5" v-for="candidate in candidates">
             <div class=" col-span-2 flex flex-col justify-between items-center">
                 <img :src="candidate.user.profile_image" alt="a"
                     class="  w-16 h-16object-cover border rounded-full">
@@ -20,11 +20,12 @@
                 </small>
             </div>
         </div>
+        <NoRecordMessage v-else>No candidate for {{ title }}</NoRecordMessage>
     </div>
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import NoRecordMessage from './NoRecordMessage.vue';
 
 defineProps({
     title:{
