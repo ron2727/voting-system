@@ -17,7 +17,7 @@ class VoteService
 
         $response = response()->json([['message' => 'You have already voted'], $request->all()], 422);
        
-        if (!$this->checkIfVoterHasVoted($request->user_id, $request->election_id)) { 
+        if (!$this->checkIfVoterHadVoted($request->user_id, $request->election_id)) { 
             foreach ($vote as $value) {
                 Vote::create([
                     'user_id' => $request->user_id,
@@ -76,7 +76,7 @@ class VoteService
         return response()->json($candidatesPosition);
     }
 
-    public function checkIfVoterHasVoted($user_id, $election_id)
+    public function checkIfVoterHadVoted($user_id, $election_id)
     {
         $isAlreadyVoted = Vote::where('user_id', $user_id)
             ->where('election_id', $election_id)

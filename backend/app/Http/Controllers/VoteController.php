@@ -26,9 +26,9 @@ class VoteController extends Controller
     public function getElectionVotes($election_id){
         return $this->voteService->getElectionVotes($election_id);
     }
-    public function checkIfVoterHasVoted($user_id, $election_id){
+    public function checkIfVoterHadVoted($user_id, $election_id){
         
-        if ($this->voteService->checkIfVoterHasVoted($user_id, $election_id)) {
+        if ($this->voteService->checkIfVoterHadVoted($user_id, $election_id)) {
             $response = response()->json(['message' => 'You have already voted'], 422);
         }else{
             $response = response()->json(['message' => 'You have not voted yet'], 200);

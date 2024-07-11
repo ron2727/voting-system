@@ -41,10 +41,11 @@ Route::get('/vote/ballot/{user_id}/{election_id}', [VoteController::class, 'getS
 Route::get('/vote/total/{election_id}', [VoteController::class, 'getCandidatesTotalVotes']);
 Route::get('/vote/winners/{election_id}', [VoteController::class, 'getElectionVotes']);
 
-Route::post('/vote', [VoteController::class, 'submitVote']);
 
-Route::get('/vote/verify/{user_id}/{election_id}', [VoteController::class, 'checkIfVoterHasVoted']);
+Route::get('/elections/report/search/{month}/{year}', [ElectionController::class, 'getElectionByMothYear']);
+Route::get('/vote/verify/{user_id}/{election_id}', [VoteController::class, 'checkIfVoterHadVoted']);
 Route::post('/voters/update/{id}', [VoterController::class, 'update']);
+Route::post('/vote', [VoteController::class, 'submitVote']);
 
 Route::apiResource('voters', VoterController::class);
 Route::apiResource('elections', ElectionController::class);

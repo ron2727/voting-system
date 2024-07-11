@@ -73,4 +73,9 @@ class ElectionController extends Controller
         return $this->electionService->getElection($id); 
     }
 
+    public function getElectionByMothYear($month, $year)
+    {
+        return $this->electionService->getElectionByMothYear($month, $year);
+    }
+
 }

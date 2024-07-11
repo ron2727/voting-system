@@ -54,4 +54,9 @@ class ElectionService
         return response()->json(['message' => 'Election updated successfully'], 201);
     }
 
+    public function getElectionByMothYear($month, $year)
+    {
+        return Election::whereMonth('start_date', $month)->whereYear('start_date', $year)->get();
+    }
+
 }

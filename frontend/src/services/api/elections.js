@@ -58,4 +58,12 @@ export const getFilteredElection = async (status) => {
     }
 }
 
+export const getElectionByMonthYear = async (month, year) => { 
+    try {
+        const response = await axios.get(`api/elections/report/search/${month}/${year}`);
+        return response.data;
+    } catch (error) {
+        console.log(error.data);
+    }
+}
 

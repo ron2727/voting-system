@@ -33,7 +33,8 @@ class Controller extends BaseController
     {
         // $image_name = 'profile_image-'.rand(11111111,99999999).'.'.$request->file('profile_image')->getClientOriginalExtension();
         // $request->file('profile_image')->storeAs('public/uploaded/images', $image_name);
-
-        return User::find(80)->profile_image;
+        // Election::whereMonth('start_date', '2024-07')->first();
+        // Election::whereMonth('start_date', Carbon::now()->month)->whereYear('start_date', Carbon::now()->year)->first()
+        return Election::whereMonth('start_date', '07')->whereYear('start_date', '2024')->get();
     }
 }
