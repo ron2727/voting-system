@@ -11,14 +11,7 @@
                     <Loader size="sm" v-if="isSearching"/>
                     <div class="wrapper space-y-3" v-else>
                         <Card v-if="elections.length" v-for="election in elections" class=" p-4">
-                        <template #title>
-                            <div class="flex justify-end">
-                                <RouterLink :to="`/election/edit/${election.id}`">
-                                    <button class="text-sm">
-                                        <i class='bx bxs-edit bx-sm'></i>
-                                    </button>
-                                </RouterLink>
-                            </div>
+                        <template #title> 
                             <h6 class="title text-lg font-bold">
                                 {{ election.title }}
                             </h6>
@@ -41,8 +34,8 @@
                                     {{ DateFormat.getTimeOfDate(election.end_date) }}
                                 </div>
                             </div>
-                            <RouterLink :to="`/election/${election.id}/candidates`">
-                                <Button buttonText="View Candidates" class=" absolute right-0 bottom-0 m-5"></Button>
+                            <RouterLink :to="`/reports/pdf/${election.id}`">
+                                <Button buttonText="Generate Report" class=" absolute right-0 bottom-0 m-5"></Button>
                             </RouterLink>
                         </template>
                     </Card>

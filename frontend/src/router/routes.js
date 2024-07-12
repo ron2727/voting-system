@@ -110,7 +110,12 @@ const routes = [
     {
         path: '/reports',
         name: 'Reports',
-        component: () => import('../views/dashboard/Reports.vue')
+        component: () => import('../views/dashboard/reports/Reports.vue')
+    }, 
+    {
+        path: '/reports/pdf/:electionId',
+        name: 'GenerateReport',
+        component: () => import('../views/dashboard/reports/GenerateReport.vue')
     },
     {
         path: '/settings',

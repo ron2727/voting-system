@@ -1,0 +1,130 @@
+<template>
+    <div>
+        <DashboardTemplate layout="w-full">
+            <template #head>
+                <Title title="Reports" subTitle="Generate report for elections"></Title>
+            </template>
+            <template #main>
+                <Loader size="md" v-if="isLoading"/>
+                <div class="wrapper-main" v-else>
+                    <div class=" max-w-4xl w-full flex justify-end m-auto mb-5">
+                        <button @click="generatePdf" type="button" class=" px-4 py-2 text-white font-bold text-sm rounded-lg bg-red-600">Print to pdf</button>
+                    </div>
+                    <div class=" max-w-4xl w-full m-auto border p-10 bg-white">
+                        <div ref="pdfContent">
+                          <ReportPdf v-if="reportData.electionName !== ''" :report-data="reportData"/>
+                        </div>
+                    </div>
+                </div>
+            </template>
+        </DashboardTemplate>
+    </div>
+</template>
+
+<script setup>
+import DashboardTemplate from '../../../components/layouts/DashboardTemplate.vue';
+import Title from '../../../components/common/Title.vue';  
+import ReportPdf from '../../../components/common/ReportPdf.vue'; 
+import Loader from '../../../components/common/Loader.vue';
+import html2pdf from 'html2pdf.js';
+import { onMounted, ref, provide, onBeforeMount } from 'vue';
+import { useRoute } from 'vue-router';
+import { useAuthStore } from '../../../stores/auth';
+import { getCandidateTotalVotes } from '../../../services/api/vote';
+import { getElection } from '../../../services/api/elections';
+
+const authStore = useAuthStore(); 
+const isLoading = ref(true); 
+const pdfContent = ref(null);
+const election = ref([]);
+const candidatesWithTotalVotes = ref({
+    "President":{ candidates: [] },
+    "Vice President": { candidates: [] },
+    "Treasurer": { candidates: [] },
+    "Secretary": { candidates: [] },
+});
+const reportData = ref({
+    electionName: '',
+    electionDescription : '',
+    electionStartDate: '',
+    electionEndDate: '',
+    totalVotes: 0, 
+    candidates: {},
+})
+const route = useRoute(); 
+provide('userAuth', authStore);
+
+onBeforeMount(async () => {
+   await authStore.getAuthUser();  
+   election.value = await getElection(route.params.electionId); 
+   const candidates = await getCandidateTotalVotes(route.params.electionId); 
+   mapCandidatesVote(candidates)  
+   storeDataToReportData(election) 
+   isLoading.value = false
+})  
+
+const mapCandidatesVote = (data) => {
+    data.forEach(candidate => {
+        candidatesWithTotalVotes.value[candidate.position].candidates.push(candidate)
+    })
+    getCandidatesPercentageVote() 
+} 
+
+const getCandidatesPercentageVote = () => { 
+     for (const key in candidatesWithTotalVotes.value) {
+         const totalVotes = candidatesWithTotalVotes.value[key].candidates.reduce((total, candidate) => total + candidate.votes, 0);
+         candidatesWithTotalVotes.value[key].totalVotes = totalVotes;
+         storetPercentageVote(candidatesWithTotalVotes.value[key].candidates, totalVotes)
+     }
+     
+     console.log(candidatesWithTotalVotes.value)
+} 
+const storetPercentageVote = (candidates, totalVotes) => {
+      for (const candidate of candidates) {
+        candidate.votePercentage = getPercentageVote(totalVotes, candidate.votes)
+      }
+}
+const getPercentageVote = (totalVotes, candidateTotalVotes) => {
+    let totalPercentageVotes = Math.round((candidateTotalVotes / totalVotes) * 100)
+    if (isNaN(totalPercentageVotes)) {
+        totalPercentageVotes = 0
+    }
+    
+    return totalPercentageVotes; 
+}
+
+const getTotalVotesOfELection = () => {
+    let totalVotes = 0
+    for (const key in candidatesWithTotalVotes.value) {
+        totalVotes += candidatesWithTotalVotes.value[key].totalVotes
+    }
+    return totalVotes
+}
+
+const storeDataToReportData = () => {
+    reportData.value.electionName = election.value.title
+    reportData.value.electionDescription = election.value.description
+    reportData.value.electionStartDate = election.value.start_date
+    reportData.value.electionEndDate = election.value.end_date 
+    reportData.value.totalVotes = getTotalVotesOfELection()
+    reportData.value.candidates = candidatesWithTotalVotes.value
+    console.log(reportData.value)
+}
+
+const generatePdf = () => {
+      const element = pdfContent.value;
+
+      // Configure options
+      const options = {
+        margin: 0.5,
+        filename: `ElectionReport-${reportData.value.electionStartDate}.pdf`,
+        image: { type: 'jpeg', quality: 0.98 },
+        html2canvas: { scale: 2 },
+        jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
+      };
+
+      // Generate PDF
+      html2pdf().from(element).set(options).save();
+}
+
+</script>
