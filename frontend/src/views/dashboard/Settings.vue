@@ -16,9 +16,9 @@
               <Input labelText="Email" :required="true" v-model="form.email" :errorMessage="errorsData?.email?.[0]" />
               <Selection labelText="Course" :required="true" v-model="form.course" :options="['BSIS', 'BSIT', 'BSCS']":errorMessage="errorsData?.course?.[0]" />
               <Selection labelText="Year Level" :required="true" v-model="form.year_level"
-                :options="['1st year', '2nd year', '3rd year', '4rth year']":errorMessage="errorsData?.year_level?.[0]" />
+                :options="['1st year', '2nd year', '3rd year', '4rth year']" :errorMessage="errorsData?.year_level?.[0]" />
               <Selection labelText="Section" :required="true" v-model="form.section" :options="['1', '2', '3']":errorMessage="errorsData?.section?.[0]" />
-              <FileInput @select-file="selectFile" @remove-file="removeFilePhoto()"/>
+              <FileInput @select-file="selectFile" @remove-file="removeFilePhoto()" :errorMessage="errorsData?.profile_image?.[0]"/>
               <div class="text-right space-x-3">
                 <Button buttonType="submit" buttonText="Update" class="bg-blue-600" :disabled="isSubmitting">
                   <i class='bx bx-loader-alt bx-xs bx-spin text-white' v-if="isSubmitting"></i>
@@ -77,7 +77,7 @@ onMounted(async () => {
    console.log(authStore.user)
 }) 
 const submitVoterForm = async () => {  
-  isSubmitting.value = true
+  isSubmitting.value = true 
   const {requestResponse, errors} = await updateVoter(getFormData(), authStore.user.id)
   
   if(errors.value) {
@@ -96,6 +96,9 @@ const submitVoterForm = async () => {
 
 const storeDataToForm = (data) => {
    for (const key in form.value) { 
+    if (key === "profile_image") {
+      continue
+    }
      form.value[key] = data[key] 
    } 
 }
@@ -111,6 +114,10 @@ const selectFile = async (file) => {
 
 const getFormData = () => {
   const formData = new FormData();
+  if (form.value.profile_image == '') {
+    delete form.value.profile_image
+    console.log(form.value)
+  }
   for (const key in form.value) {
     formData.append(key, form.value[key]);
   }

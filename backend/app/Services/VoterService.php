@@ -54,8 +54,7 @@ class VoterService
 
     public function updateVoter($data, $voterId){
 
-        if($data->hasFile('profile_image') && $data->file('profile_image')->getClientOriginalName() != '') {
-
+        if($data->hasFile('profile_image') && $data->file('profile_image')->getClientOriginalName() != '') { 
            $image_name = FileUploadService::uploadFileImage($data->file('profile_image'), $voterId);  
            $transformed_data = array_merge($data->except('profile_image'), ['profile_image' => $image_name]);
            User::where('id', $voterId)->update($transformed_data); 

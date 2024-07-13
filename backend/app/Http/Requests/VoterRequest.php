@@ -29,6 +29,7 @@ class VoterRequest extends FormRequest
             'course' => ['required', 'string'],
             'year_level' => ['required', 'string'],
             'section' => ['required', 'string'],
+            'profile_image' => ['sometimes', 'file', 'mimes:jpg,jpeg,png', 'max:2048'], 
         ];
     }
 }
