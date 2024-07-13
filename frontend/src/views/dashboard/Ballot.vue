@@ -2,6 +2,7 @@
     <div>
       <DashboardTemplate layout="w-full">
         <template #head v-if="!isLoading">
+          <BackButton :path="`/vote/${currentElection.id}`"></BackButton>
           <Title :title="currentElection.title" :subTitle="currentElection.description"></Title>
         </template>
         <template #main>
@@ -18,6 +19,7 @@
   import DashboardTemplate from '../../components/layouts/DashboardTemplate.vue'
   import Loader from '../../components/common/Loader.vue'
   import Title from '../../components/common/Title.vue' 
+  import BackButton from '../../components/common/BackButton.vue';
   import CandidateList from '../../components/common/CandidateList.vue';
   import { ref, onMounted, provide } from 'vue';
   import { useAuthStore } from '../../stores/auth';  

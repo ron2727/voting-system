@@ -1,5 +1,6 @@
 <template>
     <div>
+        <BackButton path="/results"/>
         <Loader size="md" v-if="isLoading"/>
         <CandidateVotesList v-else
                             v-for="(candidates, position) in candidatesWithTotalVotes" 
@@ -13,6 +14,7 @@
 import Loader from '../../../components/common/Loader.vue';
 import CandidateVotesList from '../../../components/common/CandidateVotesList.vue';
 import NoRecordMessage from '../../../components/common/NoRecordMessage.vue';
+import BackButton from '../../../components/common/BackButton.vue';
 import { ref, onMounted, onBeforeMount, provide } from 'vue';
 import { useRoute } from 'vue-router';
 import { useAuthStore } from '../../../stores/auth'; 

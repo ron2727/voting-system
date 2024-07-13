@@ -2,6 +2,7 @@
   <div>
     <DashboardTemplate :layout="'w-full'">
       <template #head v-if="!isLoading">
+        <BackButton :path="`/elections`"></BackButton>
         <Title :title="election.title" :subTitle="election.description"></Title>
         <RouterLink :to="`/election/${election.id}/candidates/add`">
           <Button buttonText="Add new candidate" class="mt-10">
@@ -41,9 +42,9 @@
   import Loader from '../../../components/common/Loader.vue';
   import DashboardTemplate from '../../../components/layouts/DashboardTemplate.vue'
   import Title from '../../../components/common/Title.vue'
-  import Button from '../../../components/common/Button.vue';
-  import SubNav from '../../../components/common/SubNav.vue';
+  import Button from '../../../components/common/Button.vue'; 
   import Card from '../../../components/common/Card.vue';
+  import BackButton from '../../../components/common/BackButton.vue';
   import NoRecordMessage from '../../../components/common/NoRecordMessage.vue';
   import { onMounted, ref, onBeforeMount, provide } from 'vue';
   import { RouterLink, useRouter, useRoute } from 'vue-router';

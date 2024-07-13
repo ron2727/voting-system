@@ -5,6 +5,7 @@
                 <Title title="Reports" subTitle="Generate report for elections"></Title>
             </template>
             <template #main>
+                <BackButton path="/reports" />
                 <Loader size="md" v-if="isLoading"/>
                 <div class="wrapper-main overflow-x-auto" v-else>
                     <div class=" w-[896px] flex justify-end m-auto mb-5">
@@ -28,6 +29,7 @@ import Title from '../../../components/common/Title.vue';
 import ReportPdf from '../../../components/common/ReportPdf.vue'; 
 import Loader from '../../../components/common/Loader.vue';
 import Button from '../../../components/common/Button.vue';
+import BackButton from '../../../components/common/BackButton.vue';
 import html2pdf from 'html2pdf.js';
 import { onMounted, ref, provide, onBeforeMount } from 'vue';
 import { useRoute } from 'vue-router';
