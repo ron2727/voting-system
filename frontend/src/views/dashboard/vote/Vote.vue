@@ -2,6 +2,7 @@
   <div>
     <DashboardTemplate layout="w-full">
       <template #head v-if="!isLoading">
+        <BackButton path="/vote"/>
         <Title :title="currentElection.title" :subTitle="currentElection.description"></Title>
       </template>
       <template #main>
@@ -38,6 +39,7 @@ import Title from '../../../components/common/Title.vue'
 import Button from '../../../components/common/Button.vue';  
 import CandidateList from '../../../components/common/CandidateList.vue';
 import NoRecordMessage from '../../../components/common/NoRecordMessage.vue'; 
+import BackButton from '../../../components/common/BackButton.vue';
 import { ref, onMounted, provide } from 'vue';
 import { useAuthStore } from '../../../stores/auth'; 
 import { getCandidatesFromElection } from '../../../services/api/candidates'
