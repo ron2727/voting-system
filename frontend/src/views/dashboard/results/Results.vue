@@ -7,14 +7,14 @@
                     <RouterLink to="/results">
                         <button @click="setActive('votes')" 
                                 :class="activeNav == 'votes' ? 'bg-white shadow' : 'text-slate-600'" 
-                                class=" px-5 py-2 text-sm rounded-lg">
+                                class=" px-5 py-2 text-xs lg:text-sm rounded-lg">
                             Votes Tally
                         </button>
                     </RouterLink>
                     <RouterLink to="/results/elections">
                         <button  @click="setActive('winners')" 
                                 :class="activeNav == 'winners' ? 'bg-white shadow' : 'text-slate-600'" 
-                                class="px-5 py-2 text-sm rounded-lg">
+                                class="px-5 py-2 text-xs lg:text-sm rounded-lg">
                             Winners
                         </button>
                     </RouterLink>

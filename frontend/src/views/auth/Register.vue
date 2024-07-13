@@ -8,7 +8,7 @@
                 <Input labelText="Password" inputType="password" v-model="formData.password" :errorMessage="authStore.errors?.password?.[0]"/>
                 <Input labelText="Confirm Password" inputType="password" v-model="formData.password_confirmation" :errorMessage="authStore.errors?.password?.[1]"/>
                 <div class=" flex items-center justify-between">
-                   <div class="text-sm">
+                   <div class=" text-xs md:text-sm">
                       Have an account ? <RouterLink to="/"><span class=" text-blue-600 hover:underline">Login</span></RouterLink>
                    </div>
                    <Button buttonText="Register" buttonType="submit" :disabled="isSubmitting">

@@ -1,5 +1,5 @@
 <template> 
-      <button @click="$emit('getClicked')" :type="buttonType" :class="bgColor" class="text-sm text-white rounded-md py-1.5 px-4">
+      <button @click="$emit('getClicked')" :type="buttonType" :class="bgColor" class=" text-xs lg:text-sm text-white rounded-md py-1.5 px-4">
          <slot></slot> {{ buttonText }}
       </button>
 </template>

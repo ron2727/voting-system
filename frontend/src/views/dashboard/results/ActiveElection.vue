@@ -3,12 +3,12 @@
     <div class=" space-y-3" v-else>
         <Card v-if="elections.length" v-for="election in elections" class=" p-4">
             <template #title> 
-                <h6 class="title text-lg font-bold">
+                <h6 class="title text-sm lg:text-lg font-bold">
                     {{ election.title }}
                 </h6>
             </template>
             <template #body>
-                <div class="py-4">
+                <div class="py-4 text-xs lg:text-sm">
                     {{ election.description }}
                 </div>
             </template>

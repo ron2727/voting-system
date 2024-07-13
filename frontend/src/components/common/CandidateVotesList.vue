@@ -1,24 +1,26 @@
 <template>
-    <div class=" candidates-wrapper px-4 pt-4 pb-8">
+    <div class=" candidates-wrapper px-0 md:px-4 pt-4 pb-8">
         <h6 class=" text-xl font-bold mb-5">{{title}}</h6>
-        <div v-if="candidates.length" class="relative grid grid-cols-12 h-min pt-5 pb-10 bg-white rounded-xl space-x-5" v-for="candidate in candidates">
-            <div class=" col-span-2 flex flex-col justify-between items-center">
+        <div class="wrapper border rounded-lg bg-white"  v-if="candidates.length">
+           <div class="relative px-3 md:px-0 grid grid-cols-1 md:grid-cols-12 items-center gap-y-2 md:gap-y-0 h-min pt-5 pb-10 md:space-x-5" v-for="candidate in candidates">
+            <div class=" md:col-span-2 flex flex-col justify-between items-center">
                 <img :src="candidate.user.profile_image" alt="a"
-                    class="  w-16 h-16object-cover border rounded-full">
+                    class=" w-12 h-12  md:w-16 md:h-16 object-cover border rounded-full">
                 <h6 class="text-xs font-bold">{{ candidate.user.firstname }} {{ candidate.user.lastname }}</h6>
                 <small class=" text-xs text-gray-500">{{ candidate.user.year_level }}</small>
             </div>
-            <div class="votes-wrapper col-span-9">
-                <div class="border relative h-full bg-white border-gray-200 rounded-xl overflow-hidden">
-                    <div :style="{width: `${getPercentageVote(totalVotes, candidate.votes)}%`}" class=" h-full w-1/2 bg-blue-600">
+            <div class="votes-wrapper md:col-span-9 h-12">
+                <div class="border border-blue-200 relative h-full bg-white rounded-xl overflow-hidden">
+                    <div :style="{width: `${getPercentageVote(totalVotes, candidate.votes)}%`}" class=" h-full w-1/2 bg-blue-500/25">
                     </div>
-                    <span class="votes-percent absolute right-0 top-1/2 -translate-y-1/2 mr-5 font-bold">{{ getPercentageVote(totalVotes, candidate.votes) }}%</span>
+                    <span class="votes-percent absolute right-0 top-1/2 text-blue-600 -translate-y-1/2 mr-5 font-bold">{{ getPercentageVote(totalVotes, candidate.votes) }}%</span>
                 </div>
                 <small class="votes">
                     <span class=" text-xs font-bold">Total Votes: </span>
                     <span class=" text-xs text-gray-600">{{ candidate.votes }}</span>
                 </small>
             </div>
+           </div>
         </div>
         <NoRecordMessage v-else>No candidate for {{ title }}</NoRecordMessage>
     </div>

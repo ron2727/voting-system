@@ -4,10 +4,10 @@
            <template #title>Delete Voter</template>
            <template #body>Are you sure you want to delete this voter <span class=" font-bold">{{ voterToBeDeleted.firstname }} {{ voterToBeDeleted.lastname }}</span>?</template>
            <template #footer>
-             <div class="flex justify-end space-x-2">
-
-               <button @click="isDeleteModalOpen = false" class=" text-xs px-3 py-2 border rounded-md">Cancel</button>
-               <button @click="submitVoterToDelete" class=" text-xs px-3 py-2 bg-red-600 text-white rounded-md">Yes, Delete</button>
+             <div class="flex justify-end space-x-2"> 
+               <button @click="isDeleteModalOpen = false" class=" text-xs px-2.5 py-1.5 md:px-3 md:py-2 border rounded-md">Cancel</button>
+               <button @click="submitVoterToDelete" class=" text-xs px-2.5 py-1.5 md:px-3 md:py-2 bg-red-600 text-white rounded-md" :disabled="isSubmitting" >
+                <i class='bx bx-loader-alt bx-xs bx-spin text-white' v-if="isSubmitting"></i> Yes, Delete</button>
              </div>
            </template>
         </Modal>
@@ -47,6 +47,7 @@ const loading = ref(true);
 const votersData = ref([]);
 const voterToBeDeleted = ref('')
 const isDeleteModalOpen = ref(false);
+const isSubmitting = ref(false);
 
 provide('userAuth', authStore);
 
@@ -66,19 +67,23 @@ const openDeleteModal = (voterData) => {
 }
 
 const submitVoterToDelete = async () => { 
+  isSubmitting.value = true
   const response = await deleteVoter(voterToBeDeleted.value.id)
   console.log(response)
-  await removeVoterInTable()
+  await removeVoterInTable() 
+  isSubmitting.value = false
   isDeleteModalOpen.value = false
 }
 const removeVoterInTable = async () => {
   const url = `${votersData.value.meta.path}?page=${votersData.value.meta.current_page}`;
   votersData.value = await getVoters(url)
-}
-// const removeVoterInTable = () => {
-//   const voters = votersData.value.data
-//   votersData.value.data = voters.filter(voter => voter.id !== voterToBeDeleted.value.id)
-// }
+} 
 
 </script>
- 
+
+<style scoped>
+[disabled] {
+  opacity: 0.9;
+  cursor: not-allowed; 
+}
+</style>

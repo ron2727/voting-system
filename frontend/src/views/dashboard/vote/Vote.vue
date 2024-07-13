@@ -20,7 +20,7 @@
             <NoRecordMessage>You have already voted in this election</NoRecordMessage>
             <div class=" flex justify-center">
               <RouterLink :to="`/ballot/${$route.params.electionId}`">
-                <button type="button" class=" px-4 py-2 bg-blue-600 rounded-md text-white text-sm">View my
+                <button type="button" class=" px-4 py-2 bg-blue-600 rounded-md text-white text-xs lg:text-sm">View my
                   candidates</button>
               </RouterLink>
             </div>

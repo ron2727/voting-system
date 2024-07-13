@@ -28,7 +28,7 @@
     </Modal>
     <DashboardTemplate layout="w-full">
       <template #head>
-        <Title title="Add new candidate"></Title>
+        <Title title="Add new candidate" sub-title="Create new candidate for election" ></Title>
       </template>
       <template #main>
         <form @submit.prevent="submitCandidateForm(form)">

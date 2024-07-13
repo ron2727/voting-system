@@ -7,7 +7,7 @@
              <Input labelText="Email" v-model="formData.email" :errorMessage="authStore.errors?.email?.[0]"/>
              <Input labelText="Password" inputType="password" v-model="formData.password"/>
              <div class=" flex items-center justify-between">
-                <div class="text-sm">
+                <div class=" text-xs md:text-sm">
                   Don't have an account ? <RouterLink to="/register"><span class=" text-blue-600 hover:underline">Register</span></RouterLink>
                 </div>
                 <Button buttonText="Login" buttonType="submit" :disabled="isSubmitting">

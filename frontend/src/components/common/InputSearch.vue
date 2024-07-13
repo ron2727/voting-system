@@ -1,7 +1,7 @@
 <template>
     <div class="input-search mb-5 flex justify-end">
         <div class="w-min flex items-center">
-            <input v-model="search" type="month" class=" w-40 border-l border-t border-b border-r-0 border-gray-200 rounded-l-lg  outline-none text-sm p-2"
+            <input v-model="search" type="month" class=" w-40 border-l border-t border-b border-r-0 border-gray-200 rounded-l-lg  outline-none text-xs md:text-sm p-2"
                 placeholder="Search">
             <button type="button" class="bg-blue-600 px-2 pt-1 rounded-r-lg h-full"
                 @click="findVoters">

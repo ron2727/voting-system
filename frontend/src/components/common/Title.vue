@@ -1,9 +1,9 @@
 <template>
     <div>
-       <h1 class=" text-3xl font-bold">
+       <h1 class="text-xl lg:text-3xl font-bold">
          {{title}}
        </h1>
-       <h6 class=" text-sm text-gray-500">{{subTitle}}</h6>
+       <h6 class=" text-xs lg:text-sm text-gray-500">{{subTitle}}</h6>
     </div>
 </template>
  

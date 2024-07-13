@@ -6,11 +6,12 @@
             </template>
             <template #main>
                 <Loader size="md" v-if="isLoading"/>
-                <div class="wrapper-main" v-else>
-                    <div class=" max-w-4xl w-full flex justify-end m-auto mb-5">
-                        <button @click="generatePdf" type="button" class=" px-4 py-2 text-white font-bold text-sm rounded-lg bg-red-600">Print to pdf</button>
+                <div class="wrapper-main overflow-x-auto" v-else>
+                    <div class=" w-[896px] flex justify-end m-auto mb-5">
+                        <Button buttonText="Print to pdf" bg-color="bg-red-600" @click="generatePdf"></Button>
+                        <!-- <button @click="generatePdf" type="button" class=" px-4 py-2 text-white font-bold text-sm rounded-lg bg-red-600">Print to pdf</button> -->
                     </div>
-                    <div class=" max-w-4xl w-full m-auto border p-10 bg-white">
+                    <div class=" w-[896px] m-auto border p-10 bg-white">
                         <div ref="pdfContent">
                           <ReportPdf v-if="reportData.electionName !== ''" :report-data="reportData"/>
                         </div>
@@ -26,6 +27,7 @@ import DashboardTemplate from '../../../components/layouts/DashboardTemplate.vue
 import Title from '../../../components/common/Title.vue';  
 import ReportPdf from '../../../components/common/ReportPdf.vue'; 
 import Loader from '../../../components/common/Loader.vue';
+import Button from '../../../components/common/Button.vue';
 import html2pdf from 'html2pdf.js';
 import { onMounted, ref, provide, onBeforeMount } from 'vue';
 import { useRoute } from 'vue-router';

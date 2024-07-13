@@ -2,10 +2,11 @@
     <div>
         <DashboardTemplate layout="w-full"> 
             <template #head>
-              <Title title="Update voter"></Title> 
+              <Title title="Update voter" subTitle="Update voter information"></Title> 
              </template>
              <template #main> 
-                <form @submit.prevent="submitVoterForm(form)">       
+                <Loader size="md" v-if="isLoading"/>
+                <form @submit.prevent="submitVoterForm(form)" v-else>       
                   <div class="form-wrapper bg-white max-w-xl p-4 rounded-lg shadow-md space-y-3">
                     <Input labelText="Student ID" :required="true" v-model="form.student_id" :errorMessage="errorsData?.student_id?.[0]"/>
                     <Input labelText="First Name" :required="true" v-model="form.firstname" :errorMessage="errorsData?.firstname?.[0]"/>
@@ -35,6 +36,7 @@ import Title from '../../../components/common/Title.vue'
 import Input from '../../../components/common/Input.vue';
 import Selection from '../../../components/common/Selection.vue';
 import Button from '../../../components/common/Button.vue';
+import Loader from '../../../components/common/Loader.vue';
 import { useAuthStore } from '../../../stores/auth'; 
 import { onMounted, provide, ref } from 'vue';
 import { RouterView, useRoute } from 'vue-router';
@@ -43,6 +45,7 @@ import { updateVoter, getVoter } from '../../../services/api/voters'
 const authStore = useAuthStore(); 
 const errorsData = ref([]);
 const responseData = ref([]);
+const isLoading = ref(true);
 const isSubmitting = ref(false);
 const form = ref({
    student_id: "",
@@ -60,6 +63,7 @@ onMounted(async () => {
    await authStore.getAuthUser(); 
    const voter = await getVoter(route.params.voterId) 
    storeDataToForm(voter.data)
+   isLoading.value = false
    console.log(voter)
 }) 
 const submitVoterForm = async (formData) => { 
