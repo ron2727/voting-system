@@ -1,12 +1,14 @@
 <template>
-    <div>
-        <DashboardTemplate layout="w-full">
+    <div> 
+        <div v-if="isLoading" class=" wrapper-loader h-screen w-screen flex justify-center items-center">
+            <Loader size="md"/>
+        </div>
+        <DashboardTemplate layout="w-full" v-else>
             <template #head>
                 <Title title="Dashboard" subTitle="View your dashboard" />
             </template>
             <template #main>
-                <Loader size="md" v-if="isLoading"/>
-                <div class="wrapper grid grid-cols-3 gap-2" v-else>
+                <div class="wrapper grid grid-cols-3 gap-2">
                     <div class=" col-1 col-span-2">
                         <div class=" grid grid-cols-2 gap-2">
                             <DashboardCard class="bg-blue-600">
@@ -48,12 +50,14 @@ import DashboardElectionCard from '../../components/dashboard/DashboardElectionC
 import DasboardVoteTally from '../../components/dashboard/DasboardVoteTally.vue';
 import Loader from '../../components/common/Loader.vue';
 import { onMounted, ref, provide, onBeforeMount } from 'vue';
+import { useRouter } from 'vue-router'
 import { useAuthStore } from '../../stores/auth'; 
 import { getFilteredElection } from '../../services/api/elections';
 import { getTotalVotes } from '../../services/api/vote';
 import { getTotalVoters } from '../../services/api/voters';
 
 const authStore = useAuthStore(); 
+const router = useRouter();
 const upcomingElections = ref([]);
 const totaVotesCasted = ref(0);
 const totalVoters = ref(0);
@@ -62,6 +66,9 @@ provide('userAuth', authStore);
 
 onMounted(async () => {
    await authStore.getAuthUser(); 
+   if (!authStore.user.is_admin) {
+    router.push('/vote')
+   }
    upcomingElections.value = await getFilteredElection('Upcoming') 
    totaVotesCasted.value = await getTotalVotes()
    totalVoters.value = await getTotalVoters()

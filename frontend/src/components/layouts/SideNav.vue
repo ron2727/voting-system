@@ -9,7 +9,7 @@
               </button>
            </div>
            <ul>
-             <li>
+             <li v-if="userAuth.user?.is_admin">
                <SideNavLink navText="Dashboard" link="/dashboard">
                   <template #icon>
                     <i class='bx bx-tachometer text-lg md:text-2xl'></i>
