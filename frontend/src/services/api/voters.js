@@ -55,3 +55,12 @@ export const updateVoter = async (data, voterId) => {
         const response = await axios.delete(`/api/voters/${voterId}`);
         return response.data
  }
+
+ export const getTotalVoters = async () => {
+    try {
+      const response = await axios.get(`/api/voters/total`);
+      return response.data
+    } catch (error) {
+      console.log(error)
+    }
+  }

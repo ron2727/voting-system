@@ -71,4 +71,8 @@ class VoterService
         return response()->json(['message' => 'Voter deleted successfully'], 201);;
 
     }
+    public function getTotalVoters()
+    {
+        return User::count();
+    }
 }

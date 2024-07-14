@@ -84,4 +84,9 @@ class VoteService
         
         return $isAlreadyVoted;
     }
+
+    public function getTotalVotes()
+    {
+        return Vote::count();
+    }
 }

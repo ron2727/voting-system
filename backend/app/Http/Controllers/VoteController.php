@@ -37,4 +37,7 @@ class VoteController extends Controller
         return $response;
     }
     
+    public function getTotalVotes(){
+        return $this->voteService->getTotalVotes();
+    }
 }

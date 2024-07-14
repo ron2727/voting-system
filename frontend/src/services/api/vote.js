@@ -49,3 +49,13 @@ export const checkVote = async (user_id, electionId) => {
     return response.data;
   }
 }
+
+export const getTotalVotes = async () => {
+  try {
+    const response = await axios.get(`/api/votes/totalcast`);
+    return response.data
+  } catch (error) {
+    console.log(error)
+  }
+}
+

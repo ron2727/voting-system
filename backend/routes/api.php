@@ -40,7 +40,8 @@ Route::get('/elections/filtered/{status}', [ElectionController::class, 'getFilte
 Route::get('/vote/ballot/{user_id}/{election_id}', [VoteController::class, 'getSubmittedVote']);
 Route::get('/vote/total/{election_id}', [VoteController::class, 'getCandidatesTotalVotes']);
 Route::get('/vote/winners/{election_id}', [VoteController::class, 'getElectionVotes']);
-
+Route::get('/voters/total', [VoterController::class, 'getTotalVoters']);
+Route::get('/votes/totalcast', [VoteController::class, 'getTotalVotes']);
 
 Route::get('/elections/report/search/{month}/{year}', [ElectionController::class, 'getElectionByMothYear']);
 Route::get('/vote/verify/{user_id}/{election_id}', [VoteController::class, 'checkIfVoterHadVoted']);

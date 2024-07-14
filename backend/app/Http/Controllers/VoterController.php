@@ -21,6 +21,10 @@ class VoterController extends Controller
     {
         return $this->voterService->findVoters($q);  
     }
+    public function getTotalVoters()
+    {
+        return $this->voterService->getTotalVoters();  
+    } 
     public function index()
     {
         return $this->voterService->getVoters();

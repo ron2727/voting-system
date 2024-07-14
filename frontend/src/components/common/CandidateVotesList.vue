@@ -11,7 +11,7 @@
             </div>
             <div class="votes-wrapper md:col-span-9 h-12">
                 <div class="border border-blue-200 relative h-full bg-white rounded-xl overflow-hidden">
-                    <div :style="{width: `${getPercentageVote(totalVotes, candidate.votes)}%`}" class=" h-full w-1/2 bg-blue-500/25">
+                    <div :style="{width: `${getPercentageVote(totalVotes, candidate.votes)}%`}" class=" h-full bg-blue-500/25">
                     </div>
                     <span class="votes-percent absolute right-0 top-1/2 text-blue-600 -translate-y-1/2 mr-5 font-bold">{{ getPercentageVote(totalVotes, candidate.votes) }}%</span>
                 </div>
