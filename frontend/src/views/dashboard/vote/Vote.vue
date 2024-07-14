@@ -1,40 +1,31 @@
 <template>
-  <div>
-    <DashboardTemplate layout="w-full">
-      <template #head v-if="!isLoading">
-        <BackButton path="/vote"/>
-        <Title :title="currentElection.title" :subTitle="currentElection.description"></Title>
-      </template>
-      <template #main>
-        <Loader size="md" v-if="isLoading"/>
-        <div class="wrapper space-y-8" v-else>
-          <div class="wrapper" v-if="!alreadyVoted">
-            <CandidateList v-for="(candidates, position) in positions" :candidates="candidates" :title="position"
-              @select-candidate="selectCandidate" :errorMessage="errorsData?.[removeSpace(position)]?.[0]" />
-            <div class=" flex justify-center">
-              <Button buttonText="Submit Vote" class="m-5" @click="submitVote" :disabled="isSubmitting">
-                <i class='bx bx-loader-alt bx-xs bx-spin text-white' v-if="isSubmitting"></i>
-              </Button>
-            </div>
-          </div>
-          <div class="wrapper" v-else> 
-            <NoRecordMessage>You have already voted in this election</NoRecordMessage>
-            <div class=" flex justify-center">
-              <RouterLink :to="`/ballot/${$route.params.electionId}`">
-                <button type="button" class=" px-4 py-2 bg-blue-600 rounded-md text-white text-xs lg:text-sm">View my
-                  candidates</button>
-              </RouterLink>
-            </div>
-          </div>
-        </div> 
-      </template>
-    </DashboardTemplate>
+  <BackButton path="/dashboard/vote" />
+  <Title :title="currentElection.title" :subTitle="currentElection.description" v-if="!isLoading" />
+  <Loader size="md" v-if="isLoading" />
+  <div class="wrapper space-y-8" v-else>
+    <div class="wrapper" v-if="!alreadyVoted">
+      <CandidateList v-for="(candidates, position) in positions" :candidates="candidates" :title="position"
+        @select-candidate="selectCandidate" :errorMessage="errorsData?.[removeSpace(position)]?.[0]" />
+      <div class=" flex justify-center">
+        <Button buttonText="Submit Vote" class="m-5" @click="submitVote" :disabled="isSubmitting">
+          <i class='bx bx-loader-alt bx-xs bx-spin text-white' v-if="isSubmitting"></i>
+        </Button>
+      </div>
+    </div>
+    <div class="wrapper" v-else>
+      <NoRecordMessage>You have already voted in this election</NoRecordMessage>
+      <div class=" flex justify-center">
+        <RouterLink :to="`/dashboard/ballot/${$route.params.electionId}`">
+          <button type="button" class=" px-4 py-2 bg-blue-600 rounded-md text-white text-xs lg:text-sm">View my
+            candidates</button>
+        </RouterLink>
+      </div>
+    </div>
   </div>
 </template>
 
 <script setup>
-import Loader from '../../../components/common/Loader.vue';
-import DashboardTemplate from '../../../components/layouts/DashboardTemplate.vue'
+import Loader from '../../../components/common/Loader.vue'; 
 import Title from '../../../components/common/Title.vue'
 import Button from '../../../components/common/Button.vue';  
 import CandidateList from '../../../components/common/CandidateList.vue';

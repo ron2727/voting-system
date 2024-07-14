@@ -25,7 +25,7 @@
                         {{ DateFormat.getTimeOfDate(election.end_date) }}
                     </div>
                 </div>
-                <RouterLink :to="`/results/winners/${election.id}`">
+                <RouterLink :to="`/dashboard/results/winners/${election.id}`">
                     <Button buttonText="View Winners" class=" absolute right-0 bottom-0 m-5"></Button>
                 </RouterLink>
             </template>

@@ -1,13 +1,9 @@
 <template>
-     <DashboardTemplate layout="w-full">
-      <template #head>
-        <Title title="Vote" subTitle="Select election where you want to vote"></Title>
-      </template>
-      <template #main>
-        <Loader size="md" v-if="isLoading"/>
-        <div class=" space-y-3" v-else>
+    <Title title="Vote" subTitle="Select election where you want to vote" />
+    <Loader size="md" v-if="isLoading" />
+    <div class=" space-y-3" v-else>
         <Card v-if="elections.length" v-for="election in elections" class=" p-4">
-            <template #title> 
+            <template #title>
                 <h6 class="title text-lg font-bold">
                     {{ election.title }}
                 </h6>
@@ -30,21 +26,17 @@
                         {{ DateFormat.getTimeOfDate(election.end_date) }}
                     </div>
                 </div>
-                <RouterLink :to="`/vote/${election.id}`">
-                    <Button buttonText="Vote" class=" absolute right-0 bottom-0 m-5"/>
+                <RouterLink :to="`/dashboard/vote/${election.id}`">
+                    <Button buttonText="Vote" class=" absolute right-0 bottom-0 m-5" />
                 </RouterLink>
             </template>
         </Card>
         <NoRecordMessage v-else>No election found</NoRecordMessage>
-       </div>
-      </template>
-    </DashboardTemplate>
-
+    </div>
 </template>
 
 <script setup>
-import Loader from '../../../components/common/Loader.vue';
-import DashboardTemplate from '../../../components/layouts/DashboardTemplate.vue'
+import Loader from '../../../components/common/Loader.vue'; 
 import Title from '../../../components/common/Title.vue'
 import Button from '../../../components/common/Button.vue';
 import NoRecordMessage from '../../../components/common/NoRecordMessage.vue';

@@ -1,5 +1,5 @@
 <template>
-    <div ref="menuBar" class="menuBar-wrapper space-x-2"> 
+    <div ref="menuBar" class="menuBar-wrapper space-x-2 my-8"> 
        <button v-for="(menu, index) in menus" :id="index" @click="setActive" 
                :class="[defaultActive == menu ? 'bg-white shadow' : 'text-slate-600']" 
                 class="px-5 py-2 text-xs lg:text-sm rounded-lg">

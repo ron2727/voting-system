@@ -22,7 +22,7 @@
           <td class=" border p-2">{{ voter.section }}</td>
           <td>
             <div class=" flex justify-around">
-              <RouterLink :to="`/voter/${voter.id}/update`"> 
+              <RouterLink :to="`/dashboard/voter/${voter.id}/update`"> 
                 <button type="button" class=" text-sm text-blue-600">
                    <i class='bx bx-edit'></i>
                 </button>
@@ -30,27 +30,7 @@
                <button type="button" class="text-sm text-red-600" @click="$emit('openDeleteModal', voter)">
                   <i class='bx bx-trash' ></i>
                </button>
-            </div>
-            <Dropdown>
-              <template #head>
-              </template>
-              <template #body>
-                <ul class="text-sm divide-y">
-                  <li>
-                    <RouterLink :to="`/voter/${voter.id}/update`">
-                      <div class="text-sm p-2 text-blue-600">
-                        <i class='bx bx-edit-alt bx-xs'></i> Edit
-                      </div>
-                    </RouterLink> 
-                  </li>
-                  <li> 
-                      <button type="button" class="text-sm p-2 text-red-600" @click="$emit('openDeleteModal', voter)">
-                        <i class='bx bx-trash bx-xs' ></i>  Delete
-                      </button> 
-                  </li>
-                </ul>
-              </template>
-            </Dropdown>
+            </div> 
           </td>
         </tr>
       </tbody>
@@ -73,8 +53,7 @@
   </div>
 </template>
 
-<script setup> 
-import Dropdown from './Dropdown.vue';
+<script setup>  
 defineProps({
  dataTable: Object
 })

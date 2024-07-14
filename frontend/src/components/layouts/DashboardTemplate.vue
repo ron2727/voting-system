@@ -2,8 +2,7 @@
     <div>
         <TopNav @open-nav="triggerNav(true)"/> 
         <SideNav @close-nav="triggerNav(false)"/> 
-        <div class=" m-0 lg:ml-64 p-5 space-y-10"> 
-          <slot name="head"></slot>
+        <div class=" m-0 lg:ml-64 p-5">  
           <div :class="layout" class="main">
             <slot name="main"></slot>
           </div>

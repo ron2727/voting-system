@@ -17,42 +17,42 @@
                </SideNavLink>
              </li> 
              <li v-if="userAuth.user?.is_admin">
-               <SideNavLink navText="Elections" link="/elections">
+               <SideNavLink navText="Elections" link="/dashboard/elections">
                   <template #icon>
                     <i class='bx bx-poll text-lg md:text-2xl' ></i>
                   </template> 
                </SideNavLink> 
              </li> 
              <li v-if="userAuth.user?.is_admin">
-               <SideNavLink navText="Voters" link="/voters">
+               <SideNavLink navText="Voters" link="/dashboard/voters">
                   <template #icon>
                     <i class='bx bx-group text-lg md:text-2xl'></i>
                   </template> 
                </SideNavLink> 
              </li> 
              <li v-if="!userAuth.user?.is_admin"> 
-                <SideNavLink navText="Vote" link="/vote">
+                <SideNavLink navText="Vote" link="/dashboard/vote">
                   <template #icon>
                     <i class='bx bx-file text-lg md:text-2xl' ></i>
                   </template> 
                </SideNavLink> 
              </li>
              <li v-if="userAuth.user?.is_admin"> 
-                <SideNavLink navText="Results" link="/results">
+                <SideNavLink navText="Results" link="/dashboard/results">
                   <template #icon>
                     <i class='bx bx-stats text-lg md:text-2xl' ></i> 
                   </template> 
                </SideNavLink> 
              </li>
              <li v-if="userAuth.user?.is_admin"> 
-                <SideNavLink navText="Reports" link="/reports">
+                <SideNavLink navText="Reports" link="/dashboard/reports">
                   <template #icon>
                     <i class='bx bx-file text-lg md:text-2xl' ></i>
                   </template> 
                </SideNavLink> 
              </li> 
              <li> 
-                <SideNavLink navText="Settings" link="/settings">
+                <SideNavLink navText="Settings" link="/dashboard/settings">
                   <template #icon>
                     <i class='bx bx-cog text-lg md:text-2xl' ></i> 
                   </template> 

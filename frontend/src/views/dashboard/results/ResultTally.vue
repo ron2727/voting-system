@@ -1,25 +1,17 @@
 <template>
-    <div>
-        <BackButton path="/results"/>
-        <Loader size="md" v-if="isLoading"/>
-        <CandidateVotesList v-else
-                            v-for="(candidates, position) in candidatesWithTotalVotes" 
-                            :candidates="candidates.candidates" 
-                            :totalVotes="candidates.totalVotes" 
-                            :title="position"/>
-    </div>
+    <BackButton path="/dashboard/results" />
+    <Loader size="md" v-if="isLoading" />
+    <CandidateVotesList v-else v-for="(candidates, position) in candidatesWithTotalVotes" :candidates="candidates.candidates" :totalVotes="candidates.totalVotes" :title="position" />
 </template>
 
 <script setup> 
 import Loader from '../../../components/common/Loader.vue';
-import CandidateVotesList from '../../../components/common/CandidateVotesList.vue';
-import NoRecordMessage from '../../../components/common/NoRecordMessage.vue';
+import CandidateVotesList from '../../../components/common/CandidateVotesList.vue'; 
 import BackButton from '../../../components/common/BackButton.vue';
 import { ref, onMounted, onBeforeMount, provide } from 'vue';
 import { useRoute } from 'vue-router';
 import { useAuthStore } from '../../../stores/auth'; 
-import { getCandidateTotalVotes } from '../../../services/api/vote';
-import { getFilteredElection } from '../../../services/api/elections'
+import { getCandidateTotalVotes } from '../../../services/api/vote'; 
 
 const authStore = useAuthStore(); 
 const isLoading = ref(true);

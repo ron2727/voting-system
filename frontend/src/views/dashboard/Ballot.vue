@@ -1,22 +1,13 @@
-<template>
-    <div>
-      <DashboardTemplate layout="w-full">
-        <template #head v-if="!isLoading">
-          <BackButton :path="`/vote/${currentElection.id}`"></BackButton>
-          <Title :title="currentElection.title" :subTitle="currentElection.description"></Title>
-        </template>
-        <template #main>
-          <div class="wrapper space-y-8">
-            <Loader size="md" v-if="isLoading"/>
-            <CandidateList v-else :candidates="voteBallot" title="Candidates you had voted"></CandidateList>
-           </div>  
-        </template>
-      </DashboardTemplate>
-    </div>
-  </template>
+<template> 
+  <BackButton :path="`/dashboard/vote/${currentElection.id}`" v-if="!isLoading" />
+  <Title :title="currentElection.title" :subTitle="currentElection.description" v-if="!isLoading" />
+  <div class="wrapper space-y-8">
+    <Loader size="md" v-if="isLoading" />
+    <CandidateList v-else :candidates="voteBallot" title="Candidates you had voted" />
+  </div>
+</template>
   
-  <script setup>
-  import DashboardTemplate from '../../components/layouts/DashboardTemplate.vue'
+  <script setup> 
   import Loader from '../../components/common/Loader.vue'
   import Title from '../../components/common/Title.vue' 
   import BackButton from '../../components/common/BackButton.vue';

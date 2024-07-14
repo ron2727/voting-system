@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="mb-10">
        <h1 class="text-xl lg:text-3xl font-bold">
          {{title}}
        </h1>

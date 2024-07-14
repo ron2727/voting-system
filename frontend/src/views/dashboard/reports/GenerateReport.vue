@@ -1,25 +1,16 @@
 <template>
-    <div>
-        <DashboardTemplate layout="w-full">
-            <template #head>
-                <Title title="Reports" subTitle="Generate report for elections"></Title>
-            </template>
-            <template #main>
-                <BackButton path="/reports" />
-                <Loader size="md" v-if="isLoading"/>
-                <div class="wrapper-main overflow-x-auto" v-else>
-                    <div class=" w-[896px] flex justify-end m-auto mb-5">
-                        <Button buttonText="Print to pdf" bg-color="bg-red-600" @click="generatePdf"></Button>
-                        <!-- <button @click="generatePdf" type="button" class=" px-4 py-2 text-white font-bold text-sm rounded-lg bg-red-600">Print to pdf</button> -->
-                    </div>
-                    <div class=" w-[896px] m-auto border p-10 bg-white">
-                        <div ref="pdfContent">
-                          <ReportPdf v-if="reportData.electionName !== ''" :report-data="reportData"/>
-                        </div>
-                    </div>
-                </div>
-            </template>
-        </DashboardTemplate>
+    <Title title="Reports" subTitle="Generate report for elections"></Title>
+    <BackButton path="/dashboard/reports" />
+    <Loader size="md" v-if="isLoading" />
+    <div class="wrapper-main overflow-x-auto" v-else>
+        <div class=" w-[896px] flex justify-end m-auto mb-5">
+            <Button buttonText="Print to pdf" bg-color="bg-red-600" @click="generatePdf"></Button>
+         </div>
+        <div class=" w-[896px] m-auto border p-10 bg-white">
+            <div ref="pdfContent">
+                <ReportPdf v-if="reportData.electionName !== ''" :report-data="reportData" />
+            </div>
+        </div>
     </div>
 </template>
 
