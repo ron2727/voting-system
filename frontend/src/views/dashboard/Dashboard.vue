@@ -8,7 +8,7 @@
                 <Title title="Dashboard" subTitle="View your dashboard" />
             </template>
             <template #main>
-                <div class="wrapper grid grid-cols-3 gap-2">
+                <div class="wrapper grid grid-cols-1 lg:grid-cols-3 gap-2">
                     <div class=" col-1 col-span-2">
                         <div class=" grid grid-cols-2 gap-2">
                             <DashboardCard class="bg-blue-600">
