@@ -13,7 +13,7 @@
             </div>
             <div class=" mb-2 relative border-blue-200" v-for="candidate in data.candidates">
                 <div class="wrapper flex items-center space-x-2 mb-1">
-                    <img :src="candidate.user.profile_image" alt="a" class="w-10 h-10 object-cover border rounded-2xl">
+                    <img :src="candidate.user.profile_image" alt="a" class="w-10 h-10 object-cover border rounded-full">
                     <span class=" text-xs">{{ candidate.user.firstname }} {{ candidate.user.lastname }}</span>
                 </div>
                 <div class="grid grid-cols-12 gap-x-2">
@@ -22,7 +22,7 @@
                             :style="{ width: `${getPercentageVote(data.totalVotes, candidate.votes)}%`, backgroundColor: getRandomHexColorCode() }"
                             class="votes-meter h-full"></div>
                     </div>
-                    <div class="votes-percentage text-xs mr-5 text-blue-600 font-bold">{{ getPercentageVote(data.totalVotes, candidate.votes) }}%</div>
+                    <div class="votes-percentage text-xs mr-5 text-black font-bold">{{ getPercentageVote(data.totalVotes, candidate.votes) }}%</div>
                 </div>
                 <small class=" text-xs text-gray-600">{{ candidate.votes }} Votes</small>
             </div>
