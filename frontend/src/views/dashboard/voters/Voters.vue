@@ -39,10 +39,11 @@ import Table from '../../../components/common/Table.vue';
 import Modal from '../../../components/common/Modal.vue';
 import { onMounted, onBeforeMount, provide, ref } from 'vue';
 import { useAuthStore } from '../../../stores/auth'; 
-import { RouterView } from 'vue-router';
+import { useRouter } from 'vue-router';
 import { getVoters, deleteVoter } from '../../../services/api/voters'
 
 const authStore = useAuthStore(); 
+const router = useRouter();
 const loading = ref(true);
 const votersData = ref([]);
 const voterToBeDeleted = ref('')
@@ -53,6 +54,9 @@ provide('userAuth', authStore);
 
 onBeforeMount(async () => {
    await authStore.getAuthUser(); 
+   if (!authStore.user.is_admin) {
+     router.push('/vote')
+   }
    votersData.value = await getVoters()
    loading.value = false  
    

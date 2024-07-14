@@ -37,7 +37,7 @@
                   </template> 
                </SideNavLink> 
              </li>
-             <li> 
+             <li v-if="userAuth.user?.is_admin"> 
                 <SideNavLink navText="Results" link="/results">
                   <template #icon>
                     <i class='bx bx-stats text-lg md:text-2xl' ></i> 

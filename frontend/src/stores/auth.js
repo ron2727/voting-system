@@ -32,7 +32,11 @@ export const useAuthStore = defineStore("auth", {
             try {
                 const response = await axios.post("/login", data); 
                 this.authUser = response.data.user;
-                this.router.push('/dashboard');
+                if (this.authUser.user.is_admin) {
+                    this.router.push('/dashboard');
+                }else{
+                    this.router.push('/vote');
+                }
             } catch (error) {
                 if(error.response.status === 422) {
                     this.authErrors = error.response.data.errors;

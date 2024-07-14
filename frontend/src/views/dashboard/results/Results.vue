@@ -35,14 +35,19 @@ import SubNav from '../../../components/common/SubNav.vue';
 import Card from '../../../components/common/Card.vue'; 
 import { ref, onMounted, onBeforeMount, provide } from 'vue';
 import { useAuthStore } from '../../../stores/auth';  
-import { RouterLink } from 'vue-router';
+import { RouterLink, useRouter } from 'vue-router';
 
-const authStore = useAuthStore();  
+const authStore = useAuthStore();
+const router = useRouter();  
 const activeNav = ref('votes');
 provide('userAuth', authStore);
 
 onBeforeMount(async () => {
-   await authStore.getAuthUser();  
+   await authStore.getAuthUser();
+   if (!authStore.user.is_admin) {
+      router.push('/vote');
+   }
+     
 }) 
 const setActive = (active) => {
     activeNav.value = active
