@@ -1,10 +1,10 @@
 <template>
   <Title title="User settings" subTitle="Update your account information"></Title>
   <Loader size="md" v-if="isLoading" />
+  <AlertMessage v-if="alert.isOpen" :alertType="alert.type" @closeAlert="alert.isOpen = false">{{ alert.message }}</AlertMessage>
   <div class="form-wrapper bg-white max-w-xl p-4 rounded-lg shadow-md" v-if="!isLoading" >
     <form @submit.prevent="submitVoterForm()" enctype="multipart/form-data">
       <div class=" space-y-3">
-        <AlertMessage v-if="alert.isOpen" :alertType="alert.type" @closeAlert="alert.isOpen = false">{{ alert.message }}</AlertMessage>
         <Input labelText="Student ID" :required="true" v-model="form.student_id" :errorMessage="errorsData?.student_id?.[0]" />
         <Input labelText="First Name" :required="true" v-model="form.firstname" :errorMessage="errorsData?.firstname?.[0]" />
         <Input labelText="Last Name" :required="true" v-model="form.lastname" :errorMessage="errorsData?.lastname?.[0]" />
@@ -92,12 +92,11 @@ const submitVoterForm = async () => {
   const {requestResponse, errors} = await updateVoter(getFormData(), authStore.user.id)
   
   if(errors.value) {
-    errorsData.value = errors.value 
-    openAlert('error')
+    errorsData.value = errors.value  
     console.log(errorsData.value)
   }else{
     responseData.value = requestResponse.value 
-    openAlert('success')
+    openAlert('Success', 'Updated successfully')
     errorsData.value = []
     console.log(responseData.value.data) 
   }
@@ -110,6 +109,9 @@ const submitChangePasswordForm = async () => {
    errorsData.value.current_password = authStore.errors?.current_password?.[0]
    errorsData.value.new_password = authStore.errors?.new_password?.[0]
    errorsData.value.new_password_confirmation = authStore.errors?.new_password?.[1]
+   if (!errorsData.value.current_password && !errorsData.value.new_password && !errorsData.value.new_password_confirmation) {
+      openAlert('Success', 'Password changed successfully')
+   }  
    isChangePasswordSubmitting.value = false 
 }
 
@@ -147,14 +149,10 @@ const removeFilePhoto = () => {
   form.value.profile_image = ''
 }
 
-const openAlert = (type) => {
-  const message = {
-    success: 'Updated successfully',
-    error: 'Failed to update',
-  }
+const openAlert = (type, message) => { 
   alert.value.isOpen = true
   alert.value.type = type
-  alert.value.message = message[type]
+  alert.value.message = message
 }
 </script>
  
