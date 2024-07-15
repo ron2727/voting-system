@@ -27,17 +27,12 @@ import { useRoute } from 'vue-router';
 import { useAuthStore } from '../../../stores/auth';
 import { getCandidateTotalVotes } from '../../../services/api/vote';
 import { getElection } from '../../../services/api/elections';
-
+import { VotesTally } from '../../../services/voteTally';
 const authStore = useAuthStore(); 
 const isLoading = ref(true); 
 const pdfContent = ref(null);
 const election = ref([]);
-const candidatesWithTotalVotes = ref({
-    "President":{ candidates: [] },
-    "Vice President": { candidates: [] },
-    "Treasurer": { candidates: [] },
-    "Secretary": { candidates: [] },
-});
+const candidatesWithTotalVotes = ref(null);
 const reportData = ref({
     electionName: '',
     electionDescription : '',
@@ -53,40 +48,11 @@ onBeforeMount(async () => {
    await authStore.getAuthUser();  
    election.value = await getElection(route.params.electionId); 
    const candidates = await getCandidateTotalVotes(route.params.electionId); 
-   mapCandidatesVote(candidates)  
+   const votesTally = new VotesTally(candidates, ["President", "Vice President", "Treasurer", "Secretary"])
+   candidatesWithTotalVotes.value = votesTally.getCandidates()
    storeDataToReportData(election) 
    isLoading.value = false
-})  
-
-const mapCandidatesVote = (data) => {
-    data.forEach(candidate => {
-        candidatesWithTotalVotes.value[candidate.position].candidates.push(candidate)
-    })
-    getCandidatesPercentageVote() 
-} 
-
-const getCandidatesPercentageVote = () => { 
-     for (const key in candidatesWithTotalVotes.value) {
-         const totalVotes = candidatesWithTotalVotes.value[key].candidates.reduce((total, candidate) => total + candidate.votes, 0);
-         candidatesWithTotalVotes.value[key].totalVotes = totalVotes;
-         storetPercentageVote(candidatesWithTotalVotes.value[key].candidates, totalVotes)
-     }
-     
-     console.log(candidatesWithTotalVotes.value)
-} 
-const storetPercentageVote = (candidates, totalVotes) => {
-      for (const candidate of candidates) {
-        candidate.votePercentage = getPercentageVote(totalVotes, candidate.votes)
-      }
-}
-const getPercentageVote = (totalVotes, candidateTotalVotes) => {
-    let totalPercentageVotes = Math.round((candidateTotalVotes / totalVotes) * 100)
-    if (isNaN(totalPercentageVotes)) {
-        totalPercentageVotes = 0
-    }
-    
-    return totalPercentageVotes; 
-}
+})    
 
 const getTotalVotesOfELection = () => {
     let totalVotes = 0

@@ -12,15 +12,10 @@ import { ref, onMounted, onBeforeMount, provide } from 'vue';
 import { useRoute } from 'vue-router';
 import { useAuthStore } from '../../../stores/auth'; 
 import { getCandidateTotalVotes } from '../../../services/api/vote'; 
-
+import { VotesTally } from '../../../services/voteTally';
 const authStore = useAuthStore(); 
 const isLoading = ref(true);
-const candidatesWithTotalVotes = ref({
-    "President":{ candidates: [] },
-    "Vice President": { candidates: [] },
-    "Treasurer": { candidates: [] },
-    "Secretary": { candidates: [] },
-});
+const candidatesWithTotalVotes = ref(null);
 
 const currentElection = ref([]);
 const route = useRoute();
@@ -30,24 +25,11 @@ provide('userAuth', authStore);
 onBeforeMount(async () => {
    await authStore.getAuthUser();  
    const candidates = await getCandidateTotalVotes(route.params.electionId); 
-   mapCandidatesVote(candidates) 
+   const voteTally = new VotesTally(candidates, ["President", "Vice President", "Treasurer", "Secretary"])
+   candidatesWithTotalVotes.value = voteTally.getCandidates()
+   isLoading.value = false 
 })  
-
-const mapCandidatesVote = (data) => {
-    data.forEach(candidate => {
-        candidatesWithTotalVotes.value[candidate.position].candidates.push(candidate)
-    })
-    getCandidatesPercentageVote()
-    isLoading.value = false
-} 
-
-const getCandidatesPercentageVote = () => { 
-     for (const key in candidatesWithTotalVotes.value) {
-         const totalVotes = candidatesWithTotalVotes.value[key].candidates.reduce((total, candidate) => total + candidate.votes, 0);
-         candidatesWithTotalVotes.value[key].totalVotes = totalVotes;
-     }
-     console.log(candidatesWithTotalVotes.value)
-}
+ 
 
 </script>
  
