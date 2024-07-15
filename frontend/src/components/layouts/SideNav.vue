@@ -8,51 +8,51 @@
                 <i class='bx bx-x bx-md'></i>
               </button>
            </div>
-           <ul>
+           <ul class=" space-y-1">
              <li v-if="userAuth.user?.is_admin">
-               <SideNavLink navText="Dashboard" link="/dashboard">
+               <SideNavLink @click="activeNav='Dashboard'" :currentNav="activeNav" navText="Dashboard" link="/dashboard">
                   <template #icon>
                     <i class='bx bx-tachometer text-lg md:text-2xl'></i>
                   </template> 
                </SideNavLink>
              </li> 
              <li v-if="userAuth.user?.is_admin">
-               <SideNavLink navText="Elections" link="/dashboard/elections">
+               <SideNavLink @click="activeNav='Elections'" :currentNav="activeNav" navText="Elections" link="/dashboard/elections">
                   <template #icon>
                     <i class='bx bx-poll text-lg md:text-2xl' ></i>
                   </template> 
                </SideNavLink> 
              </li> 
              <li v-if="userAuth.user?.is_admin">
-               <SideNavLink navText="Voters" link="/dashboard/voters">
+               <SideNavLink @click="activeNav='Voters'" :currentNav="activeNav" navText="Voters" link="/dashboard/voters">
                   <template #icon>
                     <i class='bx bx-group text-lg md:text-2xl'></i>
                   </template> 
                </SideNavLink> 
              </li> 
              <li v-if="!userAuth.user?.is_admin"> 
-                <SideNavLink navText="Vote" link="/dashboard/vote">
+                <SideNavLink @click="activeNav='Vote'" :currentNav="activeNav" navText="Vote" link="/dashboard/vote">
                   <template #icon>
                     <i class='bx bx-file text-lg md:text-2xl' ></i>
                   </template> 
                </SideNavLink> 
              </li>
              <li v-if="userAuth.user?.is_admin"> 
-                <SideNavLink navText="Results" link="/dashboard/results">
+                <SideNavLink @click="activeNav='Results'" :currentNav="activeNav" navText="Results" link="/dashboard/results">
                   <template #icon>
                     <i class='bx bx-stats text-lg md:text-2xl' ></i> 
                   </template> 
                </SideNavLink> 
              </li>
              <li v-if="userAuth.user?.is_admin"> 
-                <SideNavLink navText="Reports" link="/dashboard/reports">
+                <SideNavLink @click="activeNav='Reports'" :currentNav="activeNav" navText="Reports" link="/dashboard/reports">
                   <template #icon>
                     <i class='bx bx-file text-lg md:text-2xl' ></i>
                   </template> 
                </SideNavLink> 
              </li> 
              <li> 
-                <SideNavLink navText="Settings" link="/dashboard/settings">
+                <SideNavLink @click="activeNav='Settings'" :currentNav="activeNav" navText="Settings" link="/dashboard/settings">
                   <template #icon>
                     <i class='bx bx-cog text-lg md:text-2xl' ></i> 
                   </template> 
@@ -64,13 +64,24 @@
 </template>
 
 <script setup>
- import { inject, provide } from 'vue';
+ import { inject, onMounted, provide, ref } from 'vue';
+ import { useRoute } from 'vue-router';
  import SideNavLink from '../../components/common/SideNavLink.vue';
  defineProps({
    navOpen: Boolean,
  })
- const userAuth = inject('userAuth');
-
+ const userAuth = inject('userAuth');  
+ const route = useRoute();
+ const activeNav = ref('');
  const {isNavOpen, triggerNav} = inject('nav');
+
+ onMounted(() => {
+   const currentPage = route.path.split('/')[route.path.split('/').length - 1];
+   activeNav.value = getStringWithFirstLetterUppercase(currentPage);
+ })
+const getStringWithFirstLetterUppercase = (str) => { 
+    console.log(str.charAt(0).toUpperCase() + str.slice(1))
+    return str.charAt(0).toUpperCase() + str.slice(1);
+}
 </script>
  
