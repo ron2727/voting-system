@@ -131,12 +131,12 @@ const submitCandidateForm = async (formData) => {
   if(errors.value) {
     errorsData.value = errors.value
     if (errorsData.value?.candidate) { 
-      showAlert('error', errorsData.value.candidate)
+      showAlert('Error', errorsData.value.candidate)
     }
     console.log(errorsData.value)
   }else{
     responseData.value = requestResponse.value 
-    showAlert('success', requestResponse.value.message)
+    showAlert('Success', 'Candidate added successfully')
     clearForm()
   }
   isSubmitting.value = false
@@ -147,8 +147,7 @@ const showAlert = (type, message) => {
   alert.value.type = type;
   alert.value.message = message;
 } 
-const clearForm = () => {  
-  showAlert('success', "Candidate added successfully")
+const clearForm = () => {   
   form.value.user_id = ''
   form.value.position = ''
   for (const key in selectedToBeCandidate.value) { 

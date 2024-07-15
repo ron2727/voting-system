@@ -1,7 +1,8 @@
 <template> 
   <Title title="Update voter" subTitle="Update voter information"></Title>
   <Loader size="md" v-if="isLoading" />
-  <form @submit.prevent="submitVoterForm(form)" v-else>
+  <AlertMessage v-if="alert.isOpen" :alertType="alert.type" @closeAlert="alert.isOpen = false">{{ alert.message }}</AlertMessage>
+  <form @submit.prevent="submitVoterForm(form)" v-if="!isLoading">
     <div class="form-wrapper bg-white max-w-xl p-4 rounded-lg shadow-md space-y-3">
       <Input labelText="Student ID" :required="true" v-model="form.student_id" :errorMessage="errorsData?.student_id?.[0]" />
       <Input labelText="First Name" :required="true" v-model="form.firstname" :errorMessage="errorsData?.firstname?.[0]" />
@@ -23,6 +24,7 @@
 </template>
 
 <script setup> 
+import AlertMessage from '../../../components/common/AlertMessage.vue';
 import Title from '../../../components/common/Title.vue' 
 import Input from '../../../components/common/Input.vue';
 import Selection from '../../../components/common/Selection.vue';
@@ -47,6 +49,11 @@ const form = ref({
    section: "",
    email: "",
 });
+const alert = ref({
+  isOpen: false,
+  type: 'Success',
+  message: 'Updated successfully',
+});
 const route = useRoute();
 provide('userAuth', authStore);
 
@@ -66,8 +73,9 @@ const submitVoterForm = async (formData) => {
     console.log(errorsData.value)
   }else{
     responseData.value = requestResponse.value
-    console.log(responseData.value.message)
-    clearForm()
+    alert.value.isOpen = true
+    console.log(responseData.value.message) 
+
   }
 
   isSubmitting.value = false
@@ -83,9 +91,13 @@ const clearForm = () => {
 
 const storeDataToForm = (data) => {
    for (const key in data) { 
+     if (key === "profile_image") {
+       continue;
+     }
      form.value[key] = data[key] 
    } 
 }
+ 
 
 </script>
  

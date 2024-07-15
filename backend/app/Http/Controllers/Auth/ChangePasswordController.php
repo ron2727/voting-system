@@ -35,6 +35,6 @@ class ChangePasswordController extends Controller
             'password' => Hash::make($request->new_password)
         ]); 
 
-        return redirect()->back()->with('success', 'Password changed successfully.'); 
+        return response()->json(['success', 'Password changed successfully.']); 
     }
 }

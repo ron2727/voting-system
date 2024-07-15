@@ -75,7 +75,7 @@ const formChangePassword = ref({
 })
 const alert = ref({
   isOpen: false,
-  type: 'success',
+  type: 'Success',
   message: 'Updated successfully',
 });
 
@@ -106,12 +106,13 @@ const submitVoterForm = async () => {
 const submitChangePasswordForm = async () => {
    isChangePasswordSubmitting.value = true  
    await authStore.handleChangePassword(formChangePassword.value)
+   clearFormData(formChangePassword)
    errorsData.value.current_password = authStore.errors?.current_password?.[0]
    errorsData.value.new_password = authStore.errors?.new_password?.[0]
    errorsData.value.new_password_confirmation = authStore.errors?.new_password?.[1]
    if (!errorsData.value.current_password && !errorsData.value.new_password && !errorsData.value.new_password_confirmation) {
-      openAlert('Success', 'Password changed successfully')
-   }  
+    openAlert('Success', 'Password changed successfully')
+   }
    isChangePasswordSubmitting.value = false 
 }
 
@@ -153,6 +154,12 @@ const openAlert = (type, message) => {
   alert.value.isOpen = true
   alert.value.type = type
   alert.value.message = message
+}
+
+const clearFormData = (formData) => { 
+  for (const key in formData.value) {
+    formData.value[key] = ''
+  }
 }
 </script>
  

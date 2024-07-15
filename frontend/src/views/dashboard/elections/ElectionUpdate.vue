@@ -1,7 +1,8 @@
 <template> 
   <Title title="Update voter"></Title> 
   <Loader size="md" v-if="isLoading" />
-  <div class="form-wrapper bg-white max-w-xl p-4 rounded-lg shadow-md space-y-3" v-else>
+  <AlertMessage v-if="alert.isOpen" :alertType="alert.type" @closeAlert="alert.isOpen = false">{{ alert.message }}</AlertMessage>
+  <div class="form-wrapper bg-white max-w-xl p-4 rounded-lg shadow-md space-y-3" v-if="!isLoading">
     <form @submit.prevent="submitElectionForm(form)">
       <div class=" space-y-2">
         <Input labelText="Title" :required="true" v-model="form.title" :errorMessage="errorsData?.title?.[0]" />
@@ -21,6 +22,7 @@
 </template>
 
 <script setup>
+import AlertMessage from '../../../components/common/AlertMessage.vue';
 import Title from '../../../components/common/Title.vue';
 import Loader from '../../../components/common/Loader.vue'; 
 import Input from '../../../components/common/Input.vue'; 
@@ -42,6 +44,11 @@ const isSubmitting = ref(false);
 const form = ref({
    title: "",
    description: "",  
+});
+const alert = ref({
+  isOpen: false,
+  type: 'Success',
+  message: 'Updated successfully',
 });
 provide('userAuth', authStore);
   
@@ -65,6 +72,7 @@ const submitElectionForm = async (formData) => {
     console.log(errorsData.value)
   }else{
     responseData.value = requestResponse.value  
+    alert.value.isOpen = true
   }
 
   isSubmitting.value = false
@@ -76,7 +84,7 @@ const storeDataToForm = (data) => {
      form.value[key] = data[key] 
    } 
 }
-  
+ 
 </script>
  
  

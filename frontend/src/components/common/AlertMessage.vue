@@ -1,6 +1,6 @@
 <template>
-  <div :class="alertType === 'Success' ? 'bg-green-600/15' : 'bg-red-600/15'"
-       class=" fixed right-0 bottom-0 p-4 m-5 border bg-green-600/15 rounded-xl">
+  <div :class="alertType === 'Success' ? ' bg-green-100' : 'bg-red-100'"
+       class=" fixed right-0 bottom-0 p-4 m-5 border rounded-xl">
      <button @click="$emit('closeAlert')" type="button" class=" absolute top-0 right-0 m-2 text-gray-600 hover:text-gray-600/60">
         <i class='bx bx-x bx-xs'></i>
      </button>
