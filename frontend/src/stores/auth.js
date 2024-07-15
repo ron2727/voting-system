@@ -61,5 +61,18 @@ export const useAuthStore = defineStore("auth", {
             this.router.push('/');
         }, 
 
+        async handleChangePassword(data){ 
+            this.authErrors = [];
+            await this.getToken();
+            try {
+                await axios.post("/change-password", data);  
+            } catch (error) {
+                if(error.response.status === 422) {
+                    this.authErrors = error.response.data.errors;
+                }
+                console.error(error);
+            }
+        },
+
     }
 });

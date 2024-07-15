@@ -16,6 +16,7 @@ use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller as BaseController;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 
@@ -23,11 +24,10 @@ class Controller extends BaseController
 {
     use AuthorizesRequests, ValidatesRequests;
 
-    public function testing()
-    {
-       $image_url = Storage::url('public/uploaded/images/crud-layout.png');
-       return response()->json(['url_image' => $image_url]);
-    }
+    public function testing(Request $request)
+    { 
+       return response()->json(Auth::user());
+    } 
 
     public function testRequest()
     {

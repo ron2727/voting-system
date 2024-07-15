@@ -1,7 +1,7 @@
 <template>
   <Title title="User settings" subTitle="Update your account information"></Title>
   <Loader size="md" v-if="isLoading" />
-  <div class="form-wrapper bg-white max-w-xl p-4 rounded-lg shadow-md" v-else>
+  <div class="form-wrapper bg-white max-w-xl p-4 rounded-lg shadow-md" v-if="!isLoading" >
     <form @submit.prevent="submitVoterForm()" enctype="multipart/form-data">
       <div class=" space-y-3">
         <AlertMessage v-if="alert.isOpen" :alertType="alert.type" @closeAlert="alert.isOpen = false">{{ alert.message }}</AlertMessage>
@@ -16,6 +16,21 @@
         <div class="text-right space-x-3">
           <Button buttonType="submit" buttonText="Update" class="bg-blue-600" :disabled="isSubmitting">
             <i class='bx bx-loader-alt bx-xs bx-spin text-white' v-if="isSubmitting"></i>
+          </Button>
+        </div>
+      </div>
+    </form>
+  </div>
+  <Title class="mt-10" title="Change password" subTitle="You can change your password" v-if="!isLoading"></Title>
+  <div class="form-wrapper bg-white max-w-xl mt-10 p-4 rounded-lg shadow-md" v-if="!isLoading" >
+    <form @submit.prevent="submitChangePasswordForm()">
+      <div class=" space-y-3"> 
+        <Input labelText="Current Password" v-model="formChangePassword.current_password" :errorMessage="errorsData?.current_password" inputType="password"/>
+        <Input labelText="New Password" v-model="formChangePassword.new_password" :errorMessage="errorsData?.new_password" inputType="password" />
+        <Input labelText="Confirm Password" v-model="formChangePassword.new_password_confirmation" :errorMessage="errorsData?.new_password_confirmation" inputType="password" />
+        <div class="text-right space-x-3">
+          <Button buttonType="submit" buttonText="Change Password" class="bg-blue-600" :disabled="isChangePasswordSubmitting">
+            <i class='bx bx-loader-alt bx-xs bx-spin text-white' v-if="isChangePasswordSubmitting"></i>
           </Button>
         </div>
       </div>
@@ -39,6 +54,7 @@ import axios from 'axios';
 const authStore = useAuthStore();  
 const isLoading = ref(true);
 const isSubmitting = ref(false)
+const isChangePasswordSubmitting = ref(false)
 const errorsData = ref([]);
 const responseData = ref([]);
 const form = ref({
@@ -51,6 +67,12 @@ const form = ref({
    email: "",
    profile_image: "",
 });
+
+const formChangePassword = ref({
+   current_password: '',
+   new_password: '',
+   new_password_confirmation: ''
+})
 const alert = ref({
   isOpen: false,
   type: 'success',
@@ -82,6 +104,14 @@ const submitVoterForm = async () => {
   isSubmitting.value = false
 }
  
+const submitChangePasswordForm = async () => {
+   isChangePasswordSubmitting.value = true  
+   await authStore.handleChangePassword(formChangePassword.value)
+   errorsData.value.current_password = authStore.errors?.current_password?.[0]
+   errorsData.value.new_password = authStore.errors?.new_password?.[0]
+   errorsData.value.new_password_confirmation = authStore.errors?.new_password?.[1]
+   isChangePasswordSubmitting.value = false 
+}
 
 const storeDataToForm = (data) => {
    for (const key in form.value) { 
