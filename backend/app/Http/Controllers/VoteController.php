@@ -21,11 +21,7 @@ class VoteController extends Controller
 
     public function getCandidatesTotalVotes($election_id){
         return $this->voteService->getCandidatesTotalVotes($election_id);
-    }
-
-    public function getElectionVotes($election_id){
-        return $this->voteService->getElectionVotes($election_id);
-    }
+    } 
     public function checkIfVoterHadVoted($user_id, $election_id){
         
         if ($this->voteService->checkIfVoterHadVoted($user_id, $election_id)) {

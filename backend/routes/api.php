@@ -38,8 +38,7 @@ Route::get('/voters/random', [VoterController::class, 'getRandomVoters']);
 Route::get('/voters/find/{q}', [VoterController::class, 'findVoters']);
 Route::get('/elections/filtered/{status}', [ElectionController::class, 'getFilteredElections']);
 Route::get('/vote/ballot/{user_id}/{election_id}', [VoteController::class, 'getSubmittedVote']);
-Route::get('/vote/total/{election_id}', [VoteController::class, 'getCandidatesTotalVotes']);
-Route::get('/vote/winners/{election_id}', [VoteController::class, 'getElectionVotes']);
+Route::get('/vote/total/{election_id}', [VoteController::class, 'getCandidatesTotalVotes']); 
 Route::get('/voters/total', [VoterController::class, 'getTotalVoters']);
 Route::get('/votes/totalcast', [VoteController::class, 'getTotalVotes']);
 

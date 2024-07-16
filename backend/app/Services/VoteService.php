@@ -48,34 +48,7 @@ class VoteService
     { 
         $candidate = Candidate::where('election_id', $election_id)->with('user')->with('votes')->get();
         return CandidateVoteResource::collection($candidate);
-    }
-
-    public function getElectionVotes($election_id)
-    { 
-
-        $result = Candidate::where('election_id', $election_id)->with('user')->with('votes')->get();
- 
-        $candidate = CandidateVoteResource::collection($result); 
- 
-        return $this->getElectionCandidatesWithPosition($candidate);
-
-    }
-    
-    public function getElectionCandidatesWithPosition($election_candidates){
-        $candidatesPosition = [
-            'President' => ['candidates' => []],
-            'Vice President' => ['candidates' => []],
-            'Secretary' => ['candidates' => []],
-            'Treasurer' => ['candidates' => []]
-        ];
-
-        foreach ($election_candidates as $candidate) {
-            array_push($candidatesPosition[$candidate->position]['candidates'], $candidate);
-        } 
-        
-        return response()->json($candidatesPosition);
-    }
-
+    } 
     public function checkIfVoterHadVoted($user_id, $election_id)
     {
         $isAlreadyVoted = Vote::where('user_id', $user_id)

@@ -46,4 +46,32 @@ export class VotesTally {
         return candidates;
     }
 
+    getElectionCandidatesWinner = () => {
+        const candidates = this.getCandidates()
+
+        for (const position in candidates) { 
+            if (candidates[position].candidates.length > 1) {
+               const winner = {
+                  id: 0,
+                  votes: 0,
+               } 
+               candidates[position].candidates.forEach(candidate => {
+                  if (candidate.votes > winner.votes) {
+                     winner.id = candidate.id
+                     winner.votes = candidate.votes
+                  }
+               })
+               candidates[position].candidates.forEach(candidate => {
+                  if (candidate.id === winner.id) {
+                    candidates[position] = candidate  
+                  }
+               })
+            }else{
+                candidates[position] = candidates[position].candidates[0]
+            }
+        }
+    
+        return candidates;
+    }
+
 } 

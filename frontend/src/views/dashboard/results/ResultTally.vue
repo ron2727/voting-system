@@ -26,6 +26,7 @@ onBeforeMount(async () => {
    await authStore.getAuthUser();  
    const candidates = await getCandidateTotalVotes(route.params.electionId); 
    const voteTally = new VotesTally(candidates, ["President", "Vice President", "Treasurer", "Secretary"])
+   console.log(voteTally.getCandidates())
    candidatesWithTotalVotes.value = voteTally.getCandidates()
    isLoading.value = false 
 })  

@@ -2,7 +2,7 @@
   <BackButton :path="`/dashboard/elections`"></BackButton>
   <Title :title="election.title" :subTitle="election.description" v-if="!isLoading"></Title> 
   <div class="wrapper space-y-8" v-if="!isLoading">
-    <RouterLink :to="`/dashboard/election/${election.id}/candidates/add`">
+    <RouterLink :to="`/dashboard/election/${election.id}/candidates/add`" v-if="$route.params.electionStatus === 'upcoming'">
       <Button buttonText="Add new candidate" class="mt-10">
         <i class='bx bx-plus'></i>
       </Button>

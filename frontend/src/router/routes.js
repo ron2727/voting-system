@@ -58,7 +58,7 @@ const routes = [
                 component: () => import('../views/dashboard/elections/ElectionUpdate.vue')
             }, 
             {
-                path: 'election/:electionId/candidates',
+                path: 'election/:electionId/candidates/:electionStatus',
                 name: 'Candidate',
                 component: () => import('../views/dashboard/candidates/Candidates.vue')
             }, 

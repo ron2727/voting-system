@@ -39,9 +39,11 @@
             {{ DateFormat.getTimeOfDate(election.end_date) }}
           </div>
         </div>
-        <RouterLink :to="`/dashboard/election/${election.id}/candidates`">
-          <Button buttonText="View Candidates" class=" absolute right-0 bottom-0 m-5"></Button>
+       <div class=" flex justify-end">
+        <RouterLink :to="`/dashboard/election/${election.id}/candidates/${electionStatus}`">
+          <Button buttonText="View Candidates" class=" block md:absolute right-0 bottom-0 mt-2 md:m-5"/>
         </RouterLink>
+       </div>
       </template>
     </Card>
     <NoRecordMessage v-else>No election found</NoRecordMessage>
@@ -65,7 +67,7 @@ const authStore = useAuthStore();
 const route = useRouter();
 const isLoading = ref(true);
 const elections = ref([]);
-
+const electionStatus = ref('active');
 provide('userAuth', authStore);
 
 onBeforeMount(async () => {
@@ -82,11 +84,9 @@ onBeforeMount(async () => {
 const getActiveMenu = async (menuItem) => {
   isLoading.value = true;
   elections.value = await getFilteredElection(menuItem);
+  electionStatus.value = menuItem.toLowerCase();
   isLoading.value = false;
 }
 
-
-const subString = (text, end) => {
-  return `${text.substring(0, end)}...`;
-}
+ 
 </script>

@@ -24,17 +24,18 @@
 import Loader from '../../../components/common/Loader.vue';
 import BackButton from '../../../components/common/BackButton.vue';
 import { useRoute } from 'vue-router'; 
-import { getElectionVotes } from '../../../services/api/vote'
-import { onBeforeMount, ref } from 'vue';
-
+import { onBeforeMount, ref } from 'vue'; 
+import { getCandidateTotalVotes } from '../../../services/api/vote'
+import { VotesTally } from '../../../services/voteTally';
 const route = useRoute();
 const isLoading = ref(true);
 const candidatesWinners = ref([])
 onBeforeMount(async () => {
-    const data = await getElectionVotes(route.params.electionId)    
-    console.log(data)
-    candidatesWinners.value = getElectionCandidatesWinner(data)
-    isLoading.value = false
+    const data = await getCandidateTotalVotes(route.params.electionId)   
+    const votesTally = new VotesTally(data, ["President", "Vice President", "Treasurer", "Secretary"])   
+    candidatesWinners.value = votesTally.getElectionCandidatesWinner()
+    console.log(candidatesWinners.value)
+    isLoading.value = false 
 })
 
 const getElectionCandidatesWinner = (candidates) => {

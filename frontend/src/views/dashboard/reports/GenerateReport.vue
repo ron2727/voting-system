@@ -14,8 +14,7 @@
     </div>
 </template>
 
-<script setup>
-import DashboardTemplate from '../../../components/layouts/DashboardTemplate.vue';
+<script setup> 
 import Title from '../../../components/common/Title.vue';  
 import ReportPdf from '../../../components/common/ReportPdf.vue'; 
 import Loader from '../../../components/common/Loader.vue';

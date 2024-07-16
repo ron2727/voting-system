@@ -27,16 +27,7 @@ export const getCandidateTotalVotes = async (electionId) => {
     } catch (error) {
       console.log(error)
     }
-}
-
-export const getElectionVotes = async (electionId) => {
-  try {
-    const response = await axios.get(`/api/vote/winners/${electionId}`);
-    return response.data
-  } catch (error) {
-    console.log(error)
-  }
-}
+} 
 
 export const checkVote = async (user_id, electionId) => {
   let response = null
