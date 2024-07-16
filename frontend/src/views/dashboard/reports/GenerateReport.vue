@@ -32,13 +32,15 @@ const isLoading = ref(true);
 const pdfContent = ref(null);
 const election = ref([]);
 const candidatesWithTotalVotes = ref(null);
+const candidateWinners = ref(null);
 const reportData = ref({
     electionName: '',
     electionDescription : '',
     electionStartDate: '',
     electionEndDate: '',
     totalVotes: 0, 
-    candidates: {},
+    candidates: null,
+    electionWinners: null
 })
 const route = useRoute(); 
 provide('userAuth', authStore);
@@ -49,6 +51,7 @@ onBeforeMount(async () => {
    const candidates = await getCandidateTotalVotes(route.params.electionId); 
    const votesTally = new VotesTally(candidates, ["President", "Vice President", "Treasurer", "Secretary"])
    candidatesWithTotalVotes.value = votesTally.getCandidates()
+   candidateWinners.value = votesTally.getElectionCandidatesWinner()
    storeDataToReportData(election) 
    isLoading.value = false
 })    
@@ -68,6 +71,7 @@ const storeDataToReportData = () => {
     reportData.value.electionEndDate = election.value.end_date 
     reportData.value.totalVotes = getTotalVotesOfELection()
     reportData.value.candidates = candidatesWithTotalVotes.value
+    reportData.value.electionWinners = candidateWinners.value
     console.log(reportData.value)
 }
 
