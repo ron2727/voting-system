@@ -1,6 +1,6 @@
 <template> 
   <Title title="Voters" subTitle="View and manage voters"></Title>
-  <RouterLink to="/dashboard/voter/add">
+  <RouterLink to="/dashboard/voter/add" v-if="!loading">
     <Button buttonText="Add new voter" class="my-10">
       <i class='bx bx-plus'></i>
     </Button>
