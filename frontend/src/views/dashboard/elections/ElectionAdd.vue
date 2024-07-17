@@ -1,21 +1,19 @@
 <template>
   <Title title="Create an election"></Title>
-  <form @submit.prevent="submitElectionForm(form)">
+  <form>
     <div class="form-wrapper bg-white max-w-xl p-4 rounded-lg shadow-md space-y-3">
-      <Input labelText="Title" :required="true" v-model="form.title" :errorMessage="errorsData?.title?.[0]" />
-      <Input labelText="Description" :required="true" v-model="form.description"
-        :errorMessage="errorsData?.description?.[0]" />
+      <Input labelText="Title" :required="true" v-model="formData.title" :errorMessage="errorsData?.title?.[0]" />
+      <Input labelText="Description" :required="true" v-model="formData.description" :errorMessage="errorsData?.description?.[0]" />
+      <Listing :positions="formData.positions" @add-position="addPosition" @remove-position="removePosition" :errorMessage="errorsData?.positions?.[0]"/>
       <div class="grid grid-cols-2 gap-3">
-        <Input labelText="Start Date " v-model="form.start_date" :inputType="'datetime-local'"
-          :errorMessage="errorsData?.start_date?.[0]" :required="true" />
-        <Input labelText="End Date" v-model="form.end_date" :inputType="'datetime-local'"
-          :errorMessage="errorsData?.end_date?.[0]" :required="true" />
+        <Input labelText="Start Date " v-model="formData.start_date" :inputType="'datetime-local'" :errorMessage="errorsData?.start_date?.[0]" :required="true" />
+        <Input labelText="End Date" v-model="formData.end_date" :inputType="'datetime-local'" :errorMessage="errorsData?.end_date?.[0]" :required="true" />
       </div>
       <div class="text-right space-x-3">
         <RouterLink to="/dashboard/elections">
           <Button buttonText="Cancel" class="bg-red-500" />
         </RouterLink>
-        <Button buttonType="submit" buttonText="Create Election" class="bg-blue-600" :disabled="isSubmitting">
+        <Button buttonType="button" buttonText="Create Election" class="bg-blue-600" :disabled="isSubmitting" @click="submitElectionForm()">
           <i class='bx bx-loader-alt bx-xs bx-spin text-white' v-if="isSubmitting"></i>
         </Button>
       </div>
@@ -27,6 +25,7 @@
 import Title from '../../../components/common/Title.vue'
 import Input from '../../../components/common/Input.vue'; 
 import Button from '../../../components/common/Button.vue'; 
+import Listing from '../../../components/common/Listing.vue';
 import { onMounted, ref, onBeforeMount, provide } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
 import { useAuthStore } from '../../../stores/auth'; 
@@ -40,12 +39,14 @@ const elections = ref([]);
 const errorsData = ref([]);
 const responseData = ref([]);
 const isSubmitting = ref(false);
-const form = ref({
+const formData = ref({
    title: "",
-   description: "", 
+   description: "",
+   positions: [], 
    start_date: "",
    end_date: "",
 });
+
 provide('userAuth', authStore);
   
 onBeforeMount(async () => {
@@ -55,14 +56,24 @@ onBeforeMount(async () => {
    }
    elections.value = await getElections(); 
    console.log(authStore.user)
-}) 
+})  
+const addPosition = (position) => {
+    if (position !== '') {
+        formData.value.positions.push(position)
+        position = ''
+    }
+}
+
+const removePosition = (position) => {
+    formData.value.positions = formData.value.positions.filter((p, i) => i !== position)
+}
  
-const submitElectionForm = async (formData) => {
+const submitElectionForm = async () => { 
   isSubmitting.value = true
-  formData.start_date = DateFormat.getDateTime(formData.start_date)
-  formData.end_date = DateFormat.getDateTime(formData.end_date)
+  formData.value.start_date = DateFormat.getDateTime(formData.value.start_date)
+  formData.value.end_date = DateFormat.getDateTime(formData.value.end_date)
     
-  const {requestResponse, errors} = await storeElection(formData)
+  const {requestResponse, errors} = await storeElection(formData.value)
   
   if(errors.value) {
     errorsData.value = errors.value
@@ -76,8 +87,8 @@ const submitElectionForm = async (formData) => {
 }
 
 const clearForm = () => { 
-  for (const key in form.value) {
-    form.value[key] = '';
+  for (const key in formData.value) {
+    formData.value[key] = '';
   }
   errorsData.value = [];
 }
