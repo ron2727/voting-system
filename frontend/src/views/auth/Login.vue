@@ -21,22 +21,27 @@
 </template>
 
 <script setup>
-import { onMounted, ref } from 'vue';
-import { useAuthStore } from '../../stores/auth'; 
 import Input from '../../components/common/Input.vue';
-import Button from '../../components/common/Button.vue';
-
+import Button from '../../components/common/Button.vue'; 
+import { onMounted, ref } from 'vue';
+import { useRouter } from 'vue-router'; 
+import { useAuthStore } from '../../stores/auth'; 
 
 const authStore = useAuthStore(); 
 const isSubmitting = ref(false)
-
+const router = useRouter();
 const formData = ref({
   email: '',
   password: ''
 }) 
 
-onMounted(() => {
-   authStore.authErrors = []
+onMounted(async () => {
+  await authStore.getAuthUser()
+  authStore.authErrors = []
+  console.log(authStore.user)
+  if (authStore.user) {
+    router.push('/dashboard/')
+  }
 })
 
 const submitForm = async () => {

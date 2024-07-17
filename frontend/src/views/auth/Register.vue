@@ -26,17 +26,25 @@ import Input from '../../components/common/Input.vue';
 import Button from '../../components/common/Button.vue'; 
 import { onMounted, ref } from 'vue';
 import { useAuthStore } from '../../stores/auth';  
+import { useRouter } from 'vue-router';
 
 const authStore = useAuthStore();
 const isSubmitting = ref(false)
+const router = useRouter();
+
 const formData = ref({
    student_id: '',
    password: '',
    password_confirmation: ''
 })
 
-onMounted(() => {
-   authStore.authErrors = []
+onMounted( async() => {
+  await authStore.getAuthUser()
+  authStore.authErrors = []
+  console.log(authStore.user)
+  if (authStore.user) {
+    router.push('/dashboard/')
+  }
 })
 const submitForm = async () => {
   isSubmitting.value = true

@@ -25,6 +25,9 @@ provide('userAuth', authStore);
 onMounted(async () => {
    await authStore.getAuthUser(); 
    isLoading.value = false
+   if (!authStore.user) {
+     router.push('/')
+   }
    if (!authStore.user.is_admin) {
     router.push('/dashboard/vote')
    } 
