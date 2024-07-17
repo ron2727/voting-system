@@ -5,26 +5,26 @@ export class VotesTally {
         for(let i = 0; i < positions.length; i++){
            this[positions[i]] = {candidates: []}
         }
-        this.mapCandidatesVote(candidates)
+        this.#mapCandidatesVote(candidates)
     }
 
-    mapCandidatesVote = (data) => {
+    #mapCandidatesVote = (data) => {
         data.forEach(candidate => {
             this[candidate.position].candidates.push(candidate)
         })
-        this.setCandidatesPercentageVote() 
+        this.#setCandidatesPercentageVote() 
     } 
 
-    setCandidatesPercentageVote = () => { 
+    #setCandidatesPercentageVote = () => { 
         for(let i = 0; i < this.positions.length; i++){
             const position = this.positions[i]
             const totalVotes = this[position].candidates.reduce((total, candidate) => total + candidate.votes, 0);
             this[position].totalVotes = totalVotes
-            this.setPercentageVote(totalVotes, this[position].candidates) 
+            this.#setPercentageVote(totalVotes, this[position].candidates) 
          } 
     } 
 
-    setPercentageVote = (totalVote, candidates) => {
+    #setPercentageVote = (totalVote, candidates) => {
         for(let i = 0; i < candidates.length; i++){
            const candidate = candidates[i]
            let totalPercentageVotes = Math.round((candidate.votes / totalVote) * 100)
@@ -61,6 +61,9 @@ export class VotesTally {
                      winner.votes = candidate.votes
                   }
                })
+               if (winner.id == 0) {
+                 winner.id = candidates[position].candidates[0].id
+               }
                candidates[position].candidates.forEach(candidate => {
                   if (candidate.id === winner.id) {
                     candidates[position] = candidate  

@@ -2,7 +2,7 @@
   <BackButton :path="`/dashboard/elections`"></BackButton>
   <Title :title="election.title" :subTitle="election.description" v-if="!isLoading"></Title> 
   <div class="wrapper space-y-8" v-if="!isLoading">
-    <RouterLink :to="`/dashboard/election/${election.id}/candidates/add`" v-if="$route.params.electionStatus === 'upcoming'">
+    <RouterLink :to="`/dashboard/election/${election.id}/candidates/add`" v-if="$route.params.electionStatus === 'upcoming' || $route.params.electionStatus === 'active'">
       <Button buttonText="Add new candidate" class="mt-10">
         <i class='bx bx-plus'></i>
       </Button>
@@ -48,12 +48,7 @@
   const route = useRoute();
   const isLoading = ref(true);
   const election = ref([]);  
-  const positions = ref({
-    "President": [],
-    "Vice President": [],
-    "Treasurer": [],
-    "Secretary": [], 
-  });
+  const positions = ref({});
 
   provide('userAuth', authStore);
   
@@ -63,10 +58,11 @@
        router.push('/dashboard')
      }
      election.value = await getElection(route.params.electionId); 
+     setPositions()
      const response = await getCandidatesFromElection(route.params.electionId);
      isLoading.value = false
      processCandidates(response.data)
-    //  console.log(candidates.value.data)
+     console.log(response.data)
   }) 
   
   const processCandidates = (candidates) => {
@@ -74,6 +70,13 @@
        positions.value[candidate.position].push(candidate) 
     } 
     console.log(positions.value)
+  }
+
+  const setPositions = () => {
+    const positionsArr = JSON.parse(election.value.positions)
+    for (const position of positionsArr) {
+       positions.value[position] = []
+    }
   }
   </script>
    

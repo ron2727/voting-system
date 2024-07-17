@@ -2,7 +2,7 @@
     <div class=" candidates-wrapper mt-10">
         <h6 class=" text-lg md:text-xl font-bold mb-5">{{ title }}</h6>
         <div ref="candidatesList" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
-            <div v-for="candidate in candidates" @click="selectCandidate(candidate, $event)" class="candidate relative h-min border bg-white rounded-2xl cursor-pointer p-1 hover:border-blue-600">
+            <div v-for="candidate in candidates" class="candidate relative h-min border bg-white rounded-2xl p-1">
                 <img :src="candidate.user.profile_image" alt="a"
                     class=" w-full object-cover border rounded-2xl">
                 <div class="px-1 py-2">
@@ -10,47 +10,16 @@
                     <small class=" text-xs md:text-sm text-gray-500">{{ candidate.position }}</small>
                 </div>
             </div>
-        </div>
-        <small class=" text-red-500" v-if="errorMessage">
-            {{ errorMessage }}</small>
+        </div> 
     </div>
 </template>
 
-<script setup>
-import { ref } from 'vue';
-
+<script setup> 
 defineProps({
     candidates: Array,
     title: {
         type: String,
         default: ''
-    },
-    errorMessage: {
-        type: String,
-        default: ''
-    }
-})
-const emits = defineEmits(['selectCandidate'])
-
-const candidatesList = ref(null);
-
-const selectCandidate = (candidate, element) => {
-    const selectedCardCandidate = element.target.parentElement;
-    removeSelectedCardCandidate();
-    
-    if (selectedCardCandidate.classList.contains('border-blue-600')) {
-        selectedCardCandidate.classList.remove('border-blue-600')
-    }else{
-       selectedCardCandidate.classList.add('border-blue-600')
-    }
-    emits('selectCandidate', candidate)
-}
-
-const removeSelectedCardCandidate = () => {
-    Array.from(candidatesList.value.children).forEach(element => {
-        if (element.classList.contains('border-blue-600')) {
-            element.classList.remove('border-blue-600')
-        }
-    })
-}
+    }, 
+}) 
 </script> 

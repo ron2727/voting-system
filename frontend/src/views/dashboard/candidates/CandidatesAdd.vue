@@ -1,6 +1,7 @@
 <template> 
   <Title title="Add new candidate" sub-title="Create new candidate for election"></Title>
-  <form @submit.prevent="submitCandidateForm(form)">
+  <Loader size="md" v-if="isLoading" />
+  <form @submit.prevent="submitCandidateForm()" v-else>
     <input type="hidden" v-model="form.user_id">
     <div class="form-wrapper bg-white max-w-xl p-4 rounded-lg shadow-md space-y-3">
       <AlertMessage v-if="alert.isOpen" :alertType="alert.type" @closeAlert="alert.isOpen = false">{{ alert.message }}
@@ -23,7 +24,7 @@
         <small class=" text-sm text-red-600">{{ errorsData?.user_id?.[0] }}</small>
       </div>
       <Selection labelText="Position" :required="true" v-model="form.position"
-        :options="['President', 'Vice President', 'Secretary', 'Treasurer']"
+        :options="positions"
         :errorMessage="errorsData?.position?.[0]" />
       <div class="text-right space-x-3">
         <RouterLink to="/dashboard/elections">
@@ -63,7 +64,7 @@
   </Modal>
 </template>
 
-<script setup> 
+<script setup>  
 import Title from '../../../components/common/Title.vue' 
 import Selection from '../../../components/common/Selection.vue';
 import Button from '../../../components/common/Button.vue'; 
@@ -73,15 +74,16 @@ import Loader from '../../../components/common/Loader.vue';
 import { onMounted, ref, onBeforeMount, provide } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
 import { useAuthStore } from '../../../stores/auth'; 
-import { getElections, storeElection } from '../../../services/api/elections';
+import { getElections, getElection } from '../../../services/api/elections';
 import { getRandomVoters, searchVoters } from '../../../services/api/voters';
 import { storeCandidate } from '../../../services/api/candidates';
 import { DateFormat } from '../../../services/dateFormat'; 
 
 const authStore = useAuthStore(); 
 const router = useRouter();
-const route = useRoute();
-const elections = ref([]);
+const route = useRoute(); 
+const isLoading = ref(true);
+const positions = ref(null)
 const errorsData = ref([]);
 const responseData = ref([]);
 const isSubmitting = ref(false)
@@ -120,13 +122,14 @@ onBeforeMount(async () => {
    if (!authStore.user.is_admin) {
      router.push('/dashboard')
    }
-   elections.value = await getElections(); 
-   console.log(authStore.user) 
+   const elections = await getElection(route.params.electionId); 
+   setPositions(elections.positions)
+   isLoading.value = false 
 }) 
  
-const submitCandidateForm = async (formData) => { 
+const submitCandidateForm = async () => { 
   isSubmitting.value = true  
-  const {requestResponse, errors} = await storeCandidate(formData)
+  const {requestResponse, errors} = await storeCandidate(form.value)
   
   if(errors.value) {
     errorsData.value = errors.value
@@ -177,6 +180,10 @@ const selectVoter = (voter) => {
     selectedToBeCandidate.value[key] = voter[key]
   } 
   isModalOpen.value = false
+}
+
+const setPositions = (positionsArr) => {
+  positions.value = JSON.parse(positionsArr)
 }
 </script>
  

@@ -13,6 +13,7 @@ import { useRoute } from 'vue-router';
 import { useAuthStore } from '../../../stores/auth'; 
 import { getCandidateTotalVotes } from '../../../services/api/vote'; 
 import { VotesTally } from '../../../services/voteTally';
+import { getElection } from '../../../services/api/elections';
 const authStore = useAuthStore(); 
 const isLoading = ref(true);
 const candidatesWithTotalVotes = ref(null);
@@ -25,8 +26,10 @@ provide('userAuth', authStore);
 onBeforeMount(async () => {
    await authStore.getAuthUser();  
    const candidates = await getCandidateTotalVotes(route.params.electionId); 
-   const voteTally = new VotesTally(candidates, ["President", "Vice President", "Treasurer", "Secretary"])
-   console.log(voteTally.getCandidates())
+   const election = await getElection(route.params.electionId);
+   const positions = JSON.parse(election.positions)
+   const voteTally = new VotesTally(candidates, positions)
+//    console.log(voteTally.getCandidates())
    candidatesWithTotalVotes.value = voteTally.getCandidates()
    isLoading.value = false 
 })  

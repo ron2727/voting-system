@@ -10,7 +10,7 @@ class VoteController extends Controller
 {
     public function __construct(private VoteService $voteService) {}
 
-    public function submitVote(VoteRequest $request)
+    public function submitVote(Request $request)
     { 
         return $this->voteService->submitVote($request);  
     }

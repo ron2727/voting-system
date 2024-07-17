@@ -26,7 +26,8 @@
         <div class="col-3">
             <div class=" wrapper border rounded-3xl bg-white p-3">
                 <h1 class="mt-3 font-bold text-lg">Upcoming elections</h1>
-                <DashboardElectionCard v-for="election in upcomingElections" :election="election" />
+                <DashboardElectionCard v-if="upcomingElections.length" v-for="election in upcomingElections" :election="election" />
+                <NoRecordMessage v-else>No upcoming election found</NoRecordMessage>
             </div>
         </div>
     </div>
@@ -38,6 +39,7 @@ import Title from '../../../components/common/Title.vue';
 import DashboardCard from '../../../components/dashboard/DashboardCard.vue';
 import DashboardElectionCard from '../../../components/dashboard/DashboardElectionCard.vue';
 import DasboardVoteTally from '../../../components/dashboard/DasboardVoteTally.vue';
+import NoRecordMessage from '../../../components/common/NoRecordMessage.vue';
 import { onMounted, ref, provide, onBeforeMount } from 'vue';
 import { getFilteredElection } from '../../../services/api/elections';
 import { getTotalVotes } from '../../../services/api/vote';

@@ -49,10 +49,11 @@ onBeforeMount(async () => {
    await authStore.getAuthUser();  
    election.value = await getElection(route.params.electionId); 
    const candidates = await getCandidateTotalVotes(route.params.electionId); 
-   const votesTally = new VotesTally(candidates, ["President", "Vice President", "Treasurer", "Secretary"])
+   const votesTally = new VotesTally(candidates, JSON.parse(election.value.positions))
    candidatesWithTotalVotes.value = votesTally.getCandidates()
    candidateWinners.value = votesTally.getElectionCandidatesWinner()
-   storeDataToReportData(election) 
+   console.log(candidateWinners.value)
+   storeDataToReportData() 
    isLoading.value = false
 })    
 

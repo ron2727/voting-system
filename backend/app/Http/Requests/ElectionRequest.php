@@ -25,7 +25,11 @@ class ElectionRequest extends FormRequest
         return [
             'title' => ['required', 'max:100'],
             'description' => ['required', 'max:255'],
-            'positions' => ['required'],
+            'positions' => [function ($attribute, $value, $fail) {
+                if (count(json_decode($value)) < 1) {
+                    $fail('Please add at least one position');
+                }
+            }],
             'start_date' => ['required','date_format:Y-m-d H:i'],
             'end_date' => ['required','date_format:Y-m-d H:i','after:start_date'],
         ];

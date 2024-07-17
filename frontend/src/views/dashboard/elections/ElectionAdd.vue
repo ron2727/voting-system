@@ -4,7 +4,7 @@
     <div class="form-wrapper bg-white max-w-xl p-4 rounded-lg shadow-md space-y-3">
       <Input labelText="Title" :required="true" v-model="formData.title" :errorMessage="errorsData?.title?.[0]" />
       <Input labelText="Description" :required="true" v-model="formData.description" :errorMessage="errorsData?.description?.[0]" />
-      <Listing :positions="formData.positions" @add-position="addPosition" @remove-position="removePosition" :errorMessage="errorsData?.positions?.[0]"/>
+      <Listing :positions="positions" @add-position="addPosition" @remove-position="removePosition" :errorMessage="errorsData?.positions?.[0]"/>
       <div class="grid grid-cols-2 gap-3">
         <Input labelText="Start Date " v-model="formData.start_date" :inputType="'datetime-local'" :errorMessage="errorsData?.start_date?.[0]" :required="true" />
         <Input labelText="End Date" v-model="formData.end_date" :inputType="'datetime-local'" :errorMessage="errorsData?.end_date?.[0]" :required="true" />
@@ -39,6 +39,8 @@ const elections = ref([]);
 const errorsData = ref([]);
 const responseData = ref([]);
 const isSubmitting = ref(false);
+const positions = ref([]);
+
 const formData = ref({
    title: "",
    description: "",
@@ -60,28 +62,26 @@ onBeforeMount(async () => {
 const addPosition = (position) => {
     if (position !== '') {
         position = titleCase(position)
-        formData.value.positions.push(position)
+        positions.value.push(position)
         position = ''
     }
 }
 
 const removePosition = (position) => {
-    formData.value.positions = formData.value.positions.filter((p, i) => i !== position)
+    positions.value = positions.value.filter((p, i) => i !== position)
 }
  
 const submitElectionForm = async () => { 
   isSubmitting.value = true
-  formData.value.start_date = DateFormat.getDateTime(formData.value.start_date)
-  formData.value.end_date = DateFormat.getDateTime(formData.value.end_date)
-    
-  const {requestResponse, errors} = await storeElection(formData.value)
+  const newFormData = mapFormData(formData.value)
+  const {requestResponse, errors} = await storeElection(newFormData)
   
   if(errors.value) {
     errorsData.value = errors.value
     console.log(errorsData.value)
   }else{
     responseData.value = requestResponse.value 
-    router.push('/elections')
+    router.push('/dashboard/elections')
   }
 
   isSubmitting.value = false
@@ -106,6 +106,13 @@ const titleCase = (str) => {
      newStr = arr[0].charAt(0).toUpperCase() + arr[0].slice(1)
   }
   return newStr;
+}
+
+const mapFormData = (form) => {  
+  form.start_date = DateFormat.getDateTime(form.start_date)
+  form.end_date = DateFormat.getDateTime(form.end_date)
+  form.positions = JSON.stringify(positions.value)
+  return form
 }
 </script>
  

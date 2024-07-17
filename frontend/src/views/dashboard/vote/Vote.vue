@@ -67,20 +67,11 @@ const isSubmitting = ref(false);
 
 const selectedCandidates = ref({});
 
-const positions = ref({
-    "President": [],
-    "Vice President": [],
-    "Treasurer": [],
-    "Secretary": [], 
-});
+const positions = ref({});
 
 const votersBallot = ref({
     "user_id": null,
-    "election_id": null,
-    "President": null,
-    "Vice_President": null,
-    "Treasurer": null,
-    "Secretary": null,
+    "election_id": null, 
 });
 
 const errorsData = ref(null);
@@ -94,7 +85,8 @@ onMounted(async () => {
    isLoading.value = false
    if (dataForIfVoted.message == "You have not voted yet") {
      alreadyVoted.value = false
-     votersBallot.value.election_id = currentElection.value.id
+     votersBallot.value.election_id = currentElection.value.id 
+     setPositions(JSON.parse(currentElection.value.positions))
      const response = await getCandidatesFromElection(currentElection.value.id); 
      processCandidates(response.data)
      console.log(positions.value)
@@ -107,7 +99,7 @@ const processCandidates = (candidates) => {
   }
 
 const selectCandidate = (candidate) => {
-    votersBallot.value[removeSpace(candidate.position)] = candidate.id; 
+    votersBallot.value[candidate.position] = candidate.id; 
     selectedCandidates.value[candidate.position] = candidate
     console.clear()
     console.log(votersBallot.value)
@@ -127,6 +119,13 @@ const submitVote = async () => {
 
 const removeSpace = (text) => {
     return text.replace(/\s/g, '_');
+}
+
+const setPositions = (positionsArr) => { 
+    for (const position of positionsArr) {
+       positions.value[position] = []
+       votersBallot.value[position] = null
+    }
 }
 </script>
  

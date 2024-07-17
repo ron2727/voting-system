@@ -1,7 +1,7 @@
 <template>
     <Loader size="md" v-if="isLoading" />
     <div class="wrapper" v-else>
-        <div v-if="election?.title">
+        <div v-if="elections.length">
             <h6 class="text-lg font-bold mb-5">Votes tally</h6>
             <div class="election mb-5">
                 <h6 class=" font-bold text-sm">{{ election.title }}</h6>
@@ -12,7 +12,7 @@
                     <h6 class=" text-sm">{{ position }}</h6>
                     <span class=" text-xs text-gray-400">{{ data.totalVotes }} Votes</span>
                 </div>
-                <div class=" mb-2 relative border-blue-200" v-for="candidate in data.candidates">
+                <div class=" mb-2 relative border-blue-200" v-if="data.candidates.length" v-for="candidate in data.candidates">
                     <div class="wrapper flex items-center space-x-2 mb-1">
                         <img :src="candidate.user.profile_image" alt="a" class="w-10 h-10 object-cover border rounded-full">
                         <span class=" text-xs">{{ candidate.user.firstname }} {{ candidate.user.lastname }}</span>
@@ -27,6 +27,7 @@
                     </div>
                     <small class=" text-xs text-gray-600">{{ candidate.votes }} Votes</small>
                 </div>
+                <NoRecordMessage v-else>No candidates yet</NoRecordMessage>
             </div>
         </div>
         <NoRecordMessage v-else>No active election</NoRecordMessage>
@@ -41,17 +42,20 @@ import { getCandidateTotalVotes } from '../../services/api/vote';
 import { getFilteredElection } from '../../services/api/elections';
 import { VotesTally } from '../../services/voteTally';
 const isLoading = ref(true);
+const elections = ref([]);
 const election = ref();
 const candidatesWithTotalVotes = ref(null); 
 
 const colors = ref(['#EC2049', '#F26B38', '#F7DB4F', '#2F9599'])
 
 onBeforeMount(async () => { 
-   const elections = await getFilteredElection('Active');
-   const electionId = getRandomId(elections);
-   const candidates = await getCandidateTotalVotes(electionId); 
-   const voteTally = new VotesTally(candidates, ["President", "Vice President", "Treasurer", "Secretary"])
-   candidatesWithTotalVotes.value = voteTally.getCandidates()
+    elections.value = await getFilteredElection('Active'); 
+    if (elections.value.length) {
+        const { electionId, positions } = getRandomId(elections.value);
+        const candidates = await getCandidateTotalVotes(electionId);
+        const voteTally = new VotesTally(candidates, positions)
+        candidatesWithTotalVotes.value = voteTally.getCandidates()
+    }
    isLoading.value = false
 })   
 
@@ -59,10 +63,13 @@ const getRandomHexColorCode = () => {
     return colors.value[Math.floor(Math.random() * colors.value.length)]
 }
 
-const getRandomId = (elections) => {
-    const electionIds = elections.map(election => election.id)
+const getRandomId = (electionsArr) => {
+    const electionIds = electionsArr.map(election => election.id)
     const randomNumber = Math.floor(Math.random() * electionIds.length)
-    election.value = elections.filter(election => election.id === electionIds[randomNumber])[0]
-    return electionIds[randomNumber]
+    election.value = electionsArr.filter(election => election.id === electionIds[randomNumber])[0] 
+    const electionId = electionIds[randomNumber]
+    const positions = JSON.parse(election.value.positions)
+    
+    return { electionId, positions }
 }
 </script>
