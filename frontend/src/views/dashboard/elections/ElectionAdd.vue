@@ -59,6 +59,7 @@ onBeforeMount(async () => {
 })  
 const addPosition = (position) => {
     if (position !== '') {
+        position = titleCase(position)
         formData.value.positions.push(position)
         position = ''
     }
@@ -91,6 +92,20 @@ const clearForm = () => {
     formData.value[key] = '';
   }
   errorsData.value = [];
+}
+
+const titleCase = (str) => {
+  const arr = str.split(' ')
+  let newStr = ''
+  if (arr.length > 1) {
+     for (let i = 0; i < arr.length; i++) { 
+       arr[i] = arr[i].charAt(0).toUpperCase() + arr[i].slice(1)
+     }
+     newStr = arr.join(' ')
+  }else{ 
+     newStr = arr[0].charAt(0).toUpperCase() + arr[0].slice(1)
+  }
+  return newStr;
 }
 </script>
  
