@@ -9,7 +9,7 @@ import Loader from '../../../components/common/Loader.vue';
 import BackButton from '../../../components/common/BackButton.vue';
 import CandidateList from '../../../components/common/CandidateList.vue';
 import { useRoute } from 'vue-router'; 
-import { onBeforeMount, ref } from 'vue'; 
+import { onMounted, ref } from 'vue'; 
 import { getCandidateTotalVotes } from '../../../services/api/vote'
 import { VotesTally } from '../../../services/voteTally';
 import { getElection } from '../../../services/api/elections';
@@ -17,7 +17,7 @@ const route = useRoute();
 const isLoading = ref(true);
 const candidatesWinners = ref([])
 
-onBeforeMount(async () => {
+onMounted(async () => {
     const data = await getCandidateTotalVotes(route.params.electionId)
     const election = await getElection(route.params.electionId)
     const votesTally = new VotesTally(data, JSON.parse(election.positions))   

@@ -47,7 +47,7 @@ provide('userAuth', authStore);
 onBeforeMount(async () => {
   await authStore.getAuthUser();
   if (!authStore.user.is_admin) {
-    router.push('/vote')
+    router.push('/dashboard/vote')
   }
   votersData.value = await getVoters()
   loading.value = false

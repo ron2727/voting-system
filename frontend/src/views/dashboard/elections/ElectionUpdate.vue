@@ -55,7 +55,7 @@ provide('userAuth', authStore);
 onBeforeMount(async () => {
    await authStore.getAuthUser(); 
    if (!authStore.user.is_admin) {
-     router.push('/dashboard')
+     router.push('/dashboard/vote')
    } 
    const response = await getElection(route.params.electionId)
    storeDataToForm(response) 

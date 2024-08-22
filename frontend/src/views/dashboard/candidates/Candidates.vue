@@ -55,7 +55,7 @@
   onBeforeMount(async () => {
      await authStore.getAuthUser(); 
      if (!authStore.user.is_admin) {
-       router.push('/dashboard')
+       router.push('/dashboard/vote')
      }
      election.value = await getElection(route.params.electionId); 
      setPositions()

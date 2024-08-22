@@ -73,7 +73,7 @@ provide('userAuth', authStore);
 onBeforeMount(async () => {
   await authStore.getAuthUser();
   if (!authStore.user.is_admin) {
-    route.push('/dashboard')
+    route.push('/dashboard/vote')
   }
   elections.value = await getFilteredElection('Active');
   isLoading.value = false;

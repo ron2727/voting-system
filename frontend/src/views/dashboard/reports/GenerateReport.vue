@@ -22,7 +22,7 @@ import Button from '../../../components/common/Button.vue';
 import BackButton from '../../../components/common/BackButton.vue';
 import html2pdf from 'html2pdf.js';
 import { onMounted, ref, provide, onBeforeMount } from 'vue';
-import { useRoute } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 import { useAuthStore } from '../../../stores/auth';
 import { getCandidateTotalVotes } from '../../../services/api/vote';
 import { getElection } from '../../../services/api/elections';
@@ -43,10 +43,14 @@ const reportData = ref({
     electionWinners: null
 })
 const route = useRoute(); 
+const router = useRouter();
 provide('userAuth', authStore);
 
 onBeforeMount(async () => {
    await authStore.getAuthUser();  
+   if (!authStore.user.is_admin) {
+     router.push('/dashboard/vote')
+   }
    election.value = await getElection(route.params.electionId); 
    const candidates = await getCandidateTotalVotes(route.params.electionId); 
    const votesTally = new VotesTally(candidates, JSON.parse(election.value.positions))

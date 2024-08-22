@@ -8,7 +8,7 @@
 import Loader from '../../../components/common/Loader.vue';
 import CandidateVotesList from '../../../components/common/CandidateVotesList.vue'; 
 import BackButton from '../../../components/common/BackButton.vue';
-import { ref, onMounted, onBeforeMount, provide } from 'vue';
+import { ref, onMounted, provide } from 'vue';
 import { useRoute } from 'vue-router';
 import { useAuthStore } from '../../../stores/auth'; 
 import { getCandidateTotalVotes } from '../../../services/api/vote'; 
@@ -23,7 +23,7 @@ const route = useRoute();
 
 provide('userAuth', authStore);
 
-onBeforeMount(async () => {
+onMounted(async () => {
    await authStore.getAuthUser();  
    const candidates = await getCandidateTotalVotes(route.params.electionId); 
    const election = await getElection(route.params.electionId);

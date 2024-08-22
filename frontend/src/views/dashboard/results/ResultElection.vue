@@ -39,14 +39,14 @@ import Loader from '../../../components/common/Loader.vue';
 import Button from '../../../components/common/Button.vue'; 
 import Card from '../../../components/common/Card.vue';
 import NoRecordMessage from '../../../components/common/NoRecordMessage.vue';
-import { ref, onBeforeMount } from 'vue'; 
+import { ref, onMounted } from 'vue'; 
 import { getFilteredElection } from '../../../services/api/elections';
 import { DateFormat } from '../../../services/dateFormat';
 
 const isLoading = ref(true);
 const elections = ref([]);
  
-onBeforeMount(async () => { 
+onMounted(async () => { 
     elections.value = await getFilteredElection('Completed'); 
     isLoading.value = false;
 })

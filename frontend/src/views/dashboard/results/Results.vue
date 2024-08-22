@@ -19,7 +19,7 @@
 
 <script setup> 
 import Title from '../../../components/common/Title.vue' 
-import { ref, onMounted, onBeforeMount, provide } from 'vue';
+import { ref, onMounted, provide } from 'vue';
 import { useAuthStore } from '../../../stores/auth';  
 import { RouterLink, useRouter } from 'vue-router';
 
@@ -28,10 +28,10 @@ const router = useRouter();
 const activeNav = ref('votes');
 provide('userAuth', authStore);
 
-onBeforeMount(async () => {
+onMounted(async () => {
    await authStore.getAuthUser();
    if (!authStore.user.is_admin) {
-      router.push('/vote');
+      router.push('/dashboard/vote');
    }
      
 }) 

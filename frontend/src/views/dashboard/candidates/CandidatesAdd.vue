@@ -120,7 +120,7 @@ onBeforeMount(async () => {
    voters.value = await getRandomVoters();
    form.value.election_id = route.params.electionId;
    if (!authStore.user.is_admin) {
-     router.push('/dashboard')
+     router.push('/dashboard/vote')
    }
    const elections = await getElection(route.params.electionId); 
    setPositions(elections.positions)

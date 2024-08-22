@@ -50,18 +50,21 @@ import { getElectionByMonthYear } from '../../../services/api/elections';
 import { DateFormat } from '../../../services/dateFormat';
 import { onMounted, ref, provide, onBeforeMount } from 'vue';
 import { useAuthStore } from '../../../stores/auth';
-
+import { useRouter } from 'vue-router';
 
 const authStore = useAuthStore(); 
 const isLoading = ref(true);
 const isSearching = ref(false);
 const elections = ref([]);
-
+const router = useRouter();
 provide('userAuth', authStore);
 
 onMounted(async () => {
     const date = new Date();
     await authStore.getAuthUser();
+    if (!authStore.user.is_admin) {
+     router.push('/dashboard/vote')
+   }
     elections.value = await getElectionByMonthYear(date.getMonth() + 1, date.getFullYear());
     isLoading.value = false;
     console.log(date.getFullYear())
