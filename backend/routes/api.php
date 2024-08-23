@@ -24,28 +24,30 @@ use Illuminate\Support\Facades\Route;
 Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
     return UserResource::make($request->user());
 });
+ 
+Route::prefix('voters')
+       ->controller(VoterController::class)
+       ->group(function(){ 
+            Route::get('/random', 'getRandomVoters');
+            Route::get('/find/{q}', 'findVoters');
+            Route::get('/total', 'getTotalVoters');
+            Route::get('/update/{id}', 'update');
+        });
 
-// Route::post('/candidates', [CandidateController::class, 'store']);
-// Route::post('/candidates', function (Request $request) {
-//     return response()->json([['message' => 'New Candidate Created'], $request->all()], 201);
-// });
-
-
+Route::prefix('vote')
+       ->controller(VoteController::class)
+       ->group(function(){ 
+            Route::get('/', 'submitVote'); 
+            Route::get('/total/{election_id}', 'getCandidatesTotalVotes');
+            Route::get('/ballot/{user_id}/{election_id}', 'getSubmittedVote'); 
+            Route::get('/verify/{user_id}/{election_id}', 'checkIfVoterHadVoted'); 
+        });
 
 Route::get('/election/{electionId}', [ElectionController::class, 'getElection']);
-Route::get('/candidates/{electionId}', [CandidateController::class, 'getCandidates']);
-Route::get('/voters/random', [VoterController::class, 'getRandomVoters']);
-Route::get('/voters/find/{q}', [VoterController::class, 'findVoters']);
-Route::get('/elections/filtered/{status}', [ElectionController::class, 'getFilteredElections']);
-Route::get('/vote/ballot/{user_id}/{election_id}', [VoteController::class, 'getSubmittedVote']);
-Route::get('/vote/total/{election_id}', [VoteController::class, 'getCandidatesTotalVotes']); 
-Route::get('/voters/total', [VoterController::class, 'getTotalVoters']);
-Route::get('/votes/totalcast', [VoteController::class, 'getTotalVotes']);
-
-Route::get('/elections/report/search/{month}/{year}', [ElectionController::class, 'getElectionByMothYear']);
-Route::get('/vote/verify/{user_id}/{election_id}', [VoteController::class, 'checkIfVoterHadVoted']);
-Route::post('/voters/update/{id}', [VoterController::class, 'update']);
-Route::post('/vote', [VoteController::class, 'submitVote']);
+Route::get('/candidates/{electionId}', [CandidateController::class, 'getCandidates']); 
+Route::get('/elections/filtered/{status}', [ElectionController::class, 'getFilteredElections']); 
+Route::get('/votes/totalcast', [VoteController::class, 'getTotalVotes']); 
+Route::get('/elections/report/search/{month}/{year}', [ElectionController::class, 'getElectionByMothYear']); 
 
 Route::apiResource('voters', VoterController::class);
 Route::apiResource('elections', ElectionController::class);

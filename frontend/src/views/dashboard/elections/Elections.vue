@@ -30,13 +30,11 @@
         <div class=" space-y-4">
           <div class=" w-max text-xs text-gray-500">
             <span class=" font-bold">Start Date: </span>
-            {{ DateFormat.getDateWithMonthName(election.start_date) }}
-            {{ DateFormat.getTimeOfDate(election.start_date) }}
+            {{ election.start_date }} 
           </div>
           <div class=" w-max text-xs text-gray-500">
             <span class=" font-bold">End Date: </span>
-            {{ DateFormat.getDateWithMonthName(election.end_date) }}
-            {{ DateFormat.getTimeOfDate(election.end_date) }}
+            {{ election.end_date }} 
           </div>
         </div>
        <div class=" flex justify-end">
@@ -57,7 +55,7 @@ import Button from '../../../components/common/Button.vue';
 import Card from '../../../components/common/Card.vue';
 import SubNav from '../../../components/common/SubNav.vue';
 import NoRecordMessage from '../../../components/common/NoRecordMessage.vue';
-import { onMounted, ref, onBeforeMount, provide } from 'vue';
+import { onMounted, ref, provide } from 'vue';
 import { RouterLink, useRouter } from 'vue-router';
 import { useAuthStore } from '../../../stores/auth';
 import { getElections, getFilteredElection } from '../../../services/api/elections';
@@ -70,14 +68,13 @@ const elections = ref([]);
 const electionStatus = ref('active');
 provide('userAuth', authStore);
 
-onBeforeMount(async () => {
+onMounted(async () => {
   await authStore.getAuthUser();
   if (!authStore.user.is_admin) {
     route.push('/dashboard/vote')
   }
   elections.value = await getFilteredElection('Active');
   isLoading.value = false;
-  console.log(authStore.user)
 })
 
 
@@ -85,7 +82,8 @@ const getActiveMenu = async (menuItem) => {
   isLoading.value = true;
   elections.value = await getFilteredElection(menuItem);
   electionStatus.value = menuItem.toLowerCase();
-  isLoading.value = false;
+  isLoading.value = false; 
+  console.log(elections.value)
 }
 
  

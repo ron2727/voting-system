@@ -24,7 +24,7 @@ class UserResource extends JsonResource
             'year_level' => $this->year_level,
             'section' => $this->section,
             'email' => $this->email,
-            'is_admin' => $this->is_admin,
+            'is_admin' => $this->is_admin, 
             'profile_image' => 'http://127.0.0.1:8000'.Storage::url('public/uploaded/images/'.$this->profile_image)
         ];
     }
